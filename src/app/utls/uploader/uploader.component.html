@@ -1,0 +1,25 @@
+<div fxLayout='rows' fxLayoutGap='16px'>
+  <div class='dropzone' appDropzone
+    (hovered)='toggleHover($event)'
+    (dropped)='onDrop("primary", $event)'
+    [class.hovering]='isHovering'>
+    <h3>대표 이미지를 끌어다 놓아 주세요.</h3>
+    <h5>리스트 화면에서 보여 집니다.</h5>
+    
+  </div>
+  <div class="dropzone" appDropzone 
+    (hovered)="toggleHover($event)" 
+    (dropped)="onDrop('details', $event)" 
+    [class.hovering]="isHovering">
+    <h3>상세 이미지를 끌어다 놓아 주세요.</h3>
+    <h5>상세 화면에서 보여 집니다.</h5>
+  </div>
+</div>
+
+
+
+<h3>Uploads</h3>
+
+<div *ngFor="let file of files">
+  <app-upload-ctrl [file]="file" [deviceName]='deviceName' [IsPrimary]='isPrimary'></app-upload-ctrl>
+</div>

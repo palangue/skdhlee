@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "skdb-b2fd1": {
+      "hosting": {
+        "skdhlee": [
+          "skdb-b2fd1"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "skdb-b2fd1"
+  }
+}

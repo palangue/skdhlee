@@ -1,0 +1,9 @@
+<mat-form-field >
+    <input matInput [ngxMatDatetimePicker]="picker" placeholder="날짜 입력" [formControl]="datetimeCtrl"
+        [min]="null" [max]="null" [attr.disabled]="false" (dateChange)='dateChange($event)'>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="true" [stepHour]="true"
+        [stepMinute]="true" [stepSecond]="false" [touchUi]="true" [color]="'primary'"
+        [enableMeridian]="false" [disableMinute]="false" [hideTime]="false">
+    </ngx-mat-datetime-picker>
+</mat-form-field>

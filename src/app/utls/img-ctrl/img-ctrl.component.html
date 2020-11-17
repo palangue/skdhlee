@@ -1,0 +1,13 @@
+<p>img-ctrl works!</p>
+<label for="file">File:</label>
+<input type="file" (change)="upload('갤럭시 S20', $event)" accept=".png,.jpg" />
+
+<progress max="100" [value]="(uploadProgress | async)"></progress>
+
+<div class="result" *ngIf="downloadURL | async; let uploadSrc">
+    <a [href]="uploadSrc">You just uploaded this file!</a>
+  </div>
+  
+  <div class="container" *ngIf="downloadURL | async; let url">
+      <img [src]="url" alt="Image from AngularFireStorage">
+  </div>

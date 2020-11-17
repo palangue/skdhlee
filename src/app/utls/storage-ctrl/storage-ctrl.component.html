@@ -1,0 +1,31 @@
+<div>
+    <form fxLayoutGap="16px" fxFlexFill>
+
+        <mat-toolbar color='primary'>용량 별 가격</mat-toolbar>
+        <div fxLayout='row' fxFlexFill fxLayoutAlign='start center' fxLayoutGap='16px'>
+            <mat-form-field>
+                <mat-label>용량</mat-label>
+                <input matInput placeholder="숫자만 입력">
+            </mat-form-field>
+            <mat-radio-group fxLayoutGap='16px'>
+                <mat-radio-button value='GB' checked>GB </mat-radio-button>
+                <mat-radio-button value='TB'>TB </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <mat-form-field>
+            <mat-label>신규</mat-label>
+            <input matInput placeholder="신규 가입 가격">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>기기 변경</mat-label>
+            <input matInput placeholder="기기 변경 가격">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>번호 이동</mat-label>
+            <input matInput placeholder="버호 이동 가격">
+        </mat-form-field>
+        <div fxLayout='row' fxFlexFill fxLayoutAlign='end center'>
+            <button mat-flat-button color='accent'>용량 별 가격 추가 </button>
+        </div>
+    </form>
+</div>

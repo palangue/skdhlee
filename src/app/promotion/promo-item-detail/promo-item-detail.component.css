@@ -1,0 +1,7 @@
+.content{
+    padding : 16px;
+}
+.content > img {
+    width : 200px;
+    height :auto;
+}

@@ -1,0 +1,36 @@
+<p *ngIf='deviceXs'>promo-main ok</p>
+
+<div fxLayout='row' fxLayoutAlign='center center' fxFlexFill class='main-div'>
+    <mat-card *ngIf='deviceXs' fxFlex='80%' fxLayout='column'>
+        <mat-toolbar color='primary'>
+            <span>안녕하세요</span>
+        </mat-toolbar>
+        <form fxLayout='column' fxlayoutAlgin='stretch' class='main-sub-div'>
+            <mat-form-field >
+                <mat-label>코드</mat-label>
+                <input matInput placeholder="코드를 입력 해 주세요." [(ngModel)]='promo_code' [ngModelOptions]='{standalone:true}'>
+            </mat-form-field>
+            <div >
+                <span *ngIf='invalid_code' class='main-span-error-code' >프로모션 코드가 일치하지 않습니다.</span>
+            </div>
+            <br/>
+            <button mat-raised-button color="accent" (click)='ConfirmPromoCode()'>제출</button>
+        </form>
+    </mat-card>
+    <mat-card *ngIf='!deviceXs' fxFlex='50%' fxLayout='column'>
+        <mat-toolbar color='primary'>
+            <span>안녕하세요</span>
+        </mat-toolbar>
+        <form fxLayout='column' fxlayoutAlgin='stretch' class='main-sub-div'>
+            <mat-form-field >
+                <mat-label>코드</mat-label>
+                <input matInput placeholder="코드를 입력 해 주세요." [(ngModel)]='promo_code' [ngModelOptions]='{standalone:true}'>
+            </mat-form-field>
+            <div >
+                <span *ngIf='invalid_code' class='main-span-error-code' >프로모션 코드가 일치하지 않습니다.</span>
+            </div>
+            <br/>
+            <button mat-raised-button color="accent" (click)='ConfirmPromoCode()'>제출</button>
+        </form>
+    </mat-card>
+</div>

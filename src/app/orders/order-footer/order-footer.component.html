@@ -1,0 +1,27 @@
+<div fxLayout='column' fxLayoutAlign='center space-between' [ngStyle]="{'background-color' : '#f2f2f2', 'padding' : '10px;'}" fxLayoutGap='16px'>
+    <div fxLayout='row' fxLayoutAlign='space-evenly center' fxLayoutGap='16px'>
+        <div fxLayout='column' fxLayoutAlign='center start'>
+            <mat-label [ngStyle]="{'font-size' : '10px'}">휴대폰 월 할부금</mat-label>
+            <mat-label>{{ device_installment | currency : 'KRW' }}</mat-label>
+        </div>
+        <span class='mat-h2'>+</span>
+        <div fxLayout='column' fxLayoutAlign='center start'>
+            <mat-label [ngStyle]="{'font-size' : '10px'}">월 통신요금</mat-label>
+            <mat-label>{{ using_pay |currency :'KRW' }}</mat-label>
+        </div>
+        <span class='mat-h2'>=</span>
+        <div fxLayout='column' fxLayoutAlign='center start'>
+            <mat-label [ngStyle]="{'font-size' : '10px'}">예상 월 납부 금액</mat-label>
+            <mat-label>{{ (device_installment +  using_pay) | currency : 'KRW'}}</mat-label>
+            <div fxLayout='column' fxLayoutAlign='center end'>
+                <span [ngStyle]='{"font-size" : "10px", "color" : "Red"}'>할부 수수료 5.9%</span>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div fxLayout='row' fxLayoutAlign='center center' fxLayoutGap='64px'>
+        <button mat-stroked-button color='primary' (click)='phoneCall()'>상담하기</button>
+        <button mat-stroked-button color='accent' (click)='savePhoneDetail()'>주문하기</button>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<p *ngIf='deviceXs'>promo-main ok</p>
+<div fxLayout='row' fxLayoutAlign='center center' fxFlexFill class='main-div'>
+    <mat-card *ngIf='deviceXs' fxFlex='80%' fxLayout='column'>
+        <mat-toolbar color='primary'>
+            <span>관리자 로그인</span>
+        </mat-toolbar>
+        <form fxLayout='column' fxLayoutAlgin='stretch' class='main-sub-div'>
+            <mat-form-field>
+                <mat-label>아이디</mat-label>
+                <input matInput placeholder="관리자 아이디 입력" [(ngModel)]='id' [ngModelOptions]='{standalone:true}'/>
+            </mat-form-field>
+            <mat-form-field >
+                <mat-label>비밀번호</mat-label>
+                <input matInput placeholder="비밀번호 입력" [(ngModel)]='password' [ngModelOptions]='{standalone:true}'>
+            </mat-form-field>
+            <div >
+                <!-- <span *ngIf='invalid_code' class='main-span-error-code' >프로모션 코드가 일치하지 않습니다.</span> -->
+            </div>
+            <br/>
+            <button mat-raised-button color="accent" (click)='requestLogin()'>제출</button>
+        </form>
+    </mat-card>
+    <mat-card *ngIf='!deviceXs' fxFlex='50%' fxLayout='column'>
+        <mat-toolbar color='primary'>
+            <span>관리자 로그인</span>
+        </mat-toolbar>
+        <form fxLayout='column' fxLayoutAlgin='stretch' class='main-sub-div'>
+            <mat-form-field>
+                <mat-label>아이디</mat-label>
+                <input matInput placeholder="관리자 아이디 입력" [(ngModel)]='id' [ngModelOptions]='{standalone:true}'/>
+            </mat-form-field>
+            <mat-form-field >
+                <mat-label>비밀번호</mat-label>
+                <input matInput placeholder="비밀번호 입력" [(ngModel)]='password' [ngModelOptions]='{standalone:true}'>
+            </mat-form-field>
+            <div >
+                <!-- <span *ngIf='invalid_code' class='main-span-error-code' >프로모션 코드가 일치하지 않습니다.</span> -->
+            </div>
+            <br/>
+            <button mat-raised-button color="accent" (click)='requestLogin()'>제출</button>
+        </form>
+    </mat-card>
+</div>
