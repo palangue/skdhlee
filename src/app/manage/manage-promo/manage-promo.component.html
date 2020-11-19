@@ -1,7 +1,7 @@
 
-<div fxLayout='column' fxFlexFill fxLayoutGap='30px' >
+<div fxLayout='column' fxFlexFill  >
   <app-header [deviceXs]='deviceXs' (selectedMenu)='setPage($event)'></app-header>
-  <div  >
+  <div>
     <app-promo-list *ngIf="pageIndexer === 'promo_list'"></app-promo-list>
     <app-phone-list *ngIf='pageIndexer === "phone_list"'></app-phone-list>
     <app-phone-detail *ngIf='pageIndexer === "phone_detail"'></app-phone-detail>

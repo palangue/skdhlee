@@ -33,7 +33,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 
 
+
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PlanDetailComponent } from './plan-detail/plan-detail.component';
 
 
 
@@ -65,7 +67,7 @@ const MaterialModules = [
 ]
 
 @NgModule({
-  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent],
+  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
