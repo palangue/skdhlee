@@ -1,4 +1,10 @@
-<mat-toolbar>요금제 관리</mat-toolbar>
+<mat-toolbar fxLayoutAlign="space-between center"
+  ><span>요금제 관리</span>
+  <span></span>
+  <button mat-flat-button color="primary" (click)="addPayPlan()">
+    요금제 추가
+  </button>
+</mat-toolbar>
 <div fxLayout="column" fxLayoutGap="16px" [ngStyle]="{ margin: '16px' }">
   <mat-card *ngFor="let planList of planGroupData">
     <mat-card-title>{{ planList.name }}</mat-card-title>

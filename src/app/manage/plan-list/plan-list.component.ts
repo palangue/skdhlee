@@ -71,6 +71,10 @@ export class PlanListComponent implements OnInit, OnDestroy {
     }
   }
 
+  addPayPlan(): void {
+    console.log('요금제 추가');
+  }
+
   uniqueBy(a, key) {
     const seen = {};
     return a.filter((item) => {

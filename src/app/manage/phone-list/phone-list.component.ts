@@ -15,51 +15,50 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class PhoneListComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  phoneSub : Subscription;
-  planSub : Subscription;
+  phoneSub: Subscription;
+  planSub: Subscription;
 
-  phoneList : Array<PHONE_DETAIL>;
-  dataSource : MatTableDataSource<PHONE_DETAIL>;
-  @ViewChild(MatPaginator) paginator : MatPaginator;
-  @ViewChild(MatSort) sort : MatSort;
+  phoneList: Array<PHONE_DETAIL>;
+  dataSource: MatTableDataSource<PHONE_DETAIL>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  headerColumnInfo : string[] = ['PhoneName', 'storage', 'custom'];
+  headerColumnInfo: string[] = ['PhoneName', 'storage', 'custom'];
 
-  phoneName : string;
+  phoneName: string;
 
   constructor(
-    private service : DeviceService, 
-    private route : Router) { 
+    private service: DeviceService,
+    private route: Router) {
     this.dataSource = new MatTableDataSource(null);
   }
 
   ngOnInit(): void {
     this.getPhoneList();
   }
-  ngOnDestroy(): void{
-    if ( this.phoneSub )
+  ngOnDestroy(): void {
+    if (this.phoneSub)
       this.phoneSub.unsubscribe();
   }
-  ngAfterViewInit(){
-    
+  ngAfterViewInit() {
+
   }
-  btnTest1(value : string, value2 : string, obj)
-  {
-    console.log('btnTest1', value, value2, obj);
-  }
-  btnTest2(value : string, value2 : string)
-  {
-    console.log('btnTest2', value);
-    console.log("value2 = " + value2);
-    this.route.navigateByUrl('phone-detail', { state : { phoneName : value } });
-  }
-  btnTest3(value : string)
-  {
-    console.log('btnTest3', value);
+  // 수정
+  btnShowPhoneDetail(obj: PHONE_DETAIL): void {
+    console.log('btnTest1', obj);
+    this.route.navigateByUrl('phone-detail', { state: { phoneName: obj.PhoneName } });
   }
 
+  // 삭제
+  btnDeletePhone(value: string, value2: string) {
+    console.log('btnTest2', value);
+    console.log('value2 = ' + value2);
+
+  }
+
+
   // 필터
-  applyFilter(event : Event){
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -69,12 +68,13 @@ export class PhoneListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // 휴대폰 리스트
-  getPhoneList(){
-    if(this.phoneSub) this.phoneSub.unsubscribe();
+  getPhoneList(): void {
+    console.log('getPhoneList()');
+    if (this.phoneSub) { this.phoneSub.unsubscribe(); }
 
-    this.phoneSub = this.service.getDeviceDb('Phone').valueChanges({idField : 'idx'}).subscribe( res => {
-      
-      this.phoneList = res as Array<PHONE_DETAIL>;
+    this.phoneSub = this.service.getDeviceDb('Phone').valueChanges({ idField: 'idx' }).subscribe(res => {
+
+      this.phoneList = Array.from(res);
 
       this.dataSource = new MatTableDataSource(this.phoneList);
       this.dataSource.paginator = this.paginator;
@@ -84,34 +84,35 @@ export class PhoneListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // 단말기 추가 화면으로 이동 ( 테스트 코드 )
-  btnAddDevice(){
-    this.route.navigate(['admin/phone-detail']);
-    this.route.navigateByUrl('admin/phone-detail', { state  :{ sumdata :2, readdata : "123" }})
+  btnAddDevice(): void {
+    // this.route.navigate(['admin/phone-detail']);
+    this.route.navigateByUrl('admin/phone-detail', { state: { sumdata: 2, readdata: '123' } })
   }
   // 단말기 수정 코드 추가 필요
 
   // 요금제 조회
-  getPlan(){
-    if(this.planSub) this.planSub.unsubscribe;
+  getPlan(): void {
+    console.log('요금제 조회 탔다');
+    if (this.planSub) { this.planSub.unsubscribe(); }
 
-    this.planSub = this.service.getDeviceDb('using_plan').valueChanges({idField : 'idx'}).subscribe(res => {
+    this.planSub = this.service.getDeviceDb('PayPlan').valueChanges({ idField: 'idx' }).subscribe(res => {
       console.log(res);
     });
   }
-  
+
   // 단말기 삭제/활성화/비활성화
-  deletePhone(id : string){
-    this.service.deleteDevice('Phone', id);
+  deletePhone(id: string): void {
+    console.log('deletePhone');
+    // this.service.deleteDevice('Phone', id);
   }
-  enablePhone(id : string){
-    this.service.enableDevice('Phone', id, true);
+  enablePhone(id: string): void {
+    console.log('enablePhone');
+    // this.service.enableDevice('Phone', id, true);
   }
-  disablePhone(id : string){
-    this.service.enableDevice('Phone', id, false);
+  disablePhone(id: string): void {
+    console.log('disablePhone');
+    // this.service.enableDevice('Phone', id, false);
   }
 
-  // 테이블 클릭 이벤트 테스트
-  tableClickTest(data){
-    console.log(data);
-  }
+
 }
