@@ -120,7 +120,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
     // TODO: 행사 단말기 수정
     console.log(data, data2);
     this.deviceService.getPromotion('Promotion').doc(this.selectedId)
-      .collection('support_device').doc(data.idx).update({ devicePrice: data.devicePrice, deviceName: data.deviceName })
+      .collection('support_device').doc(data.idx).update({ devicePrice: data.publicPrice, deviceName: data.deviceName })
       .then(result => console.log('success'))
       .catch(err => console.log('error'));
   }

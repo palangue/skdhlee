@@ -35,39 +35,37 @@
     </div>
   </mat-drawer>
 
-  <div fxLayout="column" fxLayoutGap="16px">
-    <div
-      fxLayout="row"
-      fxLayoutAlign="space-between center"
-      [ngStyle]="{ 'padding-right': '16px', 'padding-left': '16px' }"
-    >
-      <mat-form-field>
-        <mat-label>업체명</mat-label>
-        <input
-          matInput
-          placeholder="업체를 선택 해 주세요."
-          [value]="selectedCompanyName"
-          disabled
-          [ngStyle]="{ color: 'black' }"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>업체 코드</mat-label>
-        <input
-          matInput
-          placeholder="업체를 선택 해 주세요."
-          [value]="selectedCompanyCode"
-          disabled
-          [ngStyle]="{ color: 'black' }"
-        />
-      </mat-form-field>
+  <div fxLayout="column" fxLayoutGap="16px" [ngStyle]="{ padding: '16px' }">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayoutGap="16px">
+        <mat-form-field>
+          <mat-label>업체명</mat-label>
+          <input
+            matInput
+            placeholder="업체를 선택 해 주세요."
+            [value]="selectedCompanyName"
+            disabled
+            [ngStyle]="{ color: 'black' }"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>업체 코드</mat-label>
+          <input
+            matInput
+            placeholder="업체를 선택 해 주세요."
+            [value]="selectedCompanyCode"
+            disabled
+            [ngStyle]="{ color: 'black' }"
+          />
+        </mat-form-field>
+      </div>
 
       <button mat-raised-button color="primary" (click)="btnAddDevice()">
         행사 단말기 추가
       </button>
     </div>
     <!-- Table 정보 -->
-    <div [ngStyle]="{ padding: '16px' }">
+    <div>
       <table
         mat-table
         [dataSource]="promotionDeviceDataSource"
@@ -82,7 +80,7 @@
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>복지 지원금</th>
           <td mat-cell *matCellDef="let elementItem">
-            {{ elementItem.devicePrice | number: "1.0-0" }}
+            {{ elementItem.publicPrice | number: "1.0-0" }}
           </td>
         </ng-container>
         <ng-container matColumnDef="promotion_actions">

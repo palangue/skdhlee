@@ -66,7 +66,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
     });
     this.deviceGroup = this._formGroup.group({
       device_name_ctrl: ['', Validators.required],
-      device_price_ctrl: ['', Validators.required]
+      publicPriceCtrl: ['', Validators.required]
     });
   }
   ngOnDestroy(): void {
@@ -111,9 +111,9 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
   addDevice(): void {
     const data = {
       deviceName: this.deviceGroup.get('device_name_ctrl').value,
-      devicePrice: this.deviceGroup.get('device_price_ctrl').value
+      publicPrice: this.deviceGroup.get('publicPriceCtrl').value
     };
-    if (data.deviceName.length === 0 || data.devicePrice === 0) {
+    if (data.deviceName.length === 0 || data.publicPrice === 0) {
       alert('입력한 데이터가 없습니다');
       return;
     }
