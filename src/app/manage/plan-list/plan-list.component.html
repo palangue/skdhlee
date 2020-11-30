@@ -6,22 +6,46 @@
   </button>
 </mat-toolbar>
 <div fxLayout="column" fxLayoutGap="16px" [ngStyle]="{ margin: '16px' }">
-  <mat-card *ngFor="let planList of planGroupData">
-    <mat-card-title>{{ planList.name }}</mat-card-title>
-    <mat-card-content>
-      <div *ngFor="let item of planList.value" fxLayout="row">
-        <mat-label fxFlex="20">{{ item.name }}</mat-label>
-        <mat-label fxFlex="20">{{ item.monthPay | number: "1.0-0" }}</mat-label>
-        <mat-label fxFlex="20">{{
-          item.totallyPay | number: "1.0-0"
-        }}</mat-label>
-        <mat-label fxFlex="20">{{
-          item.monthlyPay | number: "1.0-0"
-        }}</mat-label>
-        <mat-label fxFlex="20">{{
-          item.actualMonthPay | number: "1.0-0"
-        }}</mat-label>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <div *ngFor="let planList of planGroupData">
+    <mat-toolbar color="primary">{{ planList.name }}</mat-toolbar>
+    <table
+      mat-table
+      [dataSource]="planList.value"
+      class="mat-elevation-z8"
+      fxFlexFill
+    >
+      <ng-container matColumnDef="payment">
+        <th mat-header-cell *matHeaderCellDef>요금제</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="monthPay">
+        <th mat-header-cell *matHeaderCellDef>월 정액</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.monthPay | number: "1.0-0" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="monthlyDiscount">
+        <th mat-header-cell *matHeaderCellDef>월 할인 요금</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.monthlyPay | number: "1.0-0" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totallyDiscount">
+        <th mat-header-cell *matHeaderCellDef>총 할인 요금</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.totallyPay | number: "1.0-0" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="afterMonthPay">
+        <th mat-header-cell *matHeaderCellDef>할인 후 월 납입 금액</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.actualMonthPay | number: "1.0-0" }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="planColumnData"></tr>
+      <tr mat-row *matRowDef="let row; columns: planColumnData"></tr>
+    </table>
+  </div>
 </div>
