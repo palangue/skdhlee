@@ -1,3 +1,4 @@
+import { UserService } from './../../user.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -10,29 +11,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
-  @Input() deviceXs : boolean;
+
+  @Input() deviceXs: boolean;
   @Output() selectedMenu = new EventEmitter<string>();
 
-  constructor(private route : Router) { 
+  constructor(private route: Router, private userService: UserService) {
     console.log('manage-header-constructor');
   }
 
   ngOnInit(): void {
   }
 
-  gotoPromotion(){
-    console.log('gotoPromotion()');
-    this.selectedMenu.emit('promo_list');
-
-    //this.route.navigate(['/manage']);
+  gotoPromotion(): void {
+    this.userService.adminMenuPos.next('promo_list');
   }
-  gotoPayment(){
-    this.selectedMenu.emit('phone_detail');
+  gotoPayment(): void {
+    this.userService.adminMenuPos.next('plan_list');
   }
-  gotoDevice(){
-    console.log('gotoDevice()');
-    this.selectedMenu.emit('phone_list');
-    //this.route.navigate(['/phone-detail']);
+  gotoDevice(): void {
+    this.userService.adminMenuPos.next('phone_list');
+  }
+  gotoCustomers(): void {
+    this.userService.adminMenuPos.next('customer_list');
   }
 }

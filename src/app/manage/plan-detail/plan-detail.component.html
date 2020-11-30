@@ -1,7 +1,26 @@
 <div>
   <h1>요금제 관리</h1>
-  테이블 정보
-  LTE
-  5G
-  etc
+  <mat-form-field>
+    <mat-label>요금제 명</mat-label>
+    <input matInput [(ngModel)]="planName" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>월 정액</mat-label>
+    <input matInput placeholder="월 정액 요금" [(ngModel)]="monthPay" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>월 할인 요금</mat-label>
+    <input matInput [(ngModel)]="monthPay" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>총 할인 요금</mat-label>
+    <input matInput [(ngModel)]="totallyPay" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>할인 후 월 통신요금</mat-label>
+    <input matInput [(ngModel)]="afterPay" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="btnSavePlan()">
+    저장
+  </button>
 </div>

@@ -1,22 +1,117 @@
+<mat-toolbar
+  ><button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon></button
+  ><span>프로모션</span><span class="example-spacer"></span>
+</mat-toolbar>
+
 <mat-drawer-container>
-  <mat-drawer #drawer mode="side">
-    <p>안녕하세염</p>
+  <mat-drawer #drawer mode="push">
+    <mat-action-list>
+      <button
+        mat-stroked-button
+        color="primary"
+        [ngStyle]="{ margin: '4px' }"
+        *ngFor="let item of promotionDataSource"
+        (click)="
+          btnSelectCompany(
+            item.idx,
+            item.promotion_target,
+            item.promotion_target_company
+          )
+        "
+      >
+        {{ item.promotion_target_company }}
+      </button>
+    </mat-action-list>
+    <div [ngStyle]="{ height: '30px', margin: '4px' }">
+      <button
+        mat-flat-button
+        color="primary"
+        fxFlexFill
+        (click)="btnAddPromotion()"
+      >
+        업체 추가
+      </button>
+    </div>
   </mat-drawer>
 
   <div fxLayout="column" fxLayoutGap="16px">
-    <mat-toolbar
-      ><button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon></button
-      >프로모션</mat-toolbar
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      [ngStyle]="{ 'padding-right': '16px', 'padding-left': '16px' }"
     >
-    <div fxLayoutAlign="center"><h1>인성</h1></div>
-    <div fxLayoutAlign="end center" [ngStyle]="{ 'padding-right': '32px' }">
+      <mat-form-field>
+        <mat-label>업체명</mat-label>
+        <input
+          matInput
+          placeholder="업체를 선택 해 주세요."
+          [value]="selectedCompanyName"
+          disabled
+          [ngStyle]="{ color: 'black' }"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>업체 코드</mat-label>
+        <input
+          matInput
+          placeholder="업체를 선택 해 주세요."
+          [value]="selectedCompanyCode"
+          disabled
+          [ngStyle]="{ color: 'black' }"
+        />
+      </mat-form-field>
+
       <button mat-raised-button color="primary" (click)="btnAddDevice()">
-        프로모션 추가
+        행사 단말기 추가
       </button>
     </div>
-
+    <!-- Table 정보 -->
     <div [ngStyle]="{ padding: '16px' }">
+      <table
+        mat-table
+        [dataSource]="promotionDeviceDataSource"
+        class="mat-elevation-z8"
+      >
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>장비 이름</th>
+          <td mat-cell *matCellDef="let elementItem">
+            {{ elementItem.deviceName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>복지 지원금</th>
+          <td mat-cell *matCellDef="let elementItem">
+            {{ elementItem.devicePrice | number: "1.0-0" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="promotion_actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let elementItem">
+            <div fxLayoutGap="4px">
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="promo_item_modify(elementItem)"
+              >
+                수정
+              </button>
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="promo_item_delete(elementItem)"
+              >
+                삭제
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="promotionDeviceColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: promotionDeviceColumns"></tr>
+      </table>
+    </div>
+    <!-- <div [ngStyle]="{ 'padding': '16px' }">
       <table
         mat-table
         [dataSource]="promotionDataSource"
@@ -166,6 +261,6 @@
           class="example-detail-row"
         ></tr>
       </table>
-    </div>
+    </div> -->
   </div>
 </mat-drawer-container>

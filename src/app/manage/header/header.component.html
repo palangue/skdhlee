@@ -1,27 +1,26 @@
-
 <mat-toolbar color="primary">
-  <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
+  <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
     <button mat-button>
       <mat-icon>home</mat-icon>
-      <span class='logo'>SK BizOne</span>
+      <span class="logo">SK BizOne</span>
     </button>
-    <div *ngIf='!deviceXs'>
-      <button mat-button (click)='gotoPromotion()'>행사 관리</button>
-      <button mat-button (click)='gotoPayment()'>요금제 관리</button>
-      <button mat-button (click)='gotoDevice()'>단말기 관리</button>
-      <button mat-button >구매 요청 관리</button>
+    <div *ngIf="!deviceXs">
+      <button mat-button (click)="gotoPromotion()">행사 관리</button>
+      <button mat-button (click)="gotoPayment()">요금제 관리</button>
+      <button mat-button (click)="gotoDevice()">단말기 관리</button>
+      <button mat-button (click)="gotoCustomers()">구매 요청 관리</button>
     </div>
 
     <button mat-icon-button>
-      <mat-icon *ngIf='deviceXs'>menu</mat-icon>
-      <span *ngIf='!deviceXs'>Menu</span>
+      <mat-icon *ngIf="deviceXs">menu</mat-icon>
+      <span *ngIf="!deviceXs">Menu</span>
     </button>
   </mat-toolbar-row>
 
-  <mat-toolbar-row *ngIf='deviceXs' fxLayoutAlign='space-between end' >
-    <button mat-button (click)='gotoPromotion()'>행사 관리</button>
-    <button mat-button (click)='gotoPayment()'>요금제 관리</button>
-    <button mat-button (click)='gotoDevice()'>단말기 관리</button>
-    <button mat-button >구매 요청 관리</button>
+  <mat-toolbar-row *ngIf="deviceXs" fxLayoutAlign="space-between end">
+    <button mat-button (click)="gotoPromotion()">행사 관리</button>
+    <button mat-button (click)="gotoPayment()">요금제 관리</button>
+    <button mat-button (click)="gotoDevice()">단말기 관리</button>
+    <button mat-button (click)="gotoCustomers()">구매 요청 관리</button>
   </mat-toolbar-row>
 </mat-toolbar>

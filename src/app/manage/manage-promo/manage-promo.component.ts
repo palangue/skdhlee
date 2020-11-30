@@ -1,3 +1,4 @@
+import { UserService } from './../../user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
@@ -15,50 +16,53 @@ export class ManagePromoComponent implements OnInit, OnDestroy {
 
   opened = false;
 
-  pageIndexer : string = 'promo_list';
+  pageIndexer: string;
 
-  mediaSub : Subscription;
-  deviceXs : boolean;
-  
-  private DataBase : AngularFirestore;
+  mediaSub: Subscription;
+  menuChangeSub: Subscription;
+  deviceXs: boolean;
+
+  private DataBase: AngularFirestore;
   private itemsCollection: AngularFirestoreCollection<any>;
 
-  constructor(db : AngularFirestore, public mediaObserver : MediaObserver) { 
-    console.log('manage-constructor');
+  constructor(private db: AngularFirestore, public mediaObserver: MediaObserver,
+    public userService: UserService) {
+
     this.DataBase = db;
-    // this.getPromotionList('promotion').subscribe((res) => {
-    //   console.log(res)
-    // });
+    this.menuChangeSub = userService.adminMenuPos.subscribe(ref => {
+      this.pageIndexer = ref;
+    });
   }
 
   ngOnInit(): void {
-    console.log('manage-promo init');
-    this.mediaSub = this.mediaObserver.media$.subscribe((result : MediaChange) =>{
+    this.mediaSub = this.mediaObserver.media$.subscribe((result: MediaChange) => {
       this.deviceXs = result.mqAlias === 'xs' ? true : false;
     })
   }
-  ngOnDestroy() : void {
-    console.log('manage-promo destroy');
+  ngOnDestroy(): void {
     this.mediaSub.unsubscribe();
+    if (this.menuChangeSub) {
+      this.menuChangeSub.unsubscribe();
+    }
   }
 
-  setPage(event){
+  setPage(event) {
     this.pageIndexer = event;
   }
 
-  getPromotionList(dbName : string){
+  getPromotionList(dbName: string) {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }
-  getCustomerList(dbName : string, promotion_name : string){
+  getCustomerList(dbName: string, promotion_name: string) {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }
-  getUsers(dbName : string){
+  getUsers(dbName: string) {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }
-  getPhoneList(dbName : string, promotion_name : string){
+  getPhoneList(dbName: string, promotion_name: string) {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }

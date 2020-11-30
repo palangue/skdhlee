@@ -1,0 +1,21 @@
+<mat-toolbar>요금제 관리</mat-toolbar>
+<div fxLayout="column" fxLayoutGap="16px" [ngStyle]="{ margin: '16px' }">
+  <mat-card *ngFor="let planList of planGroupData">
+    <mat-card-title>{{ planList.name }}</mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let item of planList.value" fxLayout="row">
+        <mat-label fxFlex="20">{{ item.name }}</mat-label>
+        <mat-label fxFlex="20">{{ item.monthPay | number: "1.0-0" }}</mat-label>
+        <mat-label fxFlex="20">{{
+          item.totallyPay | number: "1.0-0"
+        }}</mat-label>
+        <mat-label fxFlex="20">{{
+          item.monthlyPay | number: "1.0-0"
+        }}</mat-label>
+        <mat-label fxFlex="20">{{
+          item.actualMonthPay | number: "1.0-0"
+        }}</mat-label>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

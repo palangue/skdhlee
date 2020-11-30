@@ -7,8 +7,6 @@ import { Subscription } from 'rxjs';
 import { take, map, flatMap } from 'rxjs/operators';
 import { Promotion } from '../../../models/Promotion';
 import { AngularFirestore } from '@angular/fire/firestore';
-//import { ImgCtrlComponent } from '../../utls/img-ctrl/img-ctrl.component';
-
 
 @Component({
   selector: 'app-promo-main',
@@ -17,39 +15,38 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class PromoMainComponent implements OnInit {
 
-  @Input() deviceXs : boolean;
+  @Input() deviceXs: boolean;
 
 
-  promo_code : string = '';
-  invalid_code : boolean;
-  deviceDb : Subscription;
+  promo_code: string = '';
+  invalid_code: boolean;
+  deviceDb: Subscription;
 
-  Database : AngularFirestore;
+  Database: AngularFirestore;
 
   constructor(
-    private dbService :DbServiceService,
-    private deviceService : DeviceService,
-    private db : AngularFirestore,
-    private rout : Router) {
+    private dbService: DbServiceService,
+    private deviceService: DeviceService,
+    private db: AngularFirestore,
+    private rout: Router) {
 
   }
 
   ngOnInit(): void {
   }
 
-  ConfirmPromoCode() : void
-  {
+  ConfirmPromoCode(): void {
     console.log('input code complete', this.promo_code);
 
-    this.deviceService.getPromotionTarget('promotion', this.promo_code).subscribe( (ref : Promotion[]) => {
+    this.deviceService.getPromotionTarget('Promotion', this.promo_code).subscribe((ref: Promotion[]) => {
       console.log(ref);
-      if(ref.length == 1){
+      if (ref.length == 1) {
         this.invalid_code = false;
         this.deviceService.setUserPromoCode(ref[0].promotion_target);
-        this.dbService.addData(true, { promo_code : this.promo_code, visible : true})
+        this.dbService.addData(true, { promo_code: this.promo_code, visible: true })
         this.rout.navigate(['/promo-items']);
       }
-      else{
+      else {
         this.invalid_code = true;
         alert(`프로모션 코드가 ${ref.length} 개 검색 되었습니다. 관리자에게 문의 해 주세요 ( Tel: 010-0000-0000 ) `);
       }

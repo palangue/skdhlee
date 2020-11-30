@@ -1,30 +1,60 @@
-<div class='popup-body' fxLayoutGap='16px' fxLayout='column'>
-    <div fxLayoutAlign='center center' fxFlexFill>
-        <mat-toolbar color='primary'>프로모션 등록</mat-toolbar>
+<div *ngIf="typePromo" class="popup-body" fxLayoutGap="16px" fxLayout="column">
+  <div fxLayoutAlign="center center" fxFlexFill>
+    <mat-toolbar color="primary">행사 업체 등록</mat-toolbar>
+  </div>
+  <form [formGroup]="promotionGroup" fxLayout="column" fxLayoutAlign="stretch">
+    <mat-form-field>
+      <mat-label>지원 회사 명</mat-label>
+      <input
+        matInput
+        placeholder="지원 회사 이름"
+        formControlName="company_name_ctrl"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>행사 코드</mat-label>
+      <input
+        matInput
+        placeholder="지원 회사의 코드"
+        formControlName="company_code_ctrl"
+      />
+    </mat-form-field>
+    <div fxLayout="row" fxFlex="100">
+      <button mat-stroked-button (click)="addPromotion()" color="accent">
+        등록
+      </button>
+      <button mat-button (click)="cancel()">취소</button>
     </div>
-    <form [formGroup]='promotion_group' fxLayout='column' fxLayoutAlign='stretch'>
-        <mat-form-field>
-            <mat-label>지원 회사 명</mat-label>
-            <input matInput placeholder="지원 회사 이름" formControlName='company_name_ctrl'>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>행사 코드</mat-label>
-            <input matInput placeholder="지원 회사의 코드" formControlName='company_code_ctrl'>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>행사 가격</mat-label>
-            <input matInput placeholder="행사 가격" formControlName='promo_cost_ctrl' [ngStyle]='{"text-align" : "right"}'>
-        </mat-form-field>
-        <app-sk-date (onDateChange)='startDateChange($event)' ></app-sk-date>
-        <app-sk-date (onDateChange)='endDateChange($event)'></app-sk-date>
-        <div fxLayout='row' fxFlex='100'>
-            <button mat-stroked-button (click)='addPromotion()' color='accent'>등록</button>
-            <button mat-button (click)='cancel()'>취소</button>
-        </div>
-    </form>
+  </form>
 </div>
-
-
-
-
-
+<div *ngIf="typeDevice" class="popup-body" fxLayoutGap="16px" fxLayout="column">
+  <div>
+    <mat-toolbar color="primary">행사 단말기 등록</mat-toolbar>
+    <form [formGroup]="deviceGroup" fxLayout="column">
+      <mat-form-field>
+        <mat-label>단말기 이름</mat-label>
+        <input
+          matInput
+          placeholder="예) iPhone 12 mini"
+          formControlName="device_name_ctrl"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>행사 가격</mat-label>
+        <input
+          matInput
+          placeholder="행사 가격 입력"
+          formControlName="device_price_ctrl"
+        />
+      </mat-form-field>
+    </form>
+    <div>
+      <button mat-raised-button color="primary" (click)="addDevice()">
+        단말기 등록
+      </button>
+      <button mat-stroked-button color="primary" (click)="cancel()">
+        취소
+      </button>
+    </div>
+  </div>
+</div>

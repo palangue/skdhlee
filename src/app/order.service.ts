@@ -25,16 +25,16 @@ export class OrderService {
     this.Database = db;
   }
   //#region 요금 데이터
-  sendPricing(price? : IPaymentPlan){
+  sendPricing(price?: IPaymentPlan) {
     this.pricing.next(price);
   }
-  getPricingObserv(){
+  getPricingObserv() {
     return this.pricingObserv;
   }
-  sendInstallment(installment? : string){
+  sendInstallment(installment?: string) {
     this.installment.next(installment);
   }
-  getInstallmentObserv(){
+  getInstallmentObserv() {
     return this.installmentObserv;
   }
   //#endregion
@@ -56,13 +56,13 @@ export class OrderService {
   }
 
   getPayPlan() {
-    if (this.CollectionRef['using_plan'] == null) {
-      this.CollectionRef['using_plan'] = this.Database.collection<any>('using_plan', ref => {
+    if (this.CollectionRef['PayPlan'] == null) {
+      this.CollectionRef['PayPlan'] = this.Database.collection<any>('PayPlan', ref => {
         return ref;
-      }).valueChanges({idField : 'pay_name'});
+      }).valueChanges({ idField: 'idx' });
     }
 
-    return this.CollectionRef['using_plan'];
+    return this.CollectionRef['PayPlan'];
   }
 
 

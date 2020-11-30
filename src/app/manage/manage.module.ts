@@ -31,11 +31,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatListModule} from '@angular/material/list';
 
 
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PlanDetailComponent } from './plan-detail/plan-detail.component';
+import { PlanListComponent } from './plan-list/plan-list.component';
+import { CustomerListComponent } from './customer-list/customer-list.component';
 
 
 
@@ -63,11 +66,12 @@ const MaterialModules = [
   MatDialogModule,
   UtlsModule,
   MatCheckboxModule,
-  MatRadioModule
+  MatRadioModule,
+  MatListModule
 ]
 
 @NgModule({
-  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent],
+  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent, PlanListComponent, CustomerListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
