@@ -1,6 +1,7 @@
 //export declare type PHONE_DETAIL = {
 export interface PHONE_DETAIL {
   PhoneName: string;
+  ModelName: string;
   camera: string;
   camera_comment: string;
   inches: string;
@@ -42,8 +43,8 @@ export interface IColorSet {
 }
 
 export interface IPhoneStorage {
-  size: number;
-  newRegist: string;
-  changeDevice: string;
-  changeNumber: string;
+  Size: number;
+  NewDevice: string;
+  ChangeDevice: string;
+  MoveNumber: string;
 }

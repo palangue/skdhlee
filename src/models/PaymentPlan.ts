@@ -23,3 +23,7 @@ export interface IUserPlan {
   netKind: string;
   plan: IPlan[];
 }
+export interface IPlanDialogResult {
+  code: number;
+  message: string;
+}

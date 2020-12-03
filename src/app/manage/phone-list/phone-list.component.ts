@@ -1,12 +1,12 @@
+import { StorageService } from '../../services/storage.service';
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { DeviceService } from 'src/app/device.service';
+import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from "../../../models/PhoneDetail";
 import { Subscription, VirtualTimeScheduler } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { FormControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-phone-list',
@@ -20,15 +20,19 @@ export class PhoneListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   phoneList: Array<PHONE_DETAIL>;
   dataSource: MatTableDataSource<PHONE_DETAIL>;
+  // phoneDataSource: MatTableDataSource<PHONE_DETAIL>;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   headerColumnInfo: string[] = ['PhoneName', 'storage', 'custom'];
+  phoneColumnInfo: string[] = ['PhoneName', 'supportPrice', 'publicPrice', 'custom'];
 
   phoneName: string;
 
   constructor(
     private service: DeviceService,
+    private storageService: StorageService,
     private route: Router) {
     this.dataSource = new MatTableDataSource(null);
   }
@@ -37,8 +41,9 @@ export class PhoneListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getPhoneList();
   }
   ngOnDestroy(): void {
-    if (this.phoneSub)
+    if (this.phoneSub) {
       this.phoneSub.unsubscribe();
+    }
   }
   ngAfterViewInit() {
 
@@ -50,10 +55,10 @@ export class PhoneListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // 삭제
-  btnDeletePhone(value: string, value2: string) {
+  btnDeletePhone(value: string, value2: string): void {
     console.log('btnTest2', value);
-    console.log('value2 = ' + value2);
-
+    console.log('value222222 = ' + value2);
+    this.storageService.GetStorage(value);
   }
 
 

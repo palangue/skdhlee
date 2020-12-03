@@ -11,36 +11,36 @@ import { switchMap } from 'rxjs/operators';
 export class StorageService {
 
   constructor(
-    private readonly fireStorage : AngularFireStorage,
+    private readonly fireStorage: AngularFireStorage,
   ) { }
 
-  uploadFileAndMetadata(mediaFolderPath : string, fileToUpload : File) : FileUploadMetadata {
-    
+  uploadFileAndMetadata(mediaFolderPath: string, fileToUpload: File): FileUploadMetadata {
+
     const { name } = fileToUpload;
     const filePath = `${mediaFolderPath}/${new Date().getTime()}_${name}`;
-    const uploadTask : AngularFireUploadTask = this.fireStorage.upload(
+    const uploadTask: AngularFireUploadTask = this.fireStorage.upload(
       filePath, fileToUpload
     );
 
     return {
-      UploadProgress$ : uploadTask.percentageChanges(),
-      downloadUrl$ : this.getDownloadUrl$(uploadTask, filePath)
+      UploadProgress$: uploadTask.percentageChanges(),
+      downloadUrl$: this.getDownloadUrl$(uploadTask, filePath)
     };
   }
 
   private getDownloadUrl$(
-    UploadTask : AngularFireUploadTask,
-    path : string
-  ) : Observable<string>{
+    UploadTask: AngularFireUploadTask,
+    path: string
+  ): Observable<string> {
     return from(UploadTask)
-    .pipe(
-      switchMap( (_) => 
-        this.fireStorage.ref(path).getDownloadURL()
-      ));
+      .pipe(
+        switchMap((_) =>
+          this.fireStorage.ref(path).getDownloadURL()
+        ));
   }
 }
 
-export interface FileUploadMetadata{
-  UploadProgress$ : Observable<number>;
-  downloadUrl$ : Observable<string>;
+export interface FileUploadMetadata {
+  UploadProgress$: Observable<number>;
+  downloadUrl$: Observable<string>;
 }

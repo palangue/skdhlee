@@ -1,101 +1,129 @@
-<div>
+<mat-toolbar fxLayoutAlign="space-between center"
+  ><span></span>
+  <span>단말기 정보</span>
+  <span></span>
+</mat-toolbar>
+<div [ngStyle]="{ padding: '16px' }" fxLayoutGap="16px">
+  <!-- 기본 정보 -->
+  <div>
+    <mat-toolbar color="primary">기본정보</mat-toolbar>
+    <div fxLayoutGap="16px">
+      <mat-form-field>
+        <mat-label>단말기 이름</mat-label>
+        <input
+          matInput
+          placeholder="예) iPhone 12 mini"
+          [(ngModel)]="phoneInfo.PhoneName"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>화면 사이즈 (인치)</mat-label>
+        <input matInput placeholder="예) 5.4" [(ngModel)]="phoneInfo.inches" />
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- 단말기 사이즈 / 무게 -->
+  <div>
+    <mat-toolbar> 단말기 사이즈 / 무게 </mat-toolbar>
+    <div fxLayoutGap="16px">
+      <mat-form-field>
+        <mat-label>가로 (mm)</mat-label>
+        <input matInput placeholder="예) 64.2" [(ngModel)]="phoneInfo.size_x" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>세로 (mm)</mat-label>
+        <input
+          matInput
+          placeholder="예) 131.5"
+          [(ngModel)]="phoneInfo.size_y"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>높이 (mm)</mat-label>
+        <input matInput placeholder="예) 7.4" [(ngModel)]="phoneInfo.size_z" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>무게 (g)</mat-label>
+        <input matInput placeholder="예) 133" [(ngModel)]="phoneInfo.weight" />
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- 카메라 정보 -->
+  <div>
+    <mat-toolbar> 카메라 / 동영상 </mat-toolbar>
+    <div fxLayoutGap="16px">
+      <mat-form-field>
+        <mat-label>카메라 정보</mat-label>
+        <input
+          matInput
+          placeholder="예) 듀얼 12MP 카메라 시스템"
+          [(ngModel)]="phoneInfo.camera"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>카메라 상세</mat-label>
+        <input
+          matInput
+          placeholder="예) 울트라 와이드, 와이드"
+          [(ngModel)]="phoneInfo.camera_comment"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>동영상</mat-label>
+        <input
+          matInput
+          placeholder="예) 2배 광학 줌아웃, 최대 3배 디지털 줌"
+          [(ngModel)]="phoneInfo.video"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>배터리 타임</mat-label>
+        <input
+          matInput
+          placeholder="예) 동영상 재생 최대 15시간"
+          [(ngModel)]="phoneInfo.power"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- 휴대전화 정보 저장 -->
+  <div fxLayout="row" fxLayoutGap="16px">
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="btnSavePhoneDefaultInfo()"
+    >
+      단말기 기본 정보 저장
+    </button>
+    <button mat-stroked-button color="warn">취소</button>
+  </div>
+</div>
+
+<div fxLayoutGap="16px" [ngStyle]="{ padding: '16px' }">
+  <div [ngStyle]="{ 'margin-top': '32px' }" fxLayoutGap="16px">
+    <mat-toolbar color="primary"> 지원금 </mat-toolbar>
+    <mat-form-field>
+      <mat-label>행사 가격</mat-label>
+      <input matInput placeholder="복지 지원금" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>공시 지원금</mat-label>
+      <input matInput placeholder="공시 지원금" />
+    </mat-form-field>
+    <div>
+      <button mat-raised-button color="primary" (click)="btnSetSupportMoney()">
+        저장
+      </button>
+    </div>
+  </div>
+
+  <!-- 오리진 코드 -->
   <div
     fxLayoutAlign="start center"
     fxLayout="column"
     fxLayoutGap="32px"
     fxFlexFill
   >
-    <mat-toolbar fxLayoutAlign="space-between center"
-      ><span></span>
-      <span>단말기 정보</span>
-      <span></span>
-    </mat-toolbar>
-    <mat-card
-      fxLayout="column"
-      fxLayoutAlign="start center"
-      fxLayoutGap="16px"
-      fxFlex="20%"
-    >
-      <form fxLayoutGap="16px" fxFlexFill>
-        <mat-toolbar>
-          <span>기본 정보</span>
-        </mat-toolbar>
-        <mat-form-field>
-          <mat-label>단말기 이름</mat-label>
-          <input
-            matInput
-            placeholder="예) iPhone 12 mini"
-            [value]="phoneName"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>화면 사이즈 (인치)</mat-label>
-          <input matInput placeholder="예) 5.4" />
-        </mat-form-field>
-      </form>
-      <form fxLayoutGap="16px" fxFlexFill>
-        <mat-toolbar>
-          <span>단말기 사이즈 / 무게</span>
-        </mat-toolbar>
-        <mat-form-field>
-          <mat-label>가로 (mm)</mat-label>
-          <input matInput placeholder="예) 64.2" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>세로 (mm)</mat-label>
-          <input matInput placeholder="예) 131.5" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>높이 (mm)</mat-label>
-          <input matInput placeholder="예) 7.4" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>무게 (g)</mat-label>
-          <input matInput placeholder="예) 133" />
-        </mat-form-field>
-      </form>
-      <form fxLayoutGap="16px" fxFlexFill>
-        <mat-toolbar>
-          <span>카메라 / 동영상</span>
-        </mat-toolbar>
-        <mat-form-field>
-          <mat-label>카메라 정보</mat-label>
-          <input matInput placeholder="예) 듀얼 12MP 카메라 시스템" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>카메라 상세</mat-label>
-          <input matInput placeholder="예) 울트라 와이드, 와이드" />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>동영상</mat-label>
-          <input
-            matInput
-            placeholder="예) 2배 광학 줌아웃, 최대 3배 디지털 줌"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>배터리 타임</mat-label>
-          <input matInput placeholder="예) 동영상 재생 최대 15시간" />
-        </mat-form-field>
-      </form>
-      <form fxLayoutGap="16px" fxFlexFill>
-        <mat-toolbar> 지원금 </mat-toolbar>
-        <mat-form-field>
-          <mat-label>행사 가격</mat-label>
-          <input matInput placeholder="복지 지원금" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>공시 지원금</mat-label>
-          <input matInput placeholder="공시 지원금" />
-        </mat-form-field>
-      </form>
-      <mat-card-actions>
-        <button mat-raised-button color="accent">단말기 기본 정보 저장</button>
-        <button mat-stroked-button color="warn" (click)="goBack()">취소</button>
-      </mat-card-actions>
-    </mat-card>
-
     <mat-card fxLayout="column" fxLayoutGap="16px" fxFlex="20%">
       <mat-toolbar>단말기 색상</mat-toolbar>
       <div fxLayoutAlign="end center">
@@ -199,48 +227,3 @@
     </mat-card>
   </div>
 </div>
-
-<!-- <mat-card fxLayout='column' fxLayoutAlign='start stretch' fxLayoutGap='16px' fxFlex='80%'>
-    <app-storage-ctrl></app-storage-ctrl>
-
-</mat-card>
-<mat-card fxLayout='column' fxLayoutAlign='start center' fxLayoutGap='16px' fxFlex='80'>
-    <div fxLayout='column' fxFlexFill fxLayoutGap='16px'>
-        <mat-toolbar color='primary'><span>색상 정보</span></mat-toolbar>
-        <mat-form-field>
-            <mat-label>색상 이름</mat-label>
-            <input matInput placeholder="색상 이름">
-        </mat-form-field>
-        <button mat-flat-button color="accent">색상 추가</button>
-
-    </div>
-</mat-card> -->
-<!-- <form fxLayoutGap="16px" fxFlexFill>
-
-                <mat-toolbar color='primary'>용량 별 가격</mat-toolbar>
-                <div fxLayout='row' fxFlexFill fxLayoutAlign='start center' fxLayoutGap='16px'>
-                    <mat-form-field>
-                        <mat-label>용량</mat-label>
-                        <input matInput placeholder="숫자만 입력">
-                    </mat-form-field>
-                    <mat-radio-group fxLayoutGap='16px'>
-                        <mat-radio-button value='GB' checked>GB </mat-radio-button>
-                        <mat-radio-button value='TB'>TB </mat-radio-button>
-                    </mat-radio-group>
-                </div>
-                <mat-form-field>
-                    <mat-label>신규</mat-label>
-                    <input matInput placeholder="신규 가입 가격">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>기기 변경</mat-label>
-                    <input matInput placeholder="기기 변경 가격">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>번호 이동</mat-label>
-                    <input matInput placeholder="버호 이동 가격">
-                </mat-form-field>
-                <div fxLayout='row' fxFlexFill fxLayoutAlign='end center'>
-                    <button mat-flat-button color='accent'>용량 별 가격 추가 </button>
-                </div>
-            </form> -->

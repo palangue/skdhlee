@@ -1,9 +1,9 @@
-import { IPaymentPlan, IUserPlan, IPlan, IPayPlan } from './../../../models/PaymentPlan';
-import { MatTableDataSource } from '@angular/material/table';
-import { GroupedObservable, Subscription } from 'rxjs';
+import { PlanDetailComponent } from './../plan-detail/plan-detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { IUserPlan, IPayPlan, IPlanDialogResult } from './../../../models/PaymentPlan';
+import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { MatSort } from '@angular/material/sort';
-import { Component, OnInit, ViewChild, OnDestroy, ɵConsole } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 
 export interface PlanDataGroup {
@@ -18,7 +18,7 @@ export interface PlanDataGroup {
 })
 export class PlanListComponent implements OnInit, OnDestroy {
 
-  planColumnData = ['payment', 'monthPay', 'monthlyDiscount', 'totallyDiscount', 'afterMonthPay'];
+  planColumnData = ['payment', 'monthPay', 'monthlyDiscount', 'totallyDiscount', 'afterMonthPay', 'modify', 'delete'];
   planSub: Subscription;
 
   planList: IUserPlan[];
@@ -27,19 +27,20 @@ export class PlanListComponent implements OnInit, OnDestroy {
   planGroupData: PlanDataGroup[] = [];
 
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.planSub = this.firestore.collection('PayPlan')
-      .valueChanges()
-      .subscribe((ref: IPayPlan[]) => {
-
+      .valueChanges({ idField: 'idx' })
+      .subscribe((ref: any[]) => {
+        // IPayPlan[] + idx
+        this.planGroupData = [];
         this.payPlan = ref;
+
         // 그룹 분기
         const groups = this.uniqueBy(this.payPlan.map(ref2 => ref2.netKind), JSON.stringify);
 
         // 그룹 네임 설정
-
         groups.forEach(item => {
           let itemClass: PlanDataGroup;
           itemClass = { name: item, value: [] };
@@ -54,15 +55,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
             }
           });
         });
-        console.log("class result = ", this.planGroupData);
-
-
-
-
-        // this.payPlan.sort((a, b) => {
-        //   return (a.netKind > b.netKind) ? 1 : -1;
-        // });
-
+        console.log('class result = ', this.planGroupData);
       });
   }
   ngOnDestroy(): void {
@@ -73,9 +66,38 @@ export class PlanListComponent implements OnInit, OnDestroy {
 
   addPayPlan(): void {
     console.log('요금제 추가');
+    const dialogRef = this.dialog.open(PlanDetailComponent, {
+      data: { width: '400px', Index: null, IPaymentPlan: null }
+    });
+    dialogRef.afterClosed().subscribe((result: IPlanDialogResult) => {
+      if (result.code === 0) {
+        alert('성공');
+      }
+      else {
+        alert(result.message);
+      }
+    });
   }
 
-  uniqueBy(a, key) {
+  modifyPayPlan(item): void {
+    const dialogRef = this.dialog.open(PlanDetailComponent, {
+      data: { Width: '400px', Index: item.idx, IPaymentPlan: item }
+    });
+    dialogRef.afterClosed().subscribe((result: IPlanDialogResult) => {
+      if (result.code === 0) {
+        alert('성공');
+      }
+      else {
+        alert(result.message);
+      }
+    });
+  }
+  // 요금제 삭제
+  deletePayPlan(item): void {
+    this.firestore.collection('PayPlan').doc(item.idx).delete();
+  }
+
+  uniqueBy(a, key): any {
     const seen = {};
     return a.filter((item) => {
       const k = key(item);
