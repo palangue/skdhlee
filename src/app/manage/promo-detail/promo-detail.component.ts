@@ -4,12 +4,13 @@ import { DeviceService } from '../../device.service';
 import { Promotion, SupportPromotionDevice, PromotionDialogResult } from '../../../models/Promotion'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface DialogData {
+export interface PromoSupportDialogData {
   width: string;
   type: string;
   company: string;
   code: string;
   id: string;
+  supportDeviceData: any;
 }
 
 @Component({
@@ -22,6 +23,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
   typeDevice = false;
   typePromo = false;
   index = '';
+  isModify = false;
 
   // tslint:disable-next-line: variable-name
   promo_company: string;
@@ -39,8 +41,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
   promotionGroup: FormGroup;
   deviceGroup: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,
-    // tslint:disable-next-line: variable-name
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PromoSupportDialogData,
     private _formGroup: FormBuilder,
     private deviceService: DeviceService,
     private dialogRef: MatDialogRef<PromoDetailComponent>,
@@ -66,8 +67,17 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
     });
     this.deviceGroup = this._formGroup.group({
       device_name_ctrl: ['', Validators.required],
-      publicPriceCtrl: ['', Validators.required]
+      publicPriceCtrl: ['', Validators.required],
+      choosePriceCtrl: ['', Validators.required]
     });
+
+
+    if (this.data.supportDeviceData != null) {
+      this.isModify = true;
+      this.deviceGroup.get('device_name_ctrl').setValue(this.data.supportDeviceData.deviceName);
+      this.deviceGroup.get('publicPriceCtrl').setValue(this.data.supportDeviceData.publicPrice);
+      this.deviceGroup.get('choosePriceCtrl').setValue(this.data.supportDeviceData.choosePrice);
+    }
   }
   ngOnDestroy(): void {
 
@@ -111,7 +121,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
   addDevice(): void {
     const data = {
       deviceName: this.deviceGroup.get('device_name_ctrl').value,
-      publicPrice: this.deviceGroup.get('publicPriceCtrl').value
+      publicPrice: this.deviceGroup.get('publicPriceCtrl').value,
+      choosePrice: this.deviceGroup.get('choosePriceCtrl').value
     };
     if (data.deviceName.length === 0 || data.publicPrice === 0) {
       alert('입력한 데이터가 없습니다');
@@ -135,6 +146,37 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           message: err
         };
 
+        this.dialogRef.close(msgData);
+      });
+  }
+  updateDevice(): void {
+    const data = {
+      deviceName: this.deviceGroup.get('device_name_ctrl').value,
+      publicPrice: this.deviceGroup.get('publicPriceCtrl').value,
+      choosePrice: this.deviceGroup.get('choosePriceCtrl').value
+    };
+    if (data.deviceName.length === 0 || data.publicPrice === 0) {
+      alert('입력한 데이터가 없습니다');
+      return;
+    }
+    this.deviceService.getPromotionDb()
+      .doc(this.index)
+      .collection('support_device')
+      .doc(this.data.supportDeviceData.idx)
+      .update(data)
+      .then(() => {
+        const msgData: PromotionDialogResult = {
+          code: 0,
+          message: '성공'
+        };
+
+        this.dialogRef.close(msgData);
+      })
+      .catch((err) => {
+        const msgData: PromotionDialogResult = {
+          code: 99,
+          message: err
+        };
         this.dialogRef.close(msgData);
       });
   }

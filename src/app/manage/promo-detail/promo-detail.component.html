@@ -39,18 +39,41 @@
           formControlName="device_name_ctrl"
         />
       </mat-form-field>
-      <mat-form-field>
-        <mat-label>행사 가격</mat-label>
-        <input
-          matInput
-          placeholder="행사 가격 입력"
-          formControlName="publicPriceCtrl"
-        />
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="16px">
+        <mat-form-field>
+          <mat-label>공시지원 복지 지원</mat-label>
+          <input
+            matInput
+            placeholder="공시지원 복지 지원금"
+            formControlName="publicPriceCtrl"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>선택약정 복지 지원</mat-label>
+          <input
+            matInput
+            placeholder="선택약정 복지 지원금"
+            formControlName="choosePriceCtrl"
+          />
+        </mat-form-field>
+      </div>
     </form>
-    <div>
-      <button mat-raised-button color="primary" (click)="addDevice()">
+    <div fxLayoutGap="16px">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="addDevice()"
+        *ngIf="!isModify"
+      >
         단말기 등록
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="updateDevice()"
+        *ngIf="isModify"
+      >
+        수정
       </button>
       <button mat-stroked-button color="primary" (click)="cancel()">
         취소

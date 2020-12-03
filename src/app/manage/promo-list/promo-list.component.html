@@ -77,10 +77,16 @@
             {{ elementItem.deviceName }}
           </td>
         </ng-container>
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef>복지 지원금</th>
+        <ng-container matColumnDef="publicPrice">
+          <th mat-header-cell *matHeaderCellDef>공시지원 복지금</th>
           <td mat-cell *matCellDef="let elementItem">
             {{ elementItem.publicPrice | number: "1.0-0" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="choosePrice">
+          <th mat-header-cell *matHeaderCellDef>선택약정 복지금</th>
+          <td mat-cell *matCellDef="let elementItem">
+            {{ elementItem.choosePrice | number: "1.0-0" }}
           </td>
         </ng-container>
         <ng-container matColumnDef="promotion_actions">

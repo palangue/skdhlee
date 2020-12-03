@@ -1,3 +1,4 @@
+import { PromoSupportDialogData } from './../promo-detail/promo-detail.component';
 import { Component, OnInit, ɵConsole, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -27,7 +28,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
   promotionDataSource: Promotion[];
 
   expandedElement: SupportPromotionDevice | null;
-  promotionDeviceColumns: string[] = ['name', 'price', 'promotion_actions'];
+  promotionDeviceColumns: string[] = ['name', 'publicPrice', 'choosePrice', 'promotion_actions'];
   promotionDeviceDataSource: SupportPromotionDevice[];
 
   promoCompanySub: Subscription;
@@ -52,9 +53,11 @@ export class PromoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.promoCompanySub) {
+      console.log('promo-list.component promoCompanySub destroyed');
       this.promoCompanySub.unsubscribe();
     }
     if (this.supportDeviceSub) {
+      console.log('promo-list.component supportDeviceSub destroyed');
       this.supportDeviceSub.unsubscribe();
     }
   }
@@ -66,12 +69,13 @@ export class PromoListComponent implements OnInit, OnDestroy {
     this.selectedId = index;
 
     if (this.supportDeviceSub) {
+      console.log('re allocate supportDeviceSub');
       this.supportDeviceSub.unsubscribe();
     }
     this.supportDeviceSub = this.deviceService.getPromotion('Promotion').doc(this.selectedId)
       .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: SupportPromotionDevice[]) => {
         this.promotionDeviceDataSource = ref2;
-        console.log(this.promotionDeviceDataSource);
+        console.log('update supportDevice', this.promotionDeviceDataSource);
       });
   }
   //#region 행사 추가 다이얼로그
@@ -99,8 +103,6 @@ export class PromoListComponent implements OnInit, OnDestroy {
     }
 
     // TODO: 행사 단말기 정보를 넘겨 주자
-
-    console.log('행사 단말기 정보를 넘겨 주자');
     const dialogRef = this.dialog.open(PromoDetailComponent, {
 
       data: { width: '400px', type: 'device', id: this.selectedId, company: this.selectedCompanyName, code: this.selectedCompanyCode }
@@ -117,16 +119,45 @@ export class PromoListComponent implements OnInit, OnDestroy {
   //#endregion
 
   promo_item_modify(data, data2): void {
-    // TODO: 행사 단말기 수정
     console.log(data, data2);
-    this.deviceService.getPromotion('Promotion').doc(this.selectedId)
-      .collection('support_device').doc(data.idx).update({ devicePrice: data.publicPrice, deviceName: data.deviceName })
-      .then(result => console.log('success'))
-      .catch(err => console.log('error'));
+
+    if (this.selectedId.length === 0) {
+      alert('업체를 선택 해 주세요');
+      return;
+    }
+
+    // TODO: 행사 단말기 정보를 넘겨 주자
+    const dialogRef = this.dialog.open(PromoDetailComponent, {
+
+      data: {
+        width: '400px',
+        type: 'device',
+        id: this.selectedId,
+        company: this.selectedCompanyName,
+        code: this.selectedCompanyCode,
+        supportDeviceData: data
+      }
+    });
+    dialogRef.afterClosed().subscribe((result: PromotionDialogResult) => {
+      if (result.code === 0) {
+        alert('저장 성공');
+      }
+      else if (result.code === 99) {
+        alert(result.message);
+      }
+    });
+
+
+    // TODO: 행사 단말기 수정
+    // const temp = this.deviceService.getPromotion('Promotion').doc(this.selectedId)
+    //   .collection('support_device').doc(data.idx)
+    //   .update({ publicPrice: data.publicPrice, deviceName: data.deviceName, choosePrice: data.choosePrice })
+    //   .then(result => console.log('success'))
+    //   .catch(err => console.log('error'));
   }
   promo_item_delete(data): void {
 
-    this.deviceService.getPromotion('Promotion').doc(this.selectedId)
+    const temp = this.deviceService.getPromotion('Promotion').doc(this.selectedId)
       .collection('support_device').doc(data.idx).delete()
       .then(result => console.log('success'))
       .catch(err => console.log(err));
