@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DeviceService } from '../../device.service';
 import { IPhoneStorage, PHONE_DETAIL, IColorSet } from '../../../models/PhoneDetail';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 
 @Component({
@@ -19,17 +20,18 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
   phoneInfo: PHONE_DETAIL;
 
   storageList: Array<IPhoneStorage> = [
-    { Size: 32, NewDevice: '33330', ChangeDevice: '20000', MoveNumber: '40000' },
-    { Size: 128, NewDevice: '50000', ChangeDevice: '60000', MoveNumber: '70000' },
+    { Size: 128, NewDevice: 33330, ChangeDevice: 20000, MoveNumber: 40000 },
+    { Size: 256, NewDevice: 50000, ChangeDevice: 60000, MoveNumber: 70000 },
   ];
 
   colorList: Array<IColorSet>;
 
-  storageTableColumns: string[] = ['storage', 'newRegist', 'changeDevice', 'changeNumber', 'actions'];
+  storageTableColumns: string[] = ['storage', 'newDevice', 'changeDevice', 'moveNumber', 'actions'];
   colorTableColumns: string[] = ['color_name_kor', 'color_value', 'color_actions'];
 
   constructor(
     private deviceService: DeviceService,
+    private firestore: AngularFirestore
   ) {
 
   }
@@ -60,7 +62,12 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
       size_x: '',
       size_y: '',
       size_z: '',
-      storage: '',
+      storage: {
+        ChangeDevice: 0,
+        MoveNumber: 0,
+        Size: 0,
+        NewDevice: 0,
+      },
       using_play_type: '',
       video: '',
       weight: ''
@@ -75,6 +82,7 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
 
   btnSavePhoneDefaultInfo(): void {
     console.log('phone save = ', this.phoneInfo);
+    this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).set(this.phoneInfo);
   }
   btnSetSupportMoney(): void {
     console.log('Click SetSupportMoney');

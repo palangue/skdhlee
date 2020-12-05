@@ -17,6 +17,10 @@
         />
       </mat-form-field>
       <mat-form-field>
+        <mat-label>단말기 전체 이름 (Full Name)</mat-label>
+        <input matInput placeholder="예) iPhone 12 Mini 256G" [(ngModel)]='phoneInfo.ModelName'/>
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>화면 사이즈 (인치)</mat-label>
         <input matInput placeholder="예) 5.4" [(ngModel)]="phoneInfo.inches" />
       </mat-form-field>
@@ -137,12 +141,12 @@
       >
         <ng-container matColumnDef="color_name_kor">
           <th mat-header-cell *matHeaderCellDef>색상 이름</th>
-          <td mat-cell *matCellDef="let element">{{ element.size }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.Size }}</td>
         </ng-container>
         <ng-container matColumnDef="color_value">
           <th mat-header-cell *matHeaderCellDef>색상 값</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.newRegist | number: "1.0-0" }} 원
+            {{ element.NewDevice | number: "1.0-0" }} 원
           </td>
         </ng-container>
 
@@ -184,33 +188,33 @@
       >
         <ng-container matColumnDef="storage">
           <th mat-header-cell *matHeaderCellDef>용량</th>
-          <td mat-cell *matCellDef="let element">{{ element.size }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.Size }}</td>
         </ng-container>
-        <ng-container matColumnDef="newRegist">
+        <ng-container matColumnDef="newDevice">
           <th mat-header-cell *matHeaderCellDef>신규 가입</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.newRegist | number: "1.0-0" }} 원
+            {{ element.NewDevice | number: "1.0-0" }} 원
           </td>
         </ng-container>
         <ng-container matColumnDef="changeDevice">
           <th mat-header-cell *matHeaderCellDef>기기 변경</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.changeDevice | number: "1.0-0" }} 원
+            {{ element.ChangeDevice | number: "1.0-0" }} 원
           </td>
         </ng-container>
-        <ng-container matColumnDef="changeNumber">
+        <ng-container matColumnDef="moveNumber">
           <th mat-header-cell *matHeaderCellDef>번호 이동</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.changeNumber | number: "1.0-0" }} 원
+            {{ element.MoveNumber | number: "1.0-0" }} 원
           </td>
         </ng-container>
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="btnModifyStorageInfo(element)">
+            <button mat-raised-button (click)="btnModifyStorageInfo(element)" color='primary'>
               수정
             </button>
-            <button mat-flat-button (click)="btnDeleteStorageInfo(element)">
+            <button mat-button (click)="btnDeleteStorageInfo(element)" color='warn'>
               삭제
             </button>
           </td>

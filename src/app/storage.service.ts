@@ -5,6 +5,10 @@ import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/st
 import { from, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+/*
+  Image 등 파일 업로드 서비스
+*/
+
 @Injectable({
   providedIn: 'root'
 })

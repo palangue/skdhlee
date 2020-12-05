@@ -11,7 +11,7 @@ export interface PHONE_DETAIL {
   size_x: string;
   size_y: string;
   size_z: string;
-  storage: string;
+  storage: IPhoneStorage;
   video: string;
   weight: string;
   installment_type: string;
@@ -44,7 +44,7 @@ export interface IColorSet {
 
 export interface IPhoneStorage {
   Size: number;
-  NewDevice: string;
-  ChangeDevice: string;
-  MoveNumber: string;
+  NewDevice: number;
+  ChangeDevice: number;
+  MoveNumber: number;
 }
