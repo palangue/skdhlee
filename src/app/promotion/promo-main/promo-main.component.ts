@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { DbServiceService } from '../../db-service.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { DeviceService } from 'src/app/device.service';
-import { Subscription } from 'rxjs';
-import { take, map, flatMap } from 'rxjs/operators';
-import { Promotion } from '../../../models/Promotion';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
+
+import { DbServiceService } from '../../db-service.service';
+import { Promotion } from '../../../models/Promotion';
+import { DeviceService } from '../../device.service';
+
 
 @Component({
   selector: 'app-promo-main',
@@ -18,7 +18,7 @@ export class PromoMainComponent implements OnInit {
   @Input() deviceXs: boolean;
 
 
-  promo_code: string = '';
+  promo_code = '';
   invalid_code: boolean;
   deviceDb: Subscription;
 
@@ -36,11 +36,10 @@ export class PromoMainComponent implements OnInit {
   }
 
   ConfirmPromoCode(): void {
-    console.log('input code complete', this.promo_code);
 
     this.deviceService.getPromotionTarget('Promotion', this.promo_code).subscribe((ref: Promotion[]) => {
       console.log(ref);
-      if (ref.length == 1) {
+      if (ref.length === 1) {
         this.invalid_code = false;
         this.deviceService.setUserPromoCode(ref[0].promotion_target);
         this.dbService.addData(true, { promo_code: this.promo_code, visible: true })

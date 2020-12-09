@@ -5,12 +5,13 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './uploader.component.html',
   styleUrls: ['./uploader.component.css']
 })
+
 export class UploaderComponent implements OnInit {
 
-  @Input() deviceName : string = "갤럭시 S20 FE 5G";
+  @Input() deviceName = '갤럭시 S20 FE 5G';
 
-  isHovering : boolean;
-  files : File[] = [];
+  isHovering: boolean;
+  files: File[] = [];
   isPrimary = false;
 
   constructor() { }
@@ -18,17 +19,20 @@ export class UploaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleHover(event : boolean){
+  toggleHover(event: boolean): void {
     this.isHovering = event;
   }
 
-  onDrop(imageTarget : string, files : FileList){
-    if(imageTarget === 'primary')
+  onDrop(imageTarget: string, files: FileList): void {
+    if (imageTarget === 'primary') {
       this.isPrimary = true;
-    else
+    }
+    else {
       this.isPrimary = false;
-    
-    for ( let i = 0 ; i < files.length ; i ++ ){
+    }
+
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < files.length; i++) {
       this.files.push(files[i]);
     }
   }

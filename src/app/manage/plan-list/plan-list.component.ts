@@ -1,11 +1,10 @@
-import { PlanDetailComponent } from './../plan-detail/plan-detail.component';
 import { MatDialog } from '@angular/material/dialog';
-import { IUserPlan, IPayPlan, IPlanDialogResult } from './../../../models/PaymentPlan';
-import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-
+import { IUserPlan, IPayPlan, IPlanDialogResult } from './../../../models/PaymentPlan';
+import { PlanDetailComponent } from './../plan-detail/plan-detail.component';
 export interface PlanDataGroup {
   name: string;
   value: IPayPlan[];

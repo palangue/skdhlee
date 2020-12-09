@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil, catchError, tap, finalize } from 'rxjs/operators';
-import { DeviceService } from '../../device.service';
-import { StorageService } from '../../storage.service';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+
 
 export const MEDIA_STORAGE_PATH = `img/`;
 
@@ -16,57 +14,59 @@ export const MEDIA_STORAGE_PATH = `img/`;
 })
 export class UploadCtrlComponent implements OnInit, OnDestroy {
 
-  @Input() deviceName : string;
-  @Input() file : File;
-  @Input() IsPrimary : boolean;
+  @Input() deviceName: string;
+  @Input() file: File;
+  @Input() IsPrimary: boolean;
 
-  task : AngularFireUploadTask;
+  task: AngularFireUploadTask;
 
-  percentage : Observable<number>;
-  snapshot : Observable<any>;
-  downloadUrl : string;
-  
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  downloadUrl: string;
+
 
   constructor(
-    private fireStorage : AngularFireStorage,
-    private db : AngularFirestore
-  ) { 
+    private fireStorage: AngularFireStorage,
+    private db: AngularFirestore
+  ) {
 
   }
 
   ngOnInit(): void {
     this.startUpload();
   }
-  ngOnDestroy() : void {
-    
+  ngOnDestroy(): void {
+
   }
 
-  startUpload(){
+  startUpload(): void {
 
-    if( this.IsPrimary == false )
+    if (this.IsPrimary === false) {
       this.deviceName = this.deviceName + '/details';
+    }
 
     const path = `img/${this.deviceName}/${this.file.name}`;
-    
+
     const ref = this.fireStorage.ref(path);
     this.task = this.fireStorage.upload(path, this.file);
     this.percentage = this.task.percentageChanges();
     this.snapshot = this.task.snapshotChanges().pipe(
       // tap(console.log),
-      finalize( async() => {
+      finalize(async () => {
         this.downloadUrl = await ref.getDownloadURL().toPromise();
 
         console.log('download url = ', this.downloadUrl);
         console.log('path = ', path);
 
-        
+
         // Phone Data base 에 이미지 경로 등록
         // ex) this.db.collection('files').add( { downloadURL: this.downloadURL, path });
       })
-    )
+    );
+    console.log('여기 확인 해 보셈 upload-ctrl.component');
   }
-  
-  isActive(snapshot){
+
+  isActive(snapshot): boolean {
     return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
   }
 

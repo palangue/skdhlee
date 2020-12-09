@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { OrderService } from '../../order.service';
 import { IPaymentPlan } from '../../../models/PaymentPlan';
 
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order-phone',
@@ -130,9 +130,9 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   }
   // 단말기 사양 선택
   chooseDevice(): void {
-    //this.selectedStorage = this.deviceFormGroup.get('device_storage_ctrl').value;
+    // this.selectedStorage = this.deviceFormGroup.get('device_storage_ctrl').value;
     this.selectedStorage = this.selectedPhoneInfo.storageSize;
-    
+
     this.selectedColor = this.deviceFormGroup.get('device_color_ctrl').value;
     if (this.selectedStorage && this.selectedColor) {
       this.titleDeviceInfo = this.selectedStorage + ' G,  ' + this.selectedColor;

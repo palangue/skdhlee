@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
+
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { DeviceService } from '../../device.service';
-import { map, take } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { OrderService } from '../../order.service';
-import { Subscription } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
+
 
 
 @Component({
@@ -44,39 +46,26 @@ export class PromoItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.itemPage_promoCode = this.deviceService.getUserPromoCode();
-    console.log(this.itemPage_promoCode);
-
-    // this.deviceService.getDeviceDb('Phone').valueChanges({ idField: 'idx' })
-    //   .pipe(take(1))
-    //   .subscribe(
-    //     res => {
-    //       this.items = res;
-    //     }
-    //   );
+    // TODO: 프로모션 코드로 행사 가격을 가져 와야 한다.
     this.getPhoneList();
   }
 
   ngOnDestroy(): void {
-
+    if (this.phoneListSub) { this.phoneListSub.unsubscribe(); }
   }
 
   getPhoneList(): void {
     if (this.phoneListSub) { this.phoneListSub.unsubscribe(); }
 
-    this.phoneListSub = this.firestore.collection('Phone').snapshotChanges().pipe(map( ref=>{
-      return ref.map( (a: any) =>{
+    this.phoneListSub = this.firestore.collection('Phone').snapshotChanges().pipe(map(ref => {
+      return ref.map((a: any) => {
         const data = a.payload.doc.data();
         const id = a.payload.doc.id;
 
-        return {id, ...data};
+        return { id, ...data };
       });
     })).subscribe(ref => {
-      
       this.items = Array.from(ref);
-      console.log(this.items);
-      // this.dataSource = new MatTableDataSource(this.phoneList);
-      // this.dataSource.paginator = this.paginator;
-      // this.dataSource.sort = this.sort;
     });
   }
 

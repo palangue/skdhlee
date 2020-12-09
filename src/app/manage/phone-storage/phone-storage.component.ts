@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { IPhoneStorage, PHONE_DETAIL } from 'src/models/PhoneDetail';
+
+import { IPhoneStorage, PHONE_DETAIL } from '../../../models/PhoneDetail';
 
 @Component({
   selector: 'app-phone-storage',

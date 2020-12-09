@@ -1,4 +1,3 @@
-import { ICustomerMore } from './../../../models/Customer';
 import { trigger, style, state, transition, animate } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';

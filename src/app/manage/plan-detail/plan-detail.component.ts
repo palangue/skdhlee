@@ -1,8 +1,10 @@
-import { IPaymentPlan, IPlanDialogResult } from './../../../models/PaymentPlan';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Inject } from '@angular/core';
-import { IPayPlan } from '../../../models/PaymentPlan';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { IPayPlan } from '../../../models/PaymentPlan';
+import { IPlanDialogResult } from './../../../models/PaymentPlan';
+
 
 @Component({
   selector: 'app-plan-detail',

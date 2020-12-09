@@ -1,16 +1,19 @@
-import { StorageService } from '../../services/storage.service';
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { DeviceService } from '../../device.service';
-import { PHONE_DETAIL } from '../../../models/PhoneDetail';
-import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { PhoneDetailComponent } from '../phone-detail/phone-detail.component';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { PhoneDetailComponent } from '../phone-detail/phone-detail.component';
+import { StorageService } from '../../services/storage.service';
+import { DeviceService } from '../../device.service';
+import { PHONE_DETAIL } from '../../../models/PhoneDetail';
+
 
 @Component({
   selector: 'app-phone-list',
@@ -67,7 +70,7 @@ export class PhoneListComponent implements OnInit, OnDestroy {
   // 삭제
   btnDeletePhone(value: string): void {
     this.firestore.collection('Phone').doc(value).delete();
-    //this.storageService.GetStorage(value);
+    // this.storageService.GetStorage(value);
   }
 
   // 필터

@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit, ɵConsole, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DeviceService } from '../../device.service';
-import { Promotion, SupportPromotionDevice, PromotionDialogResult } from '../../../models/Promotion'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { DeviceService } from '../../device.service';
+import { SupportPromotionDevice, PromotionDialogResult } from '../../../models/Promotion';
 
 export interface PromoSupportDialogData {
   width: string;
@@ -42,9 +43,9 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
   deviceGroup: FormGroup;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: PromoSupportDialogData,
-    private _formGroup: FormBuilder,
-    private deviceService: DeviceService,
-    private dialogRef: MatDialogRef<PromoDetailComponent>,
+              private _formGroup: FormBuilder,
+              private deviceService: DeviceService,
+              private dialogRef: MatDialogRef<PromoDetailComponent>,
 
   ) {
     if (data.type === 'device') {

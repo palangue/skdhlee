@@ -1,11 +1,10 @@
-import { UserService } from './../../user.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { MediaChange, MediaObserver } from '@angular/flex-layout';
-import { Subscription } from 'rxjs';
-
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Observable, Subscription } from 'rxjs';
+
+import { UserService } from './../../user.service';
+
 
 @Component({
   selector: 'app-manage-promo',
@@ -26,7 +25,7 @@ export class ManagePromoComponent implements OnInit, OnDestroy {
   private itemsCollection: AngularFirestoreCollection<any>;
 
   constructor(private db: AngularFirestore, public mediaObserver: MediaObserver,
-    public userService: UserService) {
+              public userService: UserService) {
 
     this.DataBase = db;
     this.menuChangeSub = userService.adminMenuPos.subscribe(ref => {
@@ -37,7 +36,7 @@ export class ManagePromoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.mediaSub = this.mediaObserver.media$.subscribe((result: MediaChange) => {
       this.deviceXs = result.mqAlias === 'xs' ? true : false;
-    })
+    });
   }
   ngOnDestroy(): void {
     this.mediaSub.unsubscribe();
@@ -46,23 +45,23 @@ export class ManagePromoComponent implements OnInit, OnDestroy {
     }
   }
 
-  setPage(event) {
+  setPage(event): void {
     this.pageIndexer = event;
   }
 
-  getPromotionList(dbName: string) {
+  getPromotionList(dbName: string): Observable<any> {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }
-  getCustomerList(dbName: string, promotion_name: string) {
+  getCustomerList(dbName: string): Observable<any> {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }
-  getUsers(dbName: string) {
+  getUsers(dbName: string): Observable<any> {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }
-  getPhoneList(dbName: string, promotion_name: string) {
+  getPhoneList(dbName: string): Observable<any> {
     this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
     return this.itemsCollection.valueChanges();
   }

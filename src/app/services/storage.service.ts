@@ -1,4 +1,3 @@
-import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 

@@ -1,13 +1,12 @@
-import { PromoSupportDialogData } from './../promo-detail/promo-detail.component';
-import { Component, OnInit, ɵConsole, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { DeviceService } from '../../device.service';
-import { PromoDetailComponent } from '../promo-detail/promo-detail.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
-import { SupportPromotionDevice, Promotion, PromotionDialogResult } from '../../../models/Promotion'
+import { Subscription } from 'rxjs';
 
+import { SupportPromotionDevice, Promotion, PromotionDialogResult } from '../../../models/Promotion'
+import { DeviceService } from '../../device.service';
+import { PromoDetailComponent } from '../promo-detail/promo-detail.component';
 
 @Component({
   selector: 'app-promo-list',
@@ -53,11 +52,9 @@ export class PromoListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.promoCompanySub) {
-      console.log('promo-list.component promoCompanySub destroyed');
       this.promoCompanySub.unsubscribe();
     }
     if (this.supportDeviceSub) {
-      console.log('promo-list.component supportDeviceSub destroyed');
       this.supportDeviceSub.unsubscribe();
     }
   }

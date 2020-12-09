@@ -1,9 +1,8 @@
-import { componentFactoryName } from '@angular/compiler';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+
 import { OrderService } from '../..//order.service';
-import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { DeviceService } from '../../device.service';
 import { IPaymentPlan } from '../../../models/PaymentPlan';
 
@@ -45,10 +44,11 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
     )
   }
   ngOnDestroy(): void {
-    if (this.pricing_subscription)
+    if (this.pricing_subscription) {
       this.pricing_subscription.unsubscribe();
+    }
   }
-  phoneCall() {
+  phoneCall(): void {
     alert('전화 상담 클릭 했다');
     // const phoneCallDialogRef = this.dialog.open(PhoneCallDialog);
     // phoneCallDialogRef.afterClosed().subscribe(result => {
@@ -56,7 +56,7 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
     // });
   }
 
-  RequestOrder() {
+  RequestOrder(): void {
     // const dialogRef = this.orderDialog.open(DialogOverViewDialog,{
     //   width : '80%',
     //   data : {
@@ -74,7 +74,7 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
   }
 
 
-  savePhoneDetail() {
+  savePhoneDetail(): void {
     alert('주문하기 클릭했다.');
     //   var phoneInfo: PHONE_DETAIL = {
     //     PhoneName: '1122',

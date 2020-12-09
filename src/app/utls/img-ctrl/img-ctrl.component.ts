@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { finalize, map, take } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-img-ctrl',
@@ -10,22 +10,22 @@ import { finalize, map, take } from 'rxjs/operators';
 })
 export class ImgCtrlComponent implements OnInit {
 
-  storageRef : AngularFireStorageReference;
-  storageTask : AngularFireUploadTask;
-  uploadProgress : Observable<number>;
+  storageRef: AngularFireStorageReference;
+  storageTask: AngularFireUploadTask;
+  uploadProgress: Observable<number>;
   downloadURL: Observable<string>;
 
   constructor(
-    private firestorage : AngularFireStorage
-    ) {
+    private firestorage: AngularFireStorage
+  ) {
 
-     }
+  }
 
   ngOnInit(): void {
   }
 
   // Arrow Function 처음 사용 해봄
-  upload = (deviceName : string, event) =>{
+  upload = (deviceName: string, event) => {
     // create a reference to the storage bucket location
     this.storageRef = this.firestorage.ref(`/img/${deviceName}/` + event.target.files.name);
     // the put method creates an AngularFireUploadTask
@@ -37,11 +37,11 @@ export class ImgCtrlComponent implements OnInit {
     // get Notified when the download URL is available
     this.storageTask.snapshotChanges().pipe(
       finalize(() => this.downloadURL = this.storageRef.getDownloadURL())
-    )
-    .subscribe();
-    
+    ).subscribe();
+    // TODO: 구독 했네?
+    console.log('구독 했네????');
     // state 도 추가 해 볼까 ?
   }
 
-  
+
 }

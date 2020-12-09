@@ -1,12 +1,10 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DeviceService } from '../../device.service';
-import { IPhoneStorage, PHONE_DETAIL, IColorSet } from '../../../models/PhoneDetail';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
-
-
+import { DeviceService } from '../../device.service';
+import { IPhoneStorage, PHONE_DETAIL, IColorSet } from '../../../models/PhoneDetail';
 @Component({
   selector: 'app-phone-detail',
   templateUrl: './phone-detail.component.html',
