@@ -83,7 +83,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
       customer_phone_ctrl: ['', Validators.required]
     });
     this.deviceFormGroup = this._formBuilder.group({
-      device_storage_ctrl: ['', Validators.required],
+      // device_storage_ctrl: ['', Validators.required],
       device_color_ctrl: ['', Validators.required]
     });
     this.payplanFormGroup = this._formBuilder.group({
@@ -130,7 +130,9 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   }
   // 단말기 사양 선택
   chooseDevice(): void {
-    this.selectedStorage = this.deviceFormGroup.get('device_storage_ctrl').value;
+    //this.selectedStorage = this.deviceFormGroup.get('device_storage_ctrl').value;
+    this.selectedStorage = this.selectedPhoneInfo.storageSize;
+    
     this.selectedColor = this.deviceFormGroup.get('device_color_ctrl').value;
     if (this.selectedStorage && this.selectedColor) {
       this.titleDeviceInfo = this.selectedStorage + ' G,  ' + this.selectedColor;

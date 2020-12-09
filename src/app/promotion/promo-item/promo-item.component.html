@@ -5,34 +5,47 @@
 <div class='content' fxLayout='row wrap' fxLayoutGap='16px grid'>
     <div fxFlex='25%' fxFlex.xs='100%' fxFlex.sm='25%' *ngFor='let data of items'>
 
-        <mat-card class='mat-elavation-z4'>
+        <mat-card class='mat-elavation-z8'>
             <mat-card-header>
                 <mat-card-title>{{ data.PhoneName }}</mat-card-title>
             </mat-card-header>
             <img mat-card-image [src]="data.mainImgSrc">
-            
+
             <mat-card-content>
-                <mat-label fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='4px'>출고가 : {{ data.origin_price | number:'1.0-0' }}</mat-label>
-                <br/>
-                <!-- <div *ngIf='getTimeComparison(data.gov_price_end) || getTimeComparison(data.gov_price_start)'>
-                    <mat-label fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='4px'>공시가 : {{ data.gov_price | number:'1.0-0' }}</mat-label>
-                    <br/>
-                </div> -->
-                <mat-label fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='4px' >색상 : 
-                    <span *ngFor='let color of data.colors'><app-color-box [phoneColor]='color.value'></app-color-box></span>
+                <mat-label fxLayoutAlign='space-between center'>
+                    <span>출고가 : </span><span></span><span [ngStyle]='{"color" : "blue"}'>{{ data.origin_price | number:'1.0-0' }} 원</span>
                 </mat-label>
                 <br/>
-                <mat-label fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='6px'>용량 : 
-                    <span class="storage-box" *ngFor='let storage of data.storage'>
-                        {{ storage }}G
-                    </span>
+                <mat-label fxLayoutAlign='space-between center'>
+                    <span>신규 : </span><span></span> <span>{{ data.NewDevice | number:'1.0-0'}} 원</span>
+                </mat-label>
+                <mat-label fxLayoutAlign='space-between center'>
+                    <span>기변 : </span><span></span><span>{{ data.ChangeDevice | number:'1.0-0'}} 원</span>
+                </mat-label>
+                <mat-label fxLayoutAlign='space-between center'>
+                    <span>번이 : </span><span></span><span>{{ data.MoveNumber | number:'1.0-0'}} 원</span>
+                </mat-label>
+                <br/>
+                <mat-label fxLayoutAlign='space-between center'>
+                    <span>색상 : </span>
+                    <span></span>
+                    <div fxLayout='row'>
+                        <span *ngFor='let color of data.colors'>
+                            <app-color-box [phoneColor]='color.value'></app-color-box>
+                        </span>
+                    </div>                   
+                </mat-label>
+                <mat-label fxLayoutAlign='space-between center'>
+                    <span>용량 :</span>
+                    <span></span>
+                    <span>{{ data.storageSize }} G</span>
+                    
                 </mat-label>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-stroked-button color='primary'(click)='btnBuy(data)' >구매신청</button>
+                <button mat-stroked-button color='primary' (click)='btnBuy(data)'>구매신청</button>
                 <button mat-stroked-button color='warn' (click)='btnDetail(data)'>상세보기</button>
             </mat-card-actions>
         </mat-card>
     </div>
 </div>
-

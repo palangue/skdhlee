@@ -8,6 +8,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
+import { PhoneDetailComponent } from '../phone-detail/phone-detail.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-phone-list',
@@ -34,7 +37,9 @@ export class PhoneListComponent implements OnInit, OnDestroy {
     private firestore: AngularFirestore,
     private service: DeviceService,
     private storageService: StorageService,
-    private route: Router) {
+    private route: Router,
+    private dialog: MatDialog
+    ) {
     this.dataSource = new MatTableDataSource(null);
   }
 
@@ -49,17 +54,21 @@ export class PhoneListComponent implements OnInit, OnDestroy {
 
   // 수정
   btnShowPhoneDetail(obj: PHONE_DETAIL): void {
-    console.log('btnTest1', obj);
-    this.route.navigateByUrl('phone-detail', { state: { phoneName: obj.PhoneName } });
+    const dialogRef = this.dialog.open(PhoneDetailComponent, {
+      data: {
+        phoneInfo: obj
+      }
+    });
+    dialogRef.afterClosed().subscribe(ref => {
+      console.log(ref);
+    });
   }
 
   // 삭제
-  btnDeletePhone(value: string, value2: string): void {
-    console.log('btnTest2', value);
-    console.log('value222222 = ' + value2);
-    this.storageService.GetStorage(value);
+  btnDeletePhone(value: string): void {
+    this.firestore.collection('Phone').doc(value).delete();
+    //this.storageService.GetStorage(value);
   }
-
 
   // 필터
   applyFilter(event: Event): void {
@@ -75,38 +84,29 @@ export class PhoneListComponent implements OnInit, OnDestroy {
   getPhoneList(): void {
     if (this.phoneSub) { this.phoneSub.unsubscribe(); }
 
-    this.phoneSub = this.service.getDeviceDb('Phone').valueChanges({ idField: 'idx' }).subscribe(res => {
-      this.phoneList = Array.from(res);
+    this.phoneSub = this.firestore.collection('Phone').snapshotChanges().pipe(map( ref=>{
+      return ref.map( (a: any) =>{
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
 
-      console.log(this.phoneList);
+        return {id, ...data};
+      });
+    })).subscribe(ref => {
+      this.phoneList = Array.from(ref);
 
       this.dataSource = new MatTableDataSource(this.phoneList);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-
   }
 
   // 단말기 추가 화면으로 이동 ( 테스트 코드 )
   btnAddDevice(): void {
-    this.route.navigateByUrl('admin/phone-detail', { state: { sumdata: 2, readdata: '123' } })
+    const dialogRef = this.dialog.open(PhoneDetailComponent, { data: null });
+    dialogRef.afterClosed().subscribe( ref => {
+      console.log(ref);
+    });
+    
   }
-  // 단말기 수정 코드 추가 필요
-
-
-  // 단말기 삭제/활성화/비활성화
-  deletePhone(id: string): void {
-    console.log('deletePhone');
-    // this.service.deleteDevice('Phone', id);
-  }
-  enablePhone(id: string): void {
-    console.log('enablePhone');
-    // this.service.enableDevice('Phone', id, true);
-  }
-  disablePhone(id: string): void {
-    console.log('disablePhone');
-    // this.service.enableDevice('Phone', id, false);
-  }
-
-
+  // TODO: 단말기 활성/비활성 추가 필요. (판매중지)
 }

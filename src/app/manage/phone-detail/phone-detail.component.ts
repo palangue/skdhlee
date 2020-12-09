@@ -1,8 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DeviceService } from '../../device.service';
 import { IPhoneStorage, PHONE_DETAIL, IColorSet } from '../../../models/PhoneDetail';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 
 @Component({
@@ -18,62 +20,69 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
 
   phoneSub: Subscription;
   phoneInfo: PHONE_DETAIL;
+  tempPhoneInfo: PHONE_DETAIL;
 
   storageList: Array<IPhoneStorage> = [
     { Size: 128, NewDevice: 33330, ChangeDevice: 20000, MoveNumber: 40000 },
     { Size: 256, NewDevice: 50000, ChangeDevice: 60000, MoveNumber: 70000 },
   ];
 
-  colorList: Array<IColorSet>;
+  colorList: Array<IColorSet> = [
+    { name: '러시안 블루', value: '#0000ff' },
+    { name: '이탈리안 레드', value: '#ff0000' }
+  ];
 
   storageTableColumns: string[] = ['storage', 'newDevice', 'changeDevice', 'moveNumber', 'actions'];
   colorTableColumns: string[] = ['color_name_kor', 'color_value', 'color_actions'];
 
   constructor(
     private deviceService: DeviceService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    public dialogRef: MatDialogRef<PhoneDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
+    if (data) {
+      this.phoneInfo = data.phoneInfo;
+    }
+    else {
+      this.phoneInfo = {
+        PhoneName: '',
+        ModelName: '',
+        camera: '',
+        camera_comment: '',
+        colors: [],
+        device_installment: [],
+        gov_price: 0,
+        inches: '',
+        installment_type: '',
+        mainImgSrc: '',
+        net_type_5g: false,
+        net_type_lte: false,
+        origin_price: '',
+        power: '',
+        promo_category: '',
+        size_x: '',
+        size_y: '',
+        size_z: '',
+        ChangeDevice: 0,
+        NewDevice: 0,
+        MoveNumber: 0,
+        storageSize: 0,
+        storage: {
+          ChangeDevice: 0,
+          MoveNumber: 0,
+          Size: 0,
+          NewDevice: 0,
+        },
+        using_play_type: '',
+        video: '',
+        weight: ''
+      };
+    }
   }
 
   ngOnInit(): void {
-    this.phoneInfo = {
-      PhoneName: '',
-      ModelName: '',
-      camera: '',
-      camera_comment: '',
-      colors: [],
-      device_installment: [],
-      gov_price: 0,
-      gov_price_end: 0,
-      gov_price_start: 0,
-      inches: '',
-      installment_type: '',
-      mainImgSrc: '',
-      net_type_5g: false,
-      net_type_lte: false,
-      origin_price: '',
-      power: '',
-      price_change_device: 0,
-      price_move_telecom: 0,
-      price_new_regist: 0,
-      price_promotion: 0,
-      promo_category: '',
-      size_x: '',
-      size_y: '',
-      size_z: '',
-      storage: {
-        ChangeDevice: 0,
-        MoveNumber: 0,
-        Size: 0,
-        NewDevice: 0,
-      },
-      using_play_type: '',
-      video: '',
-      weight: ''
-
-
-    }
 
   }
   ngOnDestroy(): void {
@@ -81,11 +90,21 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
   }
 
   btnSavePhoneDefaultInfo(): void {
-    console.log('phone save = ', this.phoneInfo);
-    this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).set(this.phoneInfo);
+
+    console.log('Save Phone Default Info ', this.phoneInfo);
+
+    this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).set(this.phoneInfo)
+    .then(ref => console.log('set done ', ref))
+    .catch(ref => console.log('error = ', ref));
   }
   btnSetSupportMoney(): void {
-    console.log('Click SetSupportMoney');
+    if (this.phoneInfo.ModelName.length > 0) {
+      this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
+    }
+    else {
+      alert('단말기 정보를 확인하세요');
+    }
+
   }
   btnModifyStorageInfo(elementInfo): void {
     console.log(elementInfo);

@@ -7,10 +7,10 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ColorBoxComponent implements OnInit {
 
-  @Input() phoneColor : string;
+  @Input() phoneColor: string;
 
-  constructor() { 
-    
+  constructor() {
+
   }
 
   ngOnInit(): void {

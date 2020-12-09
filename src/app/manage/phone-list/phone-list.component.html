@@ -23,29 +23,29 @@
     </ng-container>
     <ng-container matColumnDef="storage">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>저장 공간</th>
-      <td mat-cell *matCellDef="let element">{{ element.storage.Size }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.storageSize }}</td>
     </ng-container>
     <ng-container matColumnDef="newPrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>신규가입</th>
-      <td mat-cell *matCellDef="let element">{{ element.storage.NewDevice | number: '1.0-0' }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.NewDevice | number: '1.0-0' }}</td>
     </ng-container>
     <ng-container matColumnDef="changePrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>기기변경</th>
-      <td mat-cell *matCellDef="let element">{{ element.storage.ChangeDevice | number: '1.0-0' }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.ChangeDevice | number: '1.0-0' }}</td>
     </ng-container>
     <ng-container matColumnDef="movePrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>번호이동</th>
-      <td mat-cell *matCellDef="let element">{{ element.storage.MoveNumber  | number: '1.0-0' }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.MoveNumber  | number: '1.0-0' }}</td>
     </ng-container>
 
 
     <ng-container matColumnDef="custom">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <button mat-button (click)="btnShowPhoneDetail(element)">
+        <button mat-raised-button (click)="btnShowPhoneDetail(element)" color='primary'>
           수정
         </button>
-        <button mat-button (click)="btnDeletePhone(element.PhoneName, element.idx)" color="warn">
+        <button mat-button (click)="btnDeletePhone(element.ModelName, element.idx)" color="warn">
           삭제
         </button>
       </td>
