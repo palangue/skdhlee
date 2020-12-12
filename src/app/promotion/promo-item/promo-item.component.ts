@@ -45,6 +45,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // 로그인 시 저장 된 프로모션 코드 가져오기
     this.itemPage_promoCode = this.deviceService.getUserPromoCode();
     // TODO: 프로모션 코드로 행사 가격을 가져 와야 한다.
     this.getPhoneList();

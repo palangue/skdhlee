@@ -1,11 +1,3 @@
-.content{
-    padding : 16px;
-}
-.content > mat-card {
-    width : 200px;
-}
-
-
 .storage-box{
     border : 1px solid gray;
     border-radius : 5px;
