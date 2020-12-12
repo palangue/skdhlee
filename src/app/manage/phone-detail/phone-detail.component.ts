@@ -90,17 +90,31 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
   btnSavePhoneDefaultInfo(): void {
 
     console.log('Save Phone Default Info ', this.phoneInfo);
+    //#region 저장 필수 데이터 체크
+    if (this.phoneInfo.PhoneName.length < 1) {
+      alert('단말기 이름을 확인 하세요');
+      return;
+    }
+    if (this.phoneInfo.storageSize <= 0) {
+      alert('단말기 용량을 확인 하세요.');
+      return;
+    }
+    //#endregion
+
+    this.phoneInfo.ModelName = this.phoneInfo.PhoneName + ' ' + this.phoneInfo.storageSize;
 
     this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).set(this.phoneInfo)
-    .then(ref => console.log('set done ', ref))
-    .catch(ref => console.log('error = ', ref));
+      .then(ref => console.log('set done ', ref))
+      .catch(ref => console.log('error = ', ref));
   }
+
   btnSetSupportMoney(): void {
     if (this.phoneInfo.ModelName.length > 0) {
       this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
     }
     else {
       alert('단말기 정보를 확인하세요');
+      return;
     }
 
   }
