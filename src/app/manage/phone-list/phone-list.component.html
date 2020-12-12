@@ -4,14 +4,18 @@
     단말기 추가
   </button>
 </mat-toolbar>
-<div fxLayout="column" fxLayoutGap="16px" [ngStyle]="{ padding: '16px' }">
+<mat-form-field [ngStyle]='{margin: "0px 16px"}'>
+  <mat-label>검색</mat-label>
+  <input 
+  matInput 
+  (keyup)="applyFilter($event)" 
+  placeholder="ex. iphone 12 mini" 
+  #input 
+  />
+</mat-form-field>
+<div class='mat-elevation-z8' [ngStyle]="{ padding: '16px' }">
 
-  <mat-form-field>
-    <mat-label>검색</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="ex. iphone 12 mini" #input />
-  </mat-form-field>
-
-  <table mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort fxFlexFill>
+  <table mat-table [dataSource]="dataSource" matSort fxFlexFill>
     <!-- 폰 이름 -->
     <ng-container matColumnDef="PhoneName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>단말기 이름</th>
@@ -25,19 +29,26 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>저장 공간</th>
       <td mat-cell *matCellDef="let element">{{ element.storageSize }}</td>
     </ng-container>
+    <ng-container matColumnDef='publicPrice'>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>공시 지원금</th>
+      <td [ngStyle]="{'color': 'Blue'}" mat-cell *matCellDef='let element'>{{ element.gov_price | number: '1.0-0' }}원</td>
+    </ng-container>
     <ng-container matColumnDef="newPrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>신규가입</th>
-      <td mat-cell *matCellDef="let element">{{ element.NewDevice | number: '1.0-0' }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.NewDevice | number: '1.0-0' }}원</td>
     </ng-container>
     <ng-container matColumnDef="changePrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>기기변경</th>
-      <td mat-cell *matCellDef="let element">{{ element.ChangeDevice | number: '1.0-0' }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.ChangeDevice | number: '1.0-0' }}원</td>
     </ng-container>
     <ng-container matColumnDef="movePrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>번호이동</th>
-      <td mat-cell *matCellDef="let element">{{ element.MoveNumber  | number: '1.0-0' }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.MoveNumber  | number: '1.0-0' }}원</td>
     </ng-container>
-
+    <ng-container matColumnDef='manufacturerPrice'>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>출시가</th>
+      <td mat-cell [ngStyle]="{'color': 'tomato'}" *matCellDef='let element'>{{ element.origin_price | number: '1.0-0' }}원</td>
+    </ng-container>
 
     <ng-container matColumnDef="custom">
       <th mat-header-cell *matHeaderCellDef></th>

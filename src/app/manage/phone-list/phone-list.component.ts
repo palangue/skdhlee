@@ -32,7 +32,7 @@ export class PhoneListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  headerColumnInfo: string[] = ['PhoneName', 'ModelName', 'storage', 'newPrice', 'changePrice', 'movePrice', 'custom'];
+  headerColumnInfo: string[] = ['PhoneName', 'ModelName', 'storage', 'publicPrice', 'newPrice', 'changePrice', 'movePrice', 'manufacturerPrice', 'custom'];
 
   phoneName: string;
 
