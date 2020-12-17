@@ -31,7 +31,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -69,7 +70,8 @@ const MaterialModules = [
   UtlsModule,
   MatCheckboxModule,
   MatRadioModule,
-  MatListModule
+  MatListModule,
+  MatSelectModule
 ]
 
 @NgModule({

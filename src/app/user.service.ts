@@ -22,17 +22,20 @@ export class UserService {
   public Login(param: any): any {
 
     return this.Database.collection<any>('Users', ref => {
-      console.log('param value = ', param.id, param.password);
       return ref.where('id', '==', param.id).where('pw', '==', param.password);
     })
       .stateChanges().pipe(take(1), map(ref => {
         return ref.map(data => {
+
           const response = data.payload.doc.data();
           const responseId = data.payload.doc.id;
-
+          console.log(response);
+          console.log(responseId);
+          console.log(param.id);
           if (response.id === param.id) {
             // tslint:disable-next-line: no-shadowed-variable
-            const data = { idx: responseId, id: response.id }
+            const data = { idx: responseId, id: response.id };
+            console.log(data);
             this.authorized.next(true);
             return data;
           }

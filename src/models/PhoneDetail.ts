@@ -26,6 +26,7 @@ export interface PHONE_DETAIL {
   NewDevice: number;    // 신규 가입 금액
   ChangeDevice: number; // 기기 변경 금액
   MoveNumber: number;   // 번호 이동 금액
+  useGbn: boolean;
 }
 
 // 상품 리스트에서 팝업 또는 다음 화면에 전달 할 데이터

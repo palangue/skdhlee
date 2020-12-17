@@ -3,8 +3,8 @@
 </mat-toolbar>
 
 <div class='content' fxLayout='row wrap' fxLayoutGap='16px grid'>
-    <div fxFlex='25%' fxFlex.xs='100%' fxFlex.sm='25%' *ngFor='let data of items'>
-
+    <!-- <div fxFlex='25%' fxFlex.xs='100%' fxFlex.sm='25%' *ngFor='let data of items'> -->
+    <div *ngFor='let data of items'>
         <div class='mat-elevation-z8' [ngStyle]="{'margin': '16px 16px'}">
             <mat-toolbar color='primary'>{{ data.PhoneName }}</mat-toolbar>
             <div fxLayout='row'>
@@ -30,18 +30,18 @@
                                 <span>용량 :</span>
                                 <span></span>
                                 <span>{{ data.storageSize }} G</span>
-            
+
                             </mat-label>
                         </mat-card-content>
                         <mat-card-actions fxLayoutAlign='center'>
-                            <!-- <button mat-stroked-button color='primary' (click)='btnBuy(data)'>구매신청</button> -->
+                            <button mat-stroked-button color='primary' (click)='btnBuy(data)'>구매신청</button>
                             <button mat-stroked-button color='warn' (click)='btnDetail(data)'>상세보기</button>
                         </mat-card-actions>
                     </mat-card>
-                    
+
                 </div>
                 <div fxFlex='70%'>
-                    <table >
+                    <table>
                         <tr>
                             <th>공시 지원금</th>
                             <th>신규 가입</th>
@@ -50,7 +50,7 @@
                         </tr>
                         <tr>
                             <td>{{ data.gov_price | number:'1.0-0'}} 원</td>
-                            <td>{{ data.NewDevice | number:'1.0-0'}} 원</td>
+                            <td>{{ (data.NewDevice ) | number:'1.0-0'}} 원</td>
                             <td>{{ data.ChangeDevice | number:'1.0-0'}} 원</td>
                             <td>{{ data.MoveNumber | number:'1.0-0'}} 원</td>
                         </tr>
@@ -72,8 +72,14 @@
                     </div> -->
                 </div>
             </div>
-            
-            
+
+            <h4>단말기 요금표</h4>
+            <div *ngFor='let item of payPlan' fxLayoutAlign='space-between center'>
+                <label>{{item.name}}</label>
+                <label>{{item.netKind}}</label>
+                <label>{{item.publicPrice | number: '1.0-0'}}</label>
+                <label>{{ getNumber(data.origin_price) - item.publicPrice}}</label>
+            </div>
         </div>
     </div>
 </div>

@@ -13,6 +13,7 @@ export interface IPayPlan {
   monthPay: number;
   monthlyPay: number;
   totallyPay: number;
+  publicPrice: number;
 }
 export interface IPlan {
   name: string;
@@ -26,4 +27,8 @@ export interface IUserPlan {
 export interface IPlanDialogResult {
   code: number;
   message: string;
+}
+export interface PlanDataGroup {
+  name: string;
+  value: IPayPlan[];
 }

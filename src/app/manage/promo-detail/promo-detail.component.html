@@ -2,22 +2,15 @@
   <div fxLayoutAlign="center center" fxFlexFill>
     <mat-toolbar color="primary">행사 업체 등록</mat-toolbar>
   </div>
+
   <form [formGroup]="promotionGroup" fxLayout="column" fxLayoutAlign="stretch">
     <mat-form-field>
       <mat-label>지원 회사 명</mat-label>
-      <input
-        matInput
-        placeholder="지원 회사 이름"
-        formControlName="company_name_ctrl"
-      />
+      <input matInput placeholder="지원 회사 이름" formControlName="company_name_ctrl" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>행사 코드</mat-label>
-      <input
-        matInput
-        placeholder="지원 회사의 코드"
-        formControlName="company_code_ctrl"
-      />
+      <input matInput placeholder="지원 회사의 코드" formControlName="company_code_ctrl" />
     </mat-form-field>
     <div fxLayout="row" fxFlex="100">
       <button mat-stroked-button (click)="addPromotion()" color="accent">
@@ -27,55 +20,85 @@
     </div>
   </form>
 </div>
-<div *ngIf="typeDevice" class="popup-body" fxLayoutGap="16px" fxLayout="column">
+<div *ngIf="typeDevice" class="popup-body" fxLayoutGap="16px" [ngStyle]="{'margin': '16px 0px'}">
+
+  <mat-toolbar color="primary">단말기 복지금 관리</mat-toolbar>
+
+  <!-- 단말기 선택 -->
+  <form [formGroup]="deviceGroup" fxLayoutGap='4px' >
+    <mat-form-field>
+      <mat-label>단말기 선택</mat-label>
+      <mat-select formControlName="deviceNameCtrl">
+        <mat-option *ngFor="let phoneItem of data.phoneList" [value]="phoneItem.ModelName">
+          {{phoneItem.ModelName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>요금제 선택</mat-label>
+      <mat-select formControlName='planNameCtrl'>
+        <mat-optgroup *ngFor='let planItem of data.planGroup' [label]='planItem.name' >
+          <mat-option *ngFor='let plan of planItem.value' [value]='plan.name'>
+            {{ plan.name}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+    <span></span>
+    <button mat-raised-button color='primary' (click)='btnSearchPromotion()'>조회</button>
+  </form>
+
+
+  <form [formGroup]='planGroup'>
+    
+      <!-- 공시 지원 -->
+      <mat-card fxLayoutGap="4px" class='mat-elevation-z8' [ngStyle]="{'margin': '8px'}">
+        <div fxLayoutAlign='space-between center'>
+          <span></span>
+          <button mat-raised-button color='primary' (click)='btnAddPromotionPlan()'>복지금 등록</button>
+        </div>
+        <div fxLayout='row' fxLayoutGap='4px'>
+          <mat-form-field >
+            <mat-label>공시 신규</mat-label>
+            <input matInput formControlName='newPlanCtrl' />
+          </mat-form-field>
+          <mat-form-field >
+            <mat-label>공시 기변</mat-label>
+            <input matInput formControlName='changePlanCtrl'/>
+          </mat-form-field>
+          <mat-form-field >
+            <mat-label>공시 번이</mat-label>
+            <input matInput formControlName='movePlanCtrl'/>
+          </mat-form-field>
+        </div>
+        <!-- 약정 할인 -->
+        <div fxLayout='row' fxLayoutGap='4px'>
+          <mat-form-field>
+            <mat-label>약정 신규</mat-label>
+            <input matInput />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>약정 기변</mat-label>
+            <input matInput />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>약정 번이</mat-label>
+            <input matInput />
+          </mat-form-field>
+        </div>
+      </mat-card>
+  </form>
+
+  <!-- 등록 / 취소 -->
   <div>
-    <mat-toolbar color="primary">행사 단말기 등록</mat-toolbar>
-    <form [formGroup]="deviceGroup" fxLayout="column">
-      <mat-form-field>
-        <mat-label>단말기 이름</mat-label>
-        <input
-          matInput
-          placeholder="예) iPhone 12 mini"
-          formControlName="device_name_ctrl"
-        />
-      </mat-form-field>
-      <div fxLayout="row" fxLayoutGap="16px">
-        <mat-form-field>
-          <mat-label>공시지원 복지 지원</mat-label>
-          <input
-            matInput
-            placeholder="공시지원 복지 지원금"
-            formControlName="publicPriceCtrl"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>선택약정 복지 지원</mat-label>
-          <input
-            matInput
-            placeholder="선택약정 복지 지원금"
-            formControlName="choosePriceCtrl"
-          />
-        </mat-form-field>
-      </div>
-    </form>
-    <div fxLayoutGap="16px">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="addDevice()"
-        *ngIf="!isModify"
-      >
-        단말기 등록
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="updateDevice()"
-        *ngIf="isModify"
-      >
-        수정
-      </button>
-      <button mat-button color="warn" (click)="cancel()">취소</button>
-    </div>
+    
+    <button mat-raised-button color="primary" (click)="addDevice()" *ngIf="!isModify">
+      단말기 등록
+    </button>
+    <button mat-raised-button color="primary" (click)="updateDevice()" *ngIf="isModify">
+      수정
+    </button>
+    <button mat-button color="warn" (click)="cancel()">취소</button>
   </div>
+
 </div>

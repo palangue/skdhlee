@@ -31,7 +31,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         monthlyPay: 0,
         netKind: '',
         name: '',
-        totallyPay: 0
+        totallyPay: 0,
+        publicPrice: 0,
       };
       this.index = '';
     }

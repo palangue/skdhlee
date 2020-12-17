@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { OrderService } from '../../order.service';
+import { IPayPlan } from 'src/models/PaymentPlan';
 
 
 
@@ -34,6 +35,8 @@ export class PromoItemComponent implements OnInit, OnDestroy {
 
   phoneListSub: Subscription;
 
+  payPlan: Array<IPayPlan>;
+
   // 단말기 전체 리스트
   public items: Array<PHONE_DETAIL>;
 
@@ -49,10 +52,13 @@ export class PromoItemComponent implements OnInit, OnDestroy {
     this.itemPage_promoCode = this.deviceService.getUserPromoCode();
     // TODO: 프로모션 코드로 행사 가격을 가져 와야 한다.
     this.getPhoneList();
+    // 공시지원금 가져오기
+    this.getPublicPrice();
   }
 
   ngOnDestroy(): void {
     if (this.phoneListSub) { this.phoneListSub.unsubscribe(); }
+
   }
 
   getPhoneList(): void {
@@ -61,11 +67,12 @@ export class PromoItemComponent implements OnInit, OnDestroy {
     this.phoneListSub = this.firestore.collection('Phone').snapshotChanges().pipe(map(ref => {
       return ref.map((a: any) => {
         const data = a.payload.doc.data();
-        const id = a.payload.doc.id;
+        const idx = a.payload.doc.id;
 
-        return { id, ...data };
+        return { idx, ...data };
       });
     })).subscribe(ref => {
+      console.log('Get Phone List');
       this.items = Array.from(ref);
     });
   }
@@ -88,6 +95,27 @@ export class PromoItemComponent implements OnInit, OnDestroy {
 
   dateTimeCallback(event: number): void {
     this.currentTimestamp = event;
+  }
+
+  getPublicPrice(): void{
+    this.firestore.collection('PayPlan')
+    .snapshotChanges().pipe(map(ref =>{
+      return ref.map( (data: any) => {
+        const returnData = data.payload.doc.data();
+        const idx = data.payload.doc.id;
+
+        return {idx, ...returnData};
+      });
+    }))
+    .subscribe((ref: IPayPlan[]) =>
+    {
+      this.payPlan = ref;
+      console.log('Get Public Price = ', this.payPlan);
+    });
+  }
+
+  getNumber(data: string): number{
+    return Number(data);
   }
 }
 

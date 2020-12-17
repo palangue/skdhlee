@@ -3,12 +3,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { IUserPlan, IPayPlan, IPlanDialogResult } from './../../../models/PaymentPlan';
+import { IUserPlan, IPayPlan, IPlanDialogResult, PlanDataGroup } from './../../../models/PaymentPlan';
 import { PlanDetailComponent } from './../plan-detail/plan-detail.component';
-export interface PlanDataGroup {
-  name: string;
-  value: IPayPlan[];
-}
+
 
 @Component({
   selector: 'app-plan-list',
@@ -17,7 +14,7 @@ export interface PlanDataGroup {
 })
 export class PlanListComponent implements OnInit, OnDestroy {
 
-  planColumnData = ['payment', 'monthPay', 'monthlyDiscount', 'totallyDiscount', 'afterMonthPay', 'modify', 'delete'];
+  planColumnData = ['payment', 'monthPay', 'monthlyDiscount', 'totallyDiscount', 'afterMonthPay', 'publicPrice', 'modify', 'delete'];
   planSub: Subscription;
 
   planList: IUserPlan[];

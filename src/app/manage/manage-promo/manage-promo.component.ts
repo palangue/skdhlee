@@ -49,20 +49,20 @@ export class ManagePromoComponent implements OnInit, OnDestroy {
     this.pageIndexer = event;
   }
 
-  getPromotionList(dbName: string): Observable<any> {
-    this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
-    return this.itemsCollection.valueChanges();
-  }
-  getCustomerList(dbName: string): Observable<any> {
-    this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
-    return this.itemsCollection.valueChanges();
-  }
-  getUsers(dbName: string): Observable<any> {
-    this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
-    return this.itemsCollection.valueChanges();
-  }
-  getPhoneList(dbName: string): Observable<any> {
-    this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
-    return this.itemsCollection.valueChanges();
-  }
+  // getPromotionList(dbName: string): Observable<any> {
+  //   this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
+  //   return this.itemsCollection.valueChanges();
+  // }
+  // getCustomerList(dbName: string): Observable<any> {
+  //   this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
+  //   return this.itemsCollection.valueChanges();
+  // }
+  // getUsers(dbName: string): Observable<any> {
+  //   this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
+  //   return this.itemsCollection.valueChanges();
+  // }
+  // getPhoneList(dbName: string): Observable<any> {
+  //   this.itemsCollection = this.DataBase.collection<any>(dbName, (ref) => ref);
+  //   return this.itemsCollection.valueChanges();
+  // }
 }

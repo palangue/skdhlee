@@ -67,6 +67,12 @@ export class PhoneListComponent implements OnInit, OnDestroy {
     });
   }
 
+  // 활성 / 비활성
+  btnUpdateEnable(obj: PHONE_DETAIL): void{
+    const phoneInfo = obj;
+    phoneInfo.useGbn = !phoneInfo.useGbn;
+    this.firestore.collection('Phone').doc(phoneInfo.ModelName).update(phoneInfo);
+  }
   // 삭제
   btnDeletePhone(value: string): void {
     this.firestore.collection('Phone').doc(value).delete();
@@ -87,7 +93,8 @@ export class PhoneListComponent implements OnInit, OnDestroy {
   getPhoneList(): void {
     if (this.phoneSub) { this.phoneSub.unsubscribe(); }
 
-    this.phoneSub = this.firestore.collection('Phone').snapshotChanges().pipe(map( ref=>{
+    this.phoneSub = this.firestore.collection('Phone').snapshotChanges()
+    .pipe(map( ref=>{
       return ref.map( (a: any) =>{
         const data = a.payload.doc.data();
         const id = a.payload.doc.id;

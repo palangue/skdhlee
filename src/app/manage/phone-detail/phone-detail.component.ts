@@ -75,7 +75,8 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
         },
         using_play_type: '',
         video: '',
-        weight: ''
+        weight: '',
+        useGbn: true
       };
     }
   }

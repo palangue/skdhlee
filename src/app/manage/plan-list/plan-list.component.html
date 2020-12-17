@@ -43,7 +43,12 @@
           {{ element.actualMonthPay | number: "1.0-0" }}
         </td>
       </ng-container>
-
+      <ng-container matColumnDef="publicPrice">
+        <th mat-header-cell *matHeaderCellDef>공시지원금</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.publicPrice | number: "1.0-0" }}
+        </td>
+      </ng-container>
       <ng-container matColumnDef="modify">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">

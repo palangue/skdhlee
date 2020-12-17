@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line: deprecation
     this.mediaSub = this.mediaObserver.media$.subscribe((result: MediaChange) => {
       this.deviceXs = result.mqAlias === 'xs' ? true : false;
-    })
+    });
   }
   ngOnDestroy(): void {
     if (this.mediaSub) {
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.userScription.unsubscribe();
     }
 
-    this.userService.Login({ 'id': this.id, 'password': this.password }).subscribe(data => {
+    this.userService.Login({ id: this.id, password: this.password }).subscribe(data => {
       console.log('안녕 ?', data);
       if (data.length > 0) {
         this.route.navigate(['admin/manage']);
