@@ -12,7 +12,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { IPayPlan, PlanDataGroup } from '../../../models/PaymentPlan';
 
-
+export interface COMPANY {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'app-promo-list',
   templateUrl: './promo-list.component.html',
@@ -51,6 +54,12 @@ export class PromoListComponent implements OnInit, OnDestroy {
   selectedCompanyCode = '';
   selectedId = '';
 
+  selectedCompany: Promotion = {
+    promotion_target: '',
+    promotion_target_company: '',
+    idx: ''
+  };
+
   constructor(
     public dialog: MatDialog,
     private deviceService: DeviceService,
@@ -58,19 +67,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.promoCompanySub = this.deviceService.getPromotion('Promotion')
-      .snapshotChanges()
-      .pipe(map((result: any) => {
-        return result.map(resultData => {
-          const idx = resultData.payload.doc.id;
-          const data = resultData.payload.doc.data();
-
-          return { idx, ...data };
-        });
-      }))
-      .subscribe((ref: Promotion[]) => {
-        this.promotionDataSource = ref;
-      });
+    this.getCompanyList();
     this.getPhoneList();
     this.getPayPlanList();
   }
@@ -94,13 +91,25 @@ export class PromoListComponent implements OnInit, OnDestroy {
     this.selectedId = index;
 
     if (this.supportDeviceSub) {
-      console.log('re allocate supportDeviceSub');
       this.supportDeviceSub.unsubscribe();
     }
     this.supportDeviceSub = this.deviceService.getPromotion('Promotion').doc(this.selectedId)
       .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: SupportPromotionDevice[]) => {
         this.promotionDeviceDataSource = ref2;
         console.log('update supportDevice', this.promotionDeviceDataSource);
+      });
+  }
+  btnSearchCompany(){
+    // this.selectedCompany.idx;
+    // this.selectedCompany.promotion_target;
+    // this.selectedCompany.promotion_target_company;
+
+    if (this.supportDeviceSub) {
+      this.supportDeviceSub.unsubscribe();
+    }
+    this.supportDeviceSub = this.deviceService.getPromotion('Promotion').doc(this.selectedCompany.idx)
+      .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: SupportPromotionDevice[]) => {
+        this.promotionDeviceDataSource = ref2;
       });
   }
   //#region 행사 추가 다이얼로그
@@ -189,6 +198,21 @@ export class PromoListComponent implements OnInit, OnDestroy {
   //#endregion 단말기 추가/수정/삭제
 
   //#region 기본 정보 전체 단말기 리스트 / 전체 요금제 정보
+  getCompanyList(): void {
+    this.promoCompanySub = this.deviceService.getPromotion('Promotion')
+      .snapshotChanges()
+      .pipe(map((result: any) => {
+        return result.map(resultData => {
+          const idx = resultData.payload.doc.id;
+          const data = resultData.payload.doc.data();
+
+          return { idx, ...data };
+        });
+      }))
+      .subscribe((ref: Promotion[]) => {
+        this.promotionDataSource = ref;
+      });
+  }
   // 등록 된 모든 단말기의 정보를 가져와야 함
   getPhoneList(): void {
     this.phoneListSub = this.firestore.collection('Phone').stateChanges().pipe(take(1), map(result => {

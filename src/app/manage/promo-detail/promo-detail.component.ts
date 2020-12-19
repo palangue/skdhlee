@@ -3,21 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { DeviceService } from '../../device.service';
-import { SupportPromotionDevice, PromotionDialogResult } from '../../../models/Promotion';
-import { PHONE_DETAIL } from '../../../models/PhoneDetail';
-import { PlanDataGroup } from '../../../models/PaymentPlan';
+import { SupportPromotionDevice, PromotionDialogResult, PromoSupportDialogData } from '../../../models/Promotion';
 import { map, take } from 'rxjs/operators';
 
-export interface PromoSupportDialogData {
-  width: string;
-  type: string;
-  company: string;
-  code: string;
-  id: string;
-  supportDeviceData: any;
-  phoneList: Array<PHONE_DETAIL>;
-  planGroup: Array<PlanDataGroup>;
-}
 
 @Component({
   selector: 'app-promo-detail',
@@ -64,23 +52,14 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.index = data.id;
   }
 
-  ngAfterViewInit(): void {
-    if (this.typeDevice) {
-      if (this.data.supportDeviceData) {
-        this.deviceGroup = this._formGroup.group({
-          device_name_ctrl: [this.data.supportDeviceData.deviceName],
-          planNameCtrl: [this.data.supportDeviceData.publicPrice],
-        });
-        this.planGroup = this._formGroup.group({
-          newPlan: []
-        })
-        this.isModify = true;
-      }
-    }
-  }
-
   ngOnInit(): void {
 
+    // 수정으로 진입 한것인지 확인
+    if (this.data.supportDeviceData) {
+      this.isModify = true;
+    }
+
+    // 프로모션으로 진입 시 초기화
     if (this.typePromo) {
       this.promotionGroup = this._formGroup.group({
         company_name_ctrl: ['', Validators.required],
@@ -88,9 +67,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         promo_cost_ctrl: ['', Validators.required],
       });
     }
-    if (this.data.supportDeviceData) {
-      this.isModify = true;
-    }
+
+    // 단말기 추가로 들어 왔을 때 초기화
     if (this.typeDevice) {
       this.deviceGroup = this._formGroup.group({
         deviceNameCtrl: ['', Validators.required],
@@ -108,9 +86,27 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     console.log('supportData', this.data.supportDeviceData);
     console.log('phoneList', this.data.phoneList);
-    console.log('planLisg =', this.data.planGroup);
+    console.log('planList =', this.data.planGroup);
 
   }
+
+  ngAfterViewInit(): void {
+    if (this.typeDevice) {
+      if (this.data.supportDeviceData) {
+        // 장치 리스트 셋팅
+        this.deviceGroup = this._formGroup.group({
+          device_name_ctrl: [this.data.supportDeviceData.deviceName],
+          planNameCtrl: [this.data.supportDeviceData.publicPrice],
+        });
+        // 요금제
+        this.planGroup = this._formGroup.group({
+          newPlan: []
+        });
+
+      }
+    }
+  }
+
   ngOnDestroy(): void {
 
   }
@@ -157,7 +153,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     const deviceName = this.deviceGroup.get('deviceNameCtrl').value;
     const planName = this.deviceGroup.get('planNameCtrl').value;
 
-    console.log(deviceName, planName);
+    console.log('프로모션 검색 임시로 막아 놓음 ', deviceName, planName);
 
     return;
     this.deviceService.getPromotionDb()
@@ -183,7 +179,6 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     const changeInstPlan = this.planGroup.get('changePlanInstCtrl').value;
     const movePlanInstPlan = this.planGroup.get('movePlanInstCtrl').value;
 
-    // skt 망 정보를 긁어 온다. 어떻게 하는지 모르겠음 ㅡㅡ"
     let sktNet;
     this.data.planGroup.map(ref => {
       console.log('test map', ref);
