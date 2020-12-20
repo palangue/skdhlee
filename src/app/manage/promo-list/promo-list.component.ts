@@ -35,13 +35,13 @@ export class PromoListComponent implements OnInit, OnDestroy {
   promotionDataSource: Promotion[];
 
   expandedElement: SupportPromotionDevice | null;
-  promotionDeviceColumns: string[] = ['name', 'publicPrice', 'choosePrice', 'promotion_actions'];
+  promotionDeviceColumns: string[] = ['name', 'netName', 'planName', 'newDevice', 'changeDevice', 'moveNumber', 'promotion_actions'];
   promotionDeviceDataSource: SupportPromotionDevice[];
 
   promoCompanySub: Subscription;
   supportDeviceSub: Subscription;
   phoneListSub: Subscription;
-  payPlanSub: Subscription;
+  payPlanListSub: Subscription;
 
   // 단말기 리스트
   phoneList: Array<PHONE_DETAIL>;
@@ -50,9 +50,9 @@ export class PromoListComponent implements OnInit, OnDestroy {
   // 통신망 별 요금제 리스트 그룹
   planGroupData: Array<PlanDataGroup> = [];
 
-  selectedCompanyName = '';
-  selectedCompanyCode = '';
-  selectedId = '';
+  // selectedCompanyName = '';
+  // selectedCompanyCode = '';
+  // selectedId = '';
 
   selectedCompany: Promotion = {
     promotion_target: '',
@@ -67,56 +67,52 @@ export class PromoListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.getCompanyList();
-    this.getPhoneList();
-    this.getPayPlanList();
+    this.getCompanyList();    // 업체 리스트
+    this.getPhoneList();      // 전화기 리스트
+    this.getPayPlanList();    // 요금제 리스트
   }
 
   ngOnDestroy(): void {
-    if (this.promoCompanySub) {
-      this.promoCompanySub.unsubscribe();
-    }
-    if (this.supportDeviceSub) {
-      this.supportDeviceSub.unsubscribe();
-    }
-    if (this.phoneListSub) {
-      this.phoneListSub.unsubscribe();
-    }
+    this.promoCompanySub?.unsubscribe();
+    this.supportDeviceSub?.unsubscribe();
+    this.phoneListSub?.unsubscribe();
+    this.payPlanListSub?.unsubscribe();
   }
 
 
-  btnSelectCompany(index: string, promoTargetCode: string, promoTargetName): void {
-    this.selectedCompanyCode = promoTargetCode;
-    this.selectedCompanyName = promoTargetName;
-    this.selectedId = index;
+  // 행사 업체의 단말기 리스트 가져오기
+  btnSearchCompany(): void {
+    this.supportDeviceSub?.unsubscribe();
 
-    if (this.supportDeviceSub) {
-      this.supportDeviceSub.unsubscribe();
-    }
-    this.supportDeviceSub = this.deviceService.getPromotion('Promotion').doc(this.selectedId)
-      .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: SupportPromotionDevice[]) => {
-        this.promotionDeviceDataSource = ref2;
-        console.log('update supportDevice', this.promotionDeviceDataSource);
-      });
-  }
-  btnSearchCompany(){
-    // this.selectedCompany.idx;
-    // this.selectedCompany.promotion_target;
-    // this.selectedCompany.promotion_target_company;
-
-    if (this.supportDeviceSub) {
-      this.supportDeviceSub.unsubscribe();
-    }
     this.supportDeviceSub = this.deviceService.getPromotion('Promotion').doc(this.selectedCompany.idx)
-      .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: SupportPromotionDevice[]) => {
+      .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: any[]) => {
+
+        const tempList = ref2;
+        console.log(ref2);
+
+        ref2.sort((a,b) => {
+          if(a.deviceName === b.deviceName)
+          {
+            return a.sktNetType > b.sktNetType ? 1 : -1;
+          }
+          return a.deviceName > b.deviceName ? 1 : -1;
+        });
+        //let sortedList = this.uniqueBy(tempList.map( data => data.deviceName), JSON.stringify);
+
         this.promotionDeviceDataSource = ref2;
+        console.log('promotion device list', tempList, ref2);
       });
   }
-  //#region 행사 추가 다이얼로그
+
   // 행사 업체 추가
   btnAddPromotion(): void {
     const dialogRef = this.dialog.open(PromoDetailComponent, {
-      data: { width: '400px', type: 'promo', id: this.selectedId, company: this.selectedCompanyName, code: this.selectedCompanyCode }
+      data: {
+        width: '400px', type: 'promo',
+        id: this.selectedCompany.idx,
+        company: this.selectedCompany.promotion_target_company,
+        code: this.selectedCompany.promotion_target
+      }
     });
     dialogRef.afterClosed().subscribe((result: PromotionDialogResult) => {
       if (result.code === 0) {
@@ -125,15 +121,14 @@ export class PromoListComponent implements OnInit, OnDestroy {
       else if (result.code === 99) {
         alert(result.message);
       }
-
     });
   }
-  //#endregion
+
 
   //#region 단말기 추가/수정/삭제
   // 장치 추가
   btnAddDevice(): void {
-    if (this.selectedId.length === 0) {
+    if (this.selectedCompany.idx.length === 0) {
       alert('업체를 선택 해 주세요');
       return;
     }
@@ -143,9 +138,9 @@ export class PromoListComponent implements OnInit, OnDestroy {
       data: {
         width: '400px',
         type: 'device',
-        id: this.selectedId,
-        company: this.selectedCompanyName,
-        code: this.selectedCompanyCode,
+        id: this.selectedCompany.idx,
+        company: this.selectedCompany.promotion_target_company,
+        code: this.selectedCompany.promotion_target,
         phoneList: this.phoneList,
         planGroup: this.planGroupData
       }
@@ -161,7 +156,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
   }
   // 장치 수정
   promo_item_modify(data, data2): void {
-    if (this.selectedId.length === 0) {
+    if (this.selectedCompany.idx.length === 0) {
       alert('업체를 선택 해 주세요');
       return;
     }
@@ -170,9 +165,9 @@ export class PromoListComponent implements OnInit, OnDestroy {
       data: {
         width: '400px',
         type: 'device',
-        id: this.selectedId,
-        company: this.selectedCompanyName,
-        code: this.selectedCompanyCode,
+        id: this.selectedCompany.idx,
+        company: this.selectedCompany.promotion_target_company,
+        code: this.selectedCompany.promotion_target,
         supportDeviceData: data,
         phoneList: this.phoneList
       }
@@ -190,7 +185,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
   // 장치 삭제
   promo_item_delete(data): void {
 
-    const temp = this.deviceService.getPromotion('Promotion').doc(this.selectedId)
+    const temp = this.deviceService.getPromotion('Promotion').doc(this.selectedCompany.idx)
       .collection('support_device').doc(data.idx).delete()
       .then(result => console.log('success'))
       .catch(err => console.log(err));
@@ -215,21 +210,22 @@ export class PromoListComponent implements OnInit, OnDestroy {
   }
   // 등록 된 모든 단말기의 정보를 가져와야 함
   getPhoneList(): void {
-    this.phoneListSub = this.firestore.collection('Phone').stateChanges().pipe(take(1), map(result => {
-      return result.map((resultData: any) => {
-        const idx = resultData.payload.doc.id;
-        const data = resultData.payload.doc.data();
+    this.phoneListSub = this.firestore.collection('Phone').stateChanges()
+      .pipe(take(1), map(result => {
+        return result.map((resultData: any) => {
+          const idx = resultData.payload.doc.id;
+          const data = resultData.payload.doc.data();
 
-        return { idx, ...data };
+          return { idx, ...data };
+        });
+      })).subscribe((ref: Array<PHONE_DETAIL>) => {
+        this.phoneList = ref;
       });
-    })).subscribe((ref: Array<PHONE_DETAIL>) => {
-      this.phoneList = ref;
-    });
   }
   // 등록 된 모든 요금제를 가져온다.
   getPayPlanList(): void {
 
-    this.firestore.collection('PayPlan')
+    this.payPlanListSub = this.firestore.collection('PayPlan')
       .stateChanges().pipe(take(1), map(result => {
         return result.map((resultData: any) => {
           const idx = resultData.payload.doc.id;
@@ -262,9 +258,9 @@ export class PromoListComponent implements OnInit, OnDestroy {
 
         console.log(this.planGroupData);
 
-        for (const i of this.planGroupData) {
-          console.log('Plan_Name = ', i.name);
-        }
+        // for (const i of this.planGroupData) {
+        //   console.log('Plan_Name = ', i.name);
+        // }
       });
 
   }
