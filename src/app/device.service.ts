@@ -97,7 +97,11 @@ export class DeviceService {
   getPromotionDb(): AngularFirestoreCollection {
     return this.Database.collection<Promotion>('Promotion');
   }
-
+  getPromotionDbName(name: string): AngularFirestoreCollection{
+    return this.Database.collection<Promotion>('Promotion', ref => {
+      return ref.where('promotion_target_company', '==', name);
+    })
+  }
   addPromotion(data: Promotion): any {
     const returnData = { result: '실패', errorMessage: '' };
 
