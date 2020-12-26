@@ -68,8 +68,10 @@ export class PromoListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCompanyList();    // 업체 리스트
-    this.getPhoneList();      // 전화기 리스트
     this.getPayPlanList();    // 요금제 리스트
+    // 단말기 선택 시 모든 요금제를 보여 줘야 한다.
+    this.getPhoneList();      // 전화기 리스트
+    
   }
 
   ngOnDestroy(): void {
@@ -88,7 +90,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
       .collection('support_device').valueChanges({ idField: 'idx' }).pipe().subscribe((ref2: any[]) => {
 
         const tempList = ref2;
-        console.log(ref2);
+        //console.log(ref2);
 
         ref2.sort((a,b) => {
           if(a.deviceName === b.deviceName)
@@ -100,7 +102,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
         //let sortedList = this.uniqueBy(tempList.map( data => data.deviceName), JSON.stringify);
 
         this.promotionDeviceDataSource = ref2;
-        console.log('promotion device list', tempList, ref2);
+        //console.log('promotion device list', tempList, ref2);
       });
   }
 
@@ -219,6 +221,8 @@ export class PromoListComponent implements OnInit, OnDestroy {
           return { idx, ...data };
         });
       })).subscribe((ref: Array<PHONE_DETAIL>) => {
+        // console.log('phone list = ', ref);
+        // console.log('요금제 리스트 = ', this.planGroupData);
         this.phoneList = ref;
       });
   }
@@ -255,12 +259,6 @@ export class PromoListComponent implements OnInit, OnDestroy {
             }
           });
         });
-
-        console.log(this.planGroupData);
-
-        // for (const i of this.planGroupData) {
-        //   console.log('Plan_Name = ', i.name);
-        // }
       });
 
   }

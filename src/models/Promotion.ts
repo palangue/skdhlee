@@ -11,8 +11,12 @@ export interface Promotion {
   // support : Array<SupportPromotionDevice>;
 }
 export interface SupportPromotionDevice {
-  name: string;
-  price: number;
+  changeDevice: string;
+  deviceName: string;
+  moveNumber: string;
+  newDevice: string;
+  planName: string;
+  sktNetType: string;
 }
 
 export interface PromotionDialogResult {

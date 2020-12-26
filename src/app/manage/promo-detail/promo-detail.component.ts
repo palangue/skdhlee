@@ -5,6 +5,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DeviceService } from '../../device.service';
 import { SupportPromotionDevice, PromotionDialogResult, PromoSupportDialogData } from '../../../models/Promotion';
 import { map, take } from 'rxjs/operators';
+import { PHONE_DETAIL } from 'src/models/PhoneDetail';
+import { PlanDataGroup } from 'src/models/PaymentPlan';
+import { templateJitUrl } from '@angular/compiler';
 
 
 @Component({
@@ -12,20 +15,26 @@ import { map, take } from 'rxjs/operators';
   templateUrl: './promo-detail.component.html',
   styleUrls: ['./promo-detail.component.css']
 })
-export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PromoDetailComponent implements OnInit, OnDestroy {
 
   typeDevice = false;
   typePromo = false;
   index = '';
   isModify = false;
 
+  disableNetworkSelection = true;    // 단말기 선택 후 요금제 정보를 가져 오면 활성화, 아니면 비활성화.
 
   //supportDevice: Array<SupportPromotionDevice>;
   supportDevice: Array<any>;
+  selectedSupportDeviceAndPlanList: Array<any> = [];
 
   promotionGroup: FormGroup;
   deviceGroup: FormGroup;
   planGroup: FormGroup;
+
+  PhoneList: Array<PHONE_DETAIL>;
+  PayPlanList: Array<PlanDataGroup>;
+  SelectedPayPlanList: Array<string>;
 
   selectedDeviceName: string;
   selectedNetType: string;
@@ -44,6 +53,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.typePromo = true;
     }
     this.index = data.id;
+
+    console.log('index = ', this.index);
   }
 
   ngOnInit(): void {
@@ -62,44 +73,16 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
 
-    // 단말기 추가로 들어 왔을 때 초기화
-    // if (this.typeDevice) {
-    //   this.deviceGroup = this._formGroup.group({
-    //     deviceNameCtrl: ['', Validators.required],
-    //     planNameCtrl: ['', Validators.required],
-    //   });
-    //   this.planGroup = this._formGroup.group({
-    //     newPlanCtrl: ['', Validators.required],
-    //     movePlanCtrl: ['', Validators.required],
-    //     changePlanCtrl: ['', Validators.required],
-    //     newPlanInstCtrl: ['', Validators.required],
-    //     movePlanInstCtrl: ['', Validators.required],
-    //     changePlanInstCtrl: ['', Validators.required]
-    //   });
-    // }
+    // console.log('supportData', this.data.supportDeviceData);
+    // console.log('phoneList', this.data.phoneList);
+    // console.log('planList =', this.data.planGroup);
 
-    console.log('supportData', this.data.supportDeviceData);
-    console.log('phoneList', this.data.phoneList);
-    console.log('planList =', this.data.planGroup);
+    this.PhoneList = this.data.phoneList;
+    this.PayPlanList = this.data.planGroup;
+
 
   }
 
-  ngAfterViewInit(): void {
-    if (this.typeDevice) {
-      if (this.data.supportDeviceData) {
-        // 장치 리스트 셋팅
-        // this.deviceGroup = this._formGroup.group({
-        //   device_name_ctrl: [this.data.supportDeviceData.deviceName],
-        //   planNameCtrl: [this.data.supportDeviceData.publicPrice],
-        // });
-        // 요금제
-        // this.planGroup = this._formGroup.group({
-        //   newPlan: []
-        // });
-
-      }
-    }
-  }
 
   ngOnDestroy(): void {
 
@@ -144,14 +127,25 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // 단말기 복지금 조회
   btnSearchPromotion(): void {
-    // this.selectedDeviceName = this.deviceGroup.get('deviceNameCtrl').value;
-    // this.selectedNetType = this.deviceGroup.get('planNameCtrl').value;
-
-    //this.selectedNetType = planName;
-
-
 
     console.log(this.selectedDeviceName, this.selectedNetType)
+
+    // this.deviceService.getPromotionDb()
+    //   .doc(this.index)
+    //   .collection('support_device', ref => ref.where('deviceName', '==', this.selectedDeviceName))
+    //   .stateChanges().pipe(take(1), map(result => {
+    //     return result.map(resultData => {
+    //       const idx = resultData.payload.doc.id;
+    //       const data = resultData.payload.doc.data();
+    //       return { idx, ...data };
+    //     });
+    //   })).subscribe((ref: Array<any>) => {
+    //     this.supportDevice = ref;
+    //     console.log('Search Promotion = ', ref)
+    //   });
+  }
+
+  getSupportDeviceAndPlanList() {
 
     this.deviceService.getPromotionDb()
       .doc(this.index)
@@ -164,23 +158,139 @@ export class PromoDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       })).subscribe((ref: Array<any>) => {
         this.supportDevice = ref;
-        console.log('Search Promotion = ', ref)
+        this.disableNetworkSelection = false;
       });
   }
 
-
   // 순차 저장
   btnSave(): void {
-    for (let item of this.supportDevice) {
-      this.deviceService.getPromotionDb()
-        .doc(this.index)
-        .collection('support_device')
-        .doc(item.idx)
-        .update(item)
-        .then(out => console.log(item, "is ok"))
-        .catch((err) => console.log(item, err));
+
+    let errList: Array<string> = [];
+
+    for (let item of this.selectedSupportDeviceAndPlanList) {
+      if (item.idx === undefined || item.idx.length === 0) {
+        this.deviceService.getPromotionDb()
+          .doc(this.index)
+          .collection('support_device')
+          .add(item)
+          .catch((err) => errList.push(err));
+      }
+      else {
+        this.deviceService.getPromotionDb()
+          .doc(this.index)
+          .collection('support_device')
+          .doc(item.idx)
+          .update(item)
+          .catch((err) => errList.push(err));
+      }
     }
+
+    if (errList.length === 0) {
+      const msgData: PromotionDialogResult = {
+        code: 0,
+        message: '성공'
+      };
+  
+      this.dialogRef.close(msgData);
+    }
+    else
+    {
+      const msgData: PromotionDialogResult = {
+        code: 99,
+        message: errList.toString()
+      };
+  
+      this.dialogRef.close(msgData);
+    }
+    
+
   }
+
+  onDeviceSelected(selectedDevice: string): void {
+
+    // 단말기 선택이 변경되면 망 선택 항목도 초기화 해야 한다.
+    this.selectedNetType = '';
+    // 선택 된 단말기가 지원 가능 한 요금제 타이틀을 select 박스에 셋팅한다.
+    this.SelectedPayPlanList = [];
+
+
+
+    // 전체 단말기 리스트에서 선택 된 단말기를 가져온다.
+    const chosenPhoneDetail = this.PhoneList.find(x => x.ModelName === this.selectedDeviceName);
+
+    // 선택 된 단말기가 설정 가능한 네트워크를 select box 에 설정
+    if (chosenPhoneDetail.net_type_5g) {
+      this.SelectedPayPlanList.push('5G');
+    }
+    if (chosenPhoneDetail.net_type_lte) {
+      this.SelectedPayPlanList.push('LTE');
+    }
+
+    // 선택 된 단말기가 지원 가능 한 모든 요금제 가져온다
+    this.disableNetworkSelection = true;
+    this.getSupportDeviceAndPlanList();
+
+  }
+  onNetworkSelected(): void {
+
+    this.selectedSupportDeviceAndPlanList = [];
+
+    const listOfSupportedList = this.supportDevice.filter(x => x.sktNetType === this.selectedNetType);
+
+    // 사용 가능한 요금제 리스트를 수집 / 정렬한다.
+    const chosenPlan = this.PayPlanList.find(x => x.name === this.selectedNetType);
+
+    for (let item of chosenPlan.value) {
+
+      let foundedSupportedDevice = listOfSupportedList.find(x => x.sktNetType === item.netKind && x.planName === item.name);
+
+      if (foundedSupportedDevice === undefined) {
+        foundedSupportedDevice = {
+          changeDevice: '0',
+          deviceName: this.selectedDeviceName,
+          moveNumber: '0',
+          newDevice: '0',
+          planName: item.name,
+          sktNetType: item.netKind,
+        }
+      }
+
+      let tempItem = null;
+      if (foundedSupportedDevice.idx === undefined) {
+        tempItem =
+        {
+          changeDevice: foundedSupportedDevice.changeDevice ? foundedSupportedDevice.changeDevice : '0',
+          deviceName: this.selectedDeviceName,
+          moveNumber: foundedSupportedDevice.moveNumber ? foundedSupportedDevice.moveNumber : '0',
+          newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
+          planName: item.name,
+          sktNetType: item.netKind,
+        };
+      }
+      else {
+        tempItem =
+        {
+          changeDevice: foundedSupportedDevice.changeDevice ? foundedSupportedDevice.changeDevice : '0',
+          deviceName: this.selectedDeviceName,
+          moveNumber: foundedSupportedDevice.moveNumber ? foundedSupportedDevice.moveNumber : '0',
+          newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
+          planName: item.name,
+          sktNetType: item.netKind,
+          idx: foundedSupportedDevice.idx
+        };
+
+      }
+
+      this.selectedSupportDeviceAndPlanList.push(tempItem);
+    }
+
+    console.log(this.selectedSupportDeviceAndPlanList.sort((x, y) => x.planName > y.planName ? 1 : -1));
+
+
+    //this.supportDevice.push()
+
+  }
+
   // 단말기  복지금 등록
   // btnAddPromotionPlan(): void {
   //   const devName = this.deviceGroup.get('deviceNameCtrl').value;

@@ -25,50 +25,51 @@
   <mat-toolbar color="primary">단말기 복지금 관리</mat-toolbar>
 
   <!-- 단말기 선택 -->
-  <div  fxLayoutGap='4px'>
-    <mat-form-field>
-      <mat-label>단말기 선택</mat-label>
+  <div fxLayoutGap='4px'>
+    <mat-form-field appearance='fill'>
+      <mat-label>단말기 선택 할래?</mat-label>
       <!-- <mat-select formControlName="deviceNameCtrl"> -->
-      <mat-select [(ngModel)]='selectedDeviceName'>
-        <mat-option *ngFor="let phoneItem of data.phoneList" [value]="phoneItem.ModelName">
+      <mat-select [(ngModel)]='selectedDeviceName' (selectionChange)='onDeviceSelected(selectedDeviceName)'>
+        <mat-option *ngFor="let phoneItem of PhoneList" [value]="phoneItem.ModelName">
           {{phoneItem.ModelName}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance='fill'>
       <mat-label>요금제 선택</mat-label>
-      <!-- <mat-select formControlName='planNameCtrl'> -->
-        <mat-select [(ngModel)]="selectedNetType">
-        <mat-option *ngFor='let plan of data.planGroup' [value]='plan.name'>
-          {{ plan.name}}
+      <mat-select [(ngModel)]="selectedNetType" [disabled]='disableNetworkSelection'
+        (selectionChange)='onNetworkSelected()'>
+        <mat-option *ngFor='let plan of SelectedPayPlanList' [value]='plan'>
+          {{ plan}}
         </mat-option>
       </mat-select>
     </mat-form-field>
+
     <span></span>
 
     <button mat-raised-button color='primary' (click)='btnSearchPromotion()'>조회</button>
   </div>
 
   <mat-card *ngIf='selectedNetType && selectedDeviceName' class='mat-elevation-z8'>
-    <div *ngFor='let deviceItem of supportDevice'>
-        <span *ngIf='deviceItem.sktNetType === selectedNetType' fxLayoutAlign='space-between center'>
-          <mat-label>{{deviceItem.planName}}</mat-label> 
-          <span></span>
-          <span>
-            <mat-form-field>
-              <mat-label>공시 신규</mat-label>
-              <input matInput [(ngModel)]="deviceItem.newDevice"/>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>공시 기변</mat-label>
-              <input matInput [(ngModel)]="deviceItem.changeDevice" />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>공시 번이</mat-label>
-              <input matInput  [(ngModel)]="deviceItem.moveNumber"/>
-            </mat-form-field>
-          </span>
+    <div *ngFor='let deviceItem of selectedSupportDeviceAndPlanList'>
+      <span *ngIf='deviceItem.sktNetType === selectedNetType' fxLayoutAlign='space-between center'>
+        <mat-label>{{deviceItem.planName}}</mat-label>
+        <span></span>
+        <span>
+          <mat-form-field>
+            <mat-label>공시 신규</mat-label>
+            <input matInput [(ngModel)]="deviceItem.newDevice" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>공시 기변</mat-label>
+            <input matInput [(ngModel)]="deviceItem.changeDevice" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>공시 번이</mat-label>
+            <input matInput [(ngModel)]="deviceItem.moveNumber" />
+          </mat-form-field>
         </span>
+      </span>
     </div>
     <button mat-button (click)='btnSave()'>복지금 저장</button>
   </mat-card>
