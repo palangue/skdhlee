@@ -124,27 +124,6 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
-
-  // 단말기 복지금 조회
-  btnSearchPromotion(): void {
-
-    console.log(this.selectedDeviceName, this.selectedNetType)
-
-    // this.deviceService.getPromotionDb()
-    //   .doc(this.index)
-    //   .collection('support_device', ref => ref.where('deviceName', '==', this.selectedDeviceName))
-    //   .stateChanges().pipe(take(1), map(result => {
-    //     return result.map(resultData => {
-    //       const idx = resultData.payload.doc.id;
-    //       const data = resultData.payload.doc.data();
-    //       return { idx, ...data };
-    //     });
-    //   })).subscribe((ref: Array<any>) => {
-    //     this.supportDevice = ref;
-    //     console.log('Search Promotion = ', ref)
-    //   });
-  }
-
   getSupportDeviceAndPlanList() {
 
     this.deviceService.getPromotionDb()

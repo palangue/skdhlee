@@ -27,7 +27,7 @@
   <!-- 단말기 선택 -->
   <div fxLayoutGap='4px'>
     <mat-form-field appearance='fill'>
-      <mat-label>단말기 선택 할래?</mat-label>
+      <mat-label>단말기 선택</mat-label>
       <!-- <mat-select formControlName="deviceNameCtrl"> -->
       <mat-select [(ngModel)]='selectedDeviceName' (selectionChange)='onDeviceSelected(selectedDeviceName)'>
         <mat-option *ngFor="let phoneItem of PhoneList" [value]="phoneItem.ModelName">
@@ -36,7 +36,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance='fill'>
-      <mat-label>요금제 선택</mat-label>
+      <mat-label>통신망 선택</mat-label>
       <mat-select [(ngModel)]="selectedNetType" [disabled]='disableNetworkSelection'
         (selectionChange)='onNetworkSelected()'>
         <mat-option *ngFor='let plan of SelectedPayPlanList' [value]='plan'>
@@ -45,9 +45,6 @@
       </mat-select>
     </mat-form-field>
 
-    <span></span>
-
-    <button mat-raised-button color='primary' (click)='btnSearchPromotion()'>조회</button>
   </div>
 
   <mat-card *ngIf='selectedNetType && selectedDeviceName' class='mat-elevation-z8'>
@@ -71,7 +68,7 @@
         </span>
       </span>
     </div>
-    <button mat-button (click)='btnSave()'>복지금 저장</button>
+    <button mat-button color='primary' (click)='btnSave()'>복지금 저장</button>
   </mat-card>
   <!-- <form [formGroup]='planGroup'>
     <mat-card fxLayoutGap="4px" class='mat-elevation-z8' [ngStyle]="{'margin': '8px'}">
