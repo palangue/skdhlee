@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, CollectionReference, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Promotion } from '../models/Promotion';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 
@@ -92,7 +92,13 @@ export class DeviceService {
   getPromotionTarget(DbName: string, code: string): Observable<Promotion[]> {
     return this.Database.collection<Promotion>(DbName, (ref: CollectionReference) => {
       return ref.where('promotion_target', '==', code);
-    }).valueChanges().pipe(take(1));
+    }).stateChanges().pipe(take(1), map( result => {
+      return result.map(resultData => {
+        const idx = resultData.payload.doc.id;
+        const data = resultData.payload.doc.data();
+        return {idx, ...data};
+      });
+    }));
   }
   getPromotionDb(): AngularFirestoreCollection {
     return this.Database.collection<Promotion>('Promotion');

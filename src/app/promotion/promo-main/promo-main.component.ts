@@ -41,7 +41,7 @@ export class PromoMainComponent implements OnInit {
       console.log(ref);
       if (ref.length === 1) {
         this.invalid_code = false;
-        this.deviceService.setUserPromoCode(ref[0].promotion_target);
+        this.deviceService.setUserPromoCode(ref[0].idx);
         this.dbService.addData(true, { promo_code: this.promo_code, visible: true })
         this.rout.navigate(['/promo-items']);
       }

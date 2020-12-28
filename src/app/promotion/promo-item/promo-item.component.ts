@@ -2,8 +2,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription, combineLatest, of } from 'rxjs';
+import { map, take, switchMap } from 'rxjs/operators';
 
 import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
@@ -25,20 +25,29 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   @Input() deviceXs: boolean;
 
   // 로그인 된 프로모션 코드
-  itemPage_promoCode: string;
+  itemPage_promoCode: string;   // 사용자 입력 프로모션 코드
+  //itemPageDocumentId: string;   // 검색 된 프로모션 코드 문서
 
   gov_price: number;
   agreement_price_max: number;
   support_price: number;
 
-  currentTimestamp: number = new Date().getTime();
 
   phoneListSub: Subscription;
-
   payPlan: Array<IPayPlan>;
 
   // 단말기 전체 리스트
   public items: Array<PHONE_DETAIL>;
+  // 프로모션 (복지금) 가격 리스트
+  supportDeviceList: Array<any>;
+  publicPriceList: Array<any>;
+
+  allInfo$: Observable<{ phoneLists: any[]; payPlans: any[]; promotions: any[] }>;
+  // all$: Observable<{ burgers: any[]; donuts: any[] }>;
+  ObservablePhone: Observable<any[]>;
+  ObservablePayPlan: Observable<any[]>;
+
+  joined$: Observable<any>;
 
   constructor(
     private firestore: AngularFirestore,
@@ -48,33 +57,95 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     // 로그인 시 저장 된 프로모션 코드 가져오기
     this.itemPage_promoCode = this.deviceService.getUserPromoCode();
-    // TODO: 프로모션 코드로 행사 가격을 가져 와야 한다.
-    this.getPhoneList();
-    // 공시지원금 가져오기
-    this.getPublicPrice();
+
+    if (this.itemPage_promoCode.length === 0) {
+      alert('행사 코드를 수집하지 못했습니다. 새로고침 해 주세요');
+      return;
+    }
+
+    // 모든 데이터를 한번에 가져와서 그냥 담아 놓음
+    //this.setPhoneAndPrices();
+
+    // switchMap 사용. 모든 데이터를 한번에 가져 온다.
+    this.GetAllDeviceInfomations();
+
+
+
+    // this.getPhonePrice();
+
+    // // TODO: 프로모션 코드로 행사 가격을 가져 와야 한다.
+    // this.getPhoneList();
+    // // 공시지원금 가져오기
+    // this.getPublicPrice();
   }
 
   ngOnDestroy(): void {
-    if (this.phoneListSub) { this.phoneListSub.unsubscribe(); }
-
+    this.phoneListSub?.unsubscribe();
   }
 
-  getPhoneList(): void {
-    if (this.phoneListSub) { this.phoneListSub.unsubscribe(); }
-
-    this.phoneListSub = this.firestore.collection('Phone').snapshotChanges().pipe(map(ref => {
-      return ref.map((a: any) => {
-        const data = a.payload.doc.data();
-        const idx = a.payload.doc.id;
-
-        return { idx, ...data };
-      });
-    })).subscribe(ref => {
-      console.log('Get Phone List');
-      this.items = Array.from(ref);
+  setPhoneAndPrices(): void {
+    this.allInfo$ = combineLatest([
+      this.firestore.collection('Phone').valueChanges(),
+      this.firestore.collection('PayPlan').valueChanges(),
+      this.firestore.collection('Promotion').doc(this.itemPage_promoCode).collection('support_device').valueChanges()
+    ]).pipe(
+      map(([phoneLists, payPlans, promotions]) => {
+        return { phoneLists, payPlans, promotions };
+      })
+    );
+    this.allInfo$.subscribe(ref => {
+      console.log('All data = ', ref)
     });
+  }
+
+  // switchMap 사용
+  GetAllDeviceInfomations(): void {
+
+    this.joined$ = this.firestore
+      .collection<any>('Phone')
+      .valueChanges().pipe(
+        switchMap((PhoneLists) => {
+          // const modelName = PhoneLists.map(result => result.ModelName);
+
+          return combineLatest([
+            of(PhoneLists),
+            this.firestore.collection('Promotion').doc(this.itemPage_promoCode)
+              .collection('support_device').valueChanges()
+          ]);
+        }),
+        map(([list1, list2]) => {
+          return list1.map(result => {
+            return {
+              ...result,
+              plans: list2.filter(a => a.deviceName === result.ModelName)
+            }
+          })
+        })
+
+      );
+    this.joined$.subscribe(ref => console.log('SwitchMap data = ', ref));
+  }
+
+
+  getPhoneList(): void {
+    this.phoneListSub?.unsubscribe();
+
+    this.phoneListSub = this.firestore.collection('Phone')
+      .snapshotChanges()
+      .pipe(map(ref => {
+        return ref.map((a: any) => {
+          const data = a.payload.doc.data();
+          const idx = a.payload.doc.id;
+
+          return { idx, ...data };
+        });
+      })).subscribe(ref => {
+        // console.log('Get Phone List', ref);
+        this.items = Array.from(ref);
+      });
   }
 
   btnBuy(pd: PHONE_DETAIL): void {
@@ -82,40 +153,83 @@ export class PromoItemComponent implements OnInit, OnDestroy {
     this.route.navigate(['orders']);
   }
   btnDetail(pd: PHONE_DETAIL): void {
-    console.log('상세보기 클릭함', pd);
-
+    // console.log('상세보기 클릭함', pd);
+    //this.getPhonePrice();
   }
 
-  // 시작 날짜에서 오늘 날짜까지 보여준다
-  getTimeComparison(date): boolean {
-    if (date > this.currentTimestamp) { return true; }
+  // 프로모션 코드를 이용해서 지원 단말기의 전체 요금표를 가져온다.
+  getPhonePrice(): void {
 
-    return false;
-  }
+    if (!this.itemPage_promoCode) {
+      alert('행사 문서를 읽지 못했습니다. 페이지를 다시 로드 해 주세요');
+      return;
+    }
 
-  dateTimeCallback(event: number): void {
-    this.currentTimestamp = event;
-  }
+    this.firestore.collection('Promotion')
+      .doc(this.itemPage_promoCode)
+      .collection('support_device')
+      .snapshotChanges()
+      .pipe(take(1), map(result => {
+        return result.map(resultData => {
+          const idx = resultData.payload.doc.id;
+          const data = resultData.payload.doc.data();
 
-  getPublicPrice(): void{
-    this.firestore.collection('PayPlan')
-    .snapshotChanges().pipe(map(ref =>{
-      return ref.map( (data: any) => {
-        const returnData = data.payload.doc.data();
-        const idx = data.payload.doc.id;
-
-        return {idx, ...returnData};
+          return { idx, ...data };
+        });
+      })).subscribe(realData => {
+        this.supportDeviceList = realData;
       });
-    }))
-    .subscribe((ref: IPayPlan[]) =>
-    {
-      this.payPlan = ref;
-      console.log('Get Public Price = ', this.payPlan);
-    });
   }
 
-  getNumber(data: string): number{
+  // 요금제 표에 등록 된 공시 지원 요금을 가져온다
+  getPublicPrice(): void {
+    this.firestore.collection('PayPlan')
+      .snapshotChanges().pipe(map(ref => {
+        return ref.map((data: any) => {
+          const returnData = data.payload.doc.data();
+          const idx = data.payload.doc.id;
+
+          return { idx, ...returnData };
+        });
+      }))
+      .subscribe((ref: IPayPlan[]) => {
+        this.payPlan = ref;
+        //console.log('Get Public Price = ', this.payPlan);
+      });
+  }
+
+  getNumber(data: string): number {
     return Number(data);
+  }
+
+  GetPublicMoney(modelName: string, devicePrice: string): number {
+    const tempData = this.supportDeviceList.find(x => x.deviceName === modelName);
+
+    console.log(tempData);
+
+    return 0;
+  }
+
+  GetNewDeviceMoney(modelName: string, devicePrice: string): number {
+    const tempData = this.supportDeviceList.filter(x => x.deviceName === modelName);
+
+    console.log(tempData, modelName, devicePrice, this.supportDeviceList);
+    // 동일한 네트워크의 요금제에 대한 공시 지원금을 가져온다.
+    // const newDevicePrice = this.payPlan.find(x => x.netKind === 'newDevice' && x.name === '네트워크 이름');
+    // const devicePublicPrice  = newDevicePrice.publicPrice;
+    // newDevicePrice.name
+    // newDevicePrice.netKind
+    // console.log(this.payPlan, devicePublicPrice);
+
+    return 0;
+  }
+  GetChangeDeviceMoney(modelName: string, devicePrice: string): number {
+
+    return 0;
+  }
+  GetMoveNumberMoney(modelName: string, devicePrice: string): number {
+
+    return 0;
   }
 }
 
