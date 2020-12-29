@@ -30,4 +30,7 @@ export class SkDateComponent implements OnInit {
     // 1606463519000
     this.onDateChange.emit((event.value));
   }
+  testfunction(): void {
+
+  }
 }
