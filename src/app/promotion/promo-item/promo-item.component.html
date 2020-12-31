@@ -1,120 +1,127 @@
-<mat-toolbar color='warn'>
-    <span>iPhone 12 프로모션</span>
-</mat-toolbar>
 
-<div class='mat-elevation-z8' [ngStyle]="{'margin': '8px'}">
-    <ng-container *ngIf='joined$ | async; else loading; let joined'>
-        <div class='mat-card' [ngStyle]="{'margin': '4px'}" *ngFor='let phoneItem of joined'>
-            <div class='mat-card-content'>
-                <mat-toolbar color='primary'>{{ phoneItem.ModelName }}</mat-toolbar>
-                <div fxLayout='row'>
-                    <!-- 이미지 리사이징 때문에 이미지만 mat card 사용 -->
-                    <mat-card fxFlex='30' class='mat-elevation-z0'>
-                        <img mat-card-image [src]="phoneItem.mainImgSrc">
-                        <mat-card-content>
-                            <mat-label fxLayoutAlign='space-between center'>
-                                <span>출고가 : </span><span></span><span [ngStyle]='{"color" : "blue"}'>{{
-                                    phoneItem.origin_price | number:'1.0-0' }} 원</span>
-                            </mat-label>
-                            <mat-label fxLayoutAlign='space-between center'>
-                                <span>색상 : </span>
-                                <span></span>
-                                <div fxLayout='row'>
-                                    <span *ngFor='let color of phoneItem.colors'>
-                                        <app-color-box [phoneColor]='color.value'></app-color-box>
-                                    </span>
-                                </div>
-                            </mat-label>
-                            <mat-label fxLayoutAlign='space-between center'>
-                                <span>용량 :</span>
-                                <span></span>
-                                <span>{{ phoneItem.storageSize }} G</span>
 
-                            </mat-label>
-                        </mat-card-content>
+<!-- TODO:
+    제조사별 정렬, 보임 여부
+    통신망 별 정렬, 보임 여부
+ -->
 
-                    </mat-card>
-                    <!-- <section>출시가 : {{ phoneItem.origin_price }}</section>
-                        <section>용량 : {{ phoneItem.storageSize }} G</section> -->
 
-                    <div *ngIf='phoneItem.plans.length > 0' fxFlex='70'>
-                        <table mat-table [dataSource]='phoneItem.plans' class='mat-elevation-z0' fxFlexFill>
-
-                            <ng-container matColumnDef='payPlanName'>
-                                <th mat-header-cell *matHeaderCellDef>요금제
-                                <td mat-cell *matCellDef='let element'>
-                                    <div>
-                                        {{ element.planName }}
+<div fxLayoutAlign='center start'>
+    <div class='mat-elevation-z8' [ngStyle]="{'margin': '16px'}" fxFlex='50%' fxFlex.sm='100%' fxFlex.xs='100%' fxFlex.md='80%' >
+        <mat-toolbar color='warn'>
+            <span>iPhone 12 프로모션</span>
+        </mat-toolbar>
+        <ng-container *ngIf='joined$ | async; else loading; let joined'>
+            <div class='mat-card' [ngStyle]="{'margin': '16px'}" *ngFor='let phoneItem of joined'>
+                <div class='mat-card-content'>
+                    <mat-toolbar color='primary'>{{ phoneItem.ModelName }}</mat-toolbar>
+                    <div fxLayout='row'>
+                        <!-- 이미지 리사이징 때문에 이미지만 mat card 사용 -->
+                        <mat-card fxFlex='30' class='mat-elevation-z0'>
+                            <img mat-card-image [src]="phoneItem.mainImgSrc">
+                            <mat-card-content>
+                                <mat-label fxLayoutAlign='space-between center'>
+                                    <span>출고가 : </span><span></span><span [ngStyle]='{"color" : "blue"}'>{{
+                                        phoneItem.origin_price | number:'1.0-0' }} 원</span>
+                                </mat-label>
+                                <mat-label fxLayoutAlign='space-between center'>
+                                    <span>색상 : </span>
+                                    <span></span>
+                                    <div fxLayout='row'>
+                                        <span *ngFor='let color of phoneItem.colors'>
+                                            <app-color-box [phoneColor]='color.value'></app-color-box>
+                                        </span>
                                     </div>
-                                    <div>
-                                        월 {{ element.monthPay | number: '1.0-0'}} 원
-                                    </div>
-                                </td>
-                                <td mat-footer-cell *matFooterCellDef>월 통신요금</td>
-                            </ng-container>
-
-                            <ng-container matColumnDef='publicPrice'>
-                                <th mat-header-cell *matHeaderCellDef class='table-money'>공시지원금</th>
-                                <td mat-cell *matCellDef='let element' class='table-money'>
-                                    {{ element.publicPrice | number: '1.0-0' }}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef='newDevice'>
-                                <th mat-header-cell *matHeaderCellDef class='table-money'>신규 가입</th>
-                                <td mat-cell *matCellDef='let element' class='table-money'>
-                                    <!-- <div>
-                                        {{ element.newDevice | number: '1.0-0' }}
-                                    </div> -->
-                                    <div [ngStyle]="{'color': 'tomato'}">
-                                        {{ (phoneItem.origin_price - element.publicPrice - element.newDevice) | number:
-                                        '1.0-0' }}
-                                    </div>
-
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef='changeDevice'>
-                                <th mat-header-cell *matHeaderCellDef class='table-money'>기기 변경</th>
-                                <td mat-cell *matCellDef='let element' class='table-money'>
-                                    <!-- <div>
-                                        {{ element.changeDevice | number: '1.0-0' }}
-                                    </div> -->
-                                    <div [ngStyle]="{'color': 'tomato'}">
-                                        {{ (phoneItem.origin_price - element.publicPrice - element.changeDevice) |
-                                        number: '1.0-0' }}
-                                    </div>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef='moveNumber' >
-                                <th mat-header-cell *matHeaderCellDef class='table-money'>번호 이동</th>
-                                <td mat-cell *matCellDef='let element' class='table-money'>
-                                    <!-- <div>
-                                        {{ element.moveNumber | number: '1.0-0' }}
-                                    </div> -->
-                                    <div [ngStyle]="{'color': 'tomato'}">
-                                        {{ (phoneItem.origin_price - element.publicPrice - element.moveNumber) | number:
-                                        '1.0-0' }}
-                                    </div>
-                                </td>
-                            </ng-container>
-
-                            <!-- <ng-container matColumnDef='monthPay'>
-                                    <th mat-header-cell *matHeaderCellDef>월 통신요금</th>
-                                </ng-container> -->
-
-                            <tr mat-header-row *matHeaderRowDef="deviceHeaderColumnInfo"></tr>
-                            <!-- <tr mat-header-row *matHeaderRowDef='deviceSecondHeaderColumnInfo'></tr> -->
-                            <tr mat-row *matRowDef="let row; columns: deviceHeaderColumnInfo;"></tr>
-                        </table>
+                                </mat-label>
+                                <mat-label fxLayoutAlign='space-between center'>
+                                    <span>용량 :</span>
+                                    <span></span>
+                                    <span>{{ phoneItem.storageSize }} G</span>
+    
+                                </mat-label>
+                            </mat-card-content>
+    
+                        </mat-card>
+                        <!-- {{ phoneItem.net_type_5g }} -->
+                        <div *ngIf='phoneItem.plans.length > 0' fxFlex='70'>
+                            <table mat-table [dataSource]='phoneItem.plans' class='mat-elevation-z0' fxFlexFill>
+    
+                                <ng-container matColumnDef='payPlanName'>
+                                    <th mat-header-cell *matHeaderCellDef>요금제
+                                    <td mat-cell *matCellDef='let element'>
+                                        <div>
+                                            {{ element.planName }}
+                                        </div>
+                                        <div>
+                                            월 {{ element.monthPay | number: '1.0-0'}} 원
+                                        </div>
+                                    </td>
+                                    <td mat-footer-cell *matFooterCellDef>월 통신요금</td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef='publicPrice'>
+                                    <th mat-header-cell *matHeaderCellDef class='table-money'>공시지원금</th>
+                                    <td mat-cell *matCellDef='let element' class='table-money'>
+                                        {{ element.publicPrice | number: '1.0-0' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef='newDevice'>
+                                    <th mat-header-cell *matHeaderCellDef class='table-money'>신규 가입</th>
+                                    <td mat-cell *matCellDef='let element' class='table-money'>
+                                        <div>
+                                            {{ element.newDevice | number: '1.0-0' }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato'}">
+                                            {{ (phoneItem.origin_price - element.publicPrice - element.newDevice) | number:
+                                            '1.0-0' }}
+                                        </div>
+    
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef='changeDevice'>
+                                    <th mat-header-cell *matHeaderCellDef class='table-money'>기기 변경</th>
+                                    <td mat-cell *matCellDef='let element' class='table-money'>
+                                        <div>
+                                            {{ element.changeDevice | number: '1.0-0' }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato'}">
+                                            {{ (phoneItem.origin_price - element.publicPrice - element.changeDevice) |
+                                            number: '1.0-0' }}
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef='moveNumber' >
+                                    <th mat-header-cell *matHeaderCellDef class='table-money'>번호 이동</th>
+                                    <td mat-cell *matCellDef='let element' class='table-money'>
+                                        <div>
+                                            {{ element.moveNumber | number: '1.0-0' }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato'}">
+                                            {{ (phoneItem.origin_price - element.publicPrice - element.moveNumber) | number:
+                                            '1.0-0' }}
+                                        </div>
+                                    </td>
+                                </ng-container>
+    
+                                <!-- <ng-container matColumnDef='monthPay'>
+                                        <th mat-header-cell *matHeaderCellDef>월 통신요금</th>
+                                    </ng-container> -->
+    
+                                <tr mat-header-row *matHeaderRowDef="deviceHeaderColumnInfo"></tr>
+                                <!-- <tr mat-header-row *matHeaderRowDef='deviceSecondHeaderColumnInfo'></tr> -->
+                                <tr mat-row *matRowDef="let row; columns: deviceHeaderColumnInfo;"></tr>
+                            </table>
+                        </div>
                     </div>
+                    
                 </div>
-                <!-- {{ phoneItem.net_type_5g }} -->
             </div>
-        </div>
-    </ng-container>
+        </ng-container>
+    </div>
+    <ng-template #loading>
+        loading...
+    </ng-template>
 </div>
-<ng-template #loading>
-    loading...
-</ng-template>
 
 <div class='content' fxLayout='row wrap' fxLayoutGap='16px grid'>
     <!-- <div fxFlex='25%' fxFlex.xs='100%' fxFlex.sm='25%' *ngFor='let data of items'> -->
