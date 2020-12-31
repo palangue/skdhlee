@@ -54,15 +54,19 @@
         <span></span>
         <span>
           <mat-form-field>
-            <mat-label>공시 신규</mat-label>
+            <mat-label>공시 지원금</mat-label>
+            <input matInput [(ngModel)]='deviceItem.publicPrice'/>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>공시 신규 복지금</mat-label>
             <input matInput [(ngModel)]="deviceItem.newDevice" />
           </mat-form-field>
           <mat-form-field>
-            <mat-label>공시 기변</mat-label>
+            <mat-label>공시 기변 복지금</mat-label>
             <input matInput [(ngModel)]="deviceItem.changeDevice" />
           </mat-form-field>
           <mat-form-field>
-            <mat-label>공시 번이</mat-label>
+            <mat-label>공시 번이 복지금</mat-label>
             <input matInput [(ngModel)]="deviceItem.moveNumber" />
           </mat-form-field>
         </span>

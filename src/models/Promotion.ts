@@ -17,6 +17,8 @@ export interface SupportPromotionDevice {
   newDevice: string;
   planName: string;
   sktNetType: string;
+  monthPay: string;
+  publicPrice: string;
 }
 
 export interface PromotionDialogResult {

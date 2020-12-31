@@ -169,19 +169,18 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
         code: 0,
         message: '성공'
       };
-  
+
       this.dialogRef.close(msgData);
     }
-    else
-    {
+    else {
       const msgData: PromotionDialogResult = {
         code: 99,
         message: errList.toString()
       };
-  
+
       this.dialogRef.close(msgData);
     }
-    
+
 
   }
 
@@ -231,6 +230,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           newDevice: '0',
           planName: item.name,
           sktNetType: item.netKind,
+          monthPay: item.monthPay
         }
       }
 
@@ -244,6 +244,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
           planName: item.name,
           sktNetType: item.netKind,
+          monthPay: item.monthPay
         };
       }
       else {
@@ -255,6 +256,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
           planName: item.name,
           sktNetType: item.netKind,
+          monthPay: item.monthPay,
           idx: foundedSupportedDevice.idx
         };
 
@@ -265,143 +267,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
 
     console.log(this.selectedSupportDeviceAndPlanList.sort((x, y) => x.planName > y.planName ? 1 : -1));
 
-
-    //this.supportDevice.push()
-
   }
 
-  // 단말기  복지금 등록
-  // btnAddPromotionPlan(): void {
-  //   const devName = this.deviceGroup.get('deviceNameCtrl').value;
-  //   const plnName = this.deviceGroup.get('planNameCtrl').value;
-
-  //   const newPlan = this.planGroup.get('newPlanCtrl').value;
-  //   const changePlan = this.planGroup.get('changePlanCtrl').value;
-  //   const movePlan = this.planGroup.get('movePlanCtrl').value;
-  //   const newInstPlan = this.planGroup.get('newPlanInstCtrl').value;
-  //   const changeInstPlan = this.planGroup.get('changePlanInstCtrl').value;
-  //   const movePlanInstPlan = this.planGroup.get('movePlanInstCtrl').value;
-
-  //   let sktNet;
-  //   this.data.planGroup.map(ref => {
-  //     console.log('test map', ref);
-  //     ref.value.map(ref2 => {
-  //       if (ref2.name === plnName) {
-  //         sktNet = ref2.netKind;
-  //       }
-  //     });
-  //   });
-
-  //   const submitData = {
-  //     deviceName: devName,
-  //     planName: plnName,
-  //     sktNetType: sktNet,
-  //     newDevice: newPlan,
-  //     changeDevice: changePlan,
-  //     moveNumber: movePlan
-  //   };
-
-  //   this.deviceService.getPromotionDb()
-  //     .doc(this.index)
-  //     .collection('support_device', ref => ref.where('deviceName', '==', devName).where('planName', '==', plnName))
-  //     .snapshotChanges()
-  //     .pipe(take(1), map(result => {
-  //       console.log('result = ', result);
-  //       return result.map(resultData => {
-  //         const idx = resultData.payload.doc.id;
-  //         const data = resultData.payload.doc.data();
-
-  //         return { idx, ...data };
-
-  //       });
-  //     })).subscribe((ref: any) => {
-  //       console.log('found plan item', ref);
-  //       if (ref.length > 0) {
-  //         console.log('idx = ', ref.idx);
-  //         this.deviceService.getPromotionDb()
-  //           .doc(this.index)
-  //           .collection('support_device')
-  //           .doc(ref[0].idx)
-  //           .update(submitData)
-  //           .then(() => alert('업데이트 성공'))
-  //           .catch((err) => alert('업데이트 실패\n' + err));
-  //       }
-  //       else {
-  //         this.deviceService.getPromotionDb()
-  //           .doc(this.index)
-  //           .collection('support_device')
-  //           .add(submitData)
-  //           .then(() => alert('추가 성공'))
-  //           .catch((err) => alert('추가 실패\n' + err));
-  //       }
-  //     });
-  // }
-
-  // 행사 단말기 등록
-  // addDevice(): void {
-  //   const data = {
-  //     deviceName: this.deviceGroup.get('device_name_ctrl').value,
-  //     publicPrice: this.deviceGroup.get('publicPriceCtrl').value,
-  //     choosePrice: this.deviceGroup.get('choosePriceCtrl').value
-  //   };
-  //   if (data.deviceName.length === 0 || data.publicPrice === 0) {
-  //     alert('입력한 데이터가 없습니다');
-  //     return;
-  //   }
-  //   this.deviceService.getPromotionDb()
-  //     .doc(this.index)
-  //     .collection('support_device')
-  //     .add(data)
-  //     .then(() => {
-  //       const msgData: PromotionDialogResult = {
-  //         code: 0,
-  //         message: '성공'
-  //       };
-
-  //       this.dialogRef.close(msgData);
-  //     })
-  //     .catch((err) => {
-  //       const msgData: PromotionDialogResult = {
-  //         code: 99,
-  //         message: err
-  //       };
-
-  //       this.dialogRef.close(msgData);
-  //     });
-  // }
-
-  // 행사 단말기 수정
-  // updateDevice(): void {
-  //   const data = {
-  //     deviceName: this.deviceGroup.get('device_name_ctrl').value,
-  //     publicPrice: this.deviceGroup.get('publicPriceCtrl').value,
-  //     choosePrice: this.deviceGroup.get('choosePriceCtrl').value
-  //   };
-  //   if (data.deviceName.length === 0 || data.publicPrice === 0) {
-  //     alert('입력한 데이터가 없습니다');
-  //     return;
-  //   }
-  //   this.deviceService.getPromotionDb()
-  //     .doc(this.index)
-  //     .collection('support_device')
-  //     .doc(this.data.supportDeviceData.idx)
-  //     .update(data)
-  //     .then(() => {
-  //       const msgData: PromotionDialogResult = {
-  //         code: 0,
-  //         message: '성공'
-  //       };
-
-  //       this.dialogRef.close(msgData);
-  //     })
-  //     .catch((err) => {
-  //       const msgData: PromotionDialogResult = {
-  //         code: 99,
-  //         message: err
-  //       };
-  //       this.dialogRef.close(msgData);
-  //     });
-  // }
 }
 // TODO: 수정 쪽에 처리 하나도 안되어 있음
 // TODO: 공시 지원금은 단말기 별 + 요금제 별로 다르고, 기변 번이 신규와 상관없이 동일하다.
