@@ -22,6 +22,9 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   // Firestorage Reference 를 이용해서 getDownloadUrl() 호출 시 404 에러가 계속 뜸. 이유를 모르겠음
   // Firestorage 에 있는 Url 정보를 Phone DB 에 그대로 적재함.
 
+  deviceHeaderColumnInfo = [ 'payPlanName', 'publicPrice', 'newDevice', 'changeDevice', 'moveNumber'];
+  deviceSecondHeaderColumnInfo = ['monthPay'];
+
   @Input() deviceXs: boolean;
 
   // 로그인 된 프로모션 코드

@@ -19,6 +19,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatTableModule} from '@angular/material/table';
+
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -39,7 +41,7 @@ const material_module = [
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule,
-  
+  MatTableModule,
   MatToolbarModule,
   MatCardModule,
   MatGridListModule,
