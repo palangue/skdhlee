@@ -22,7 +22,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   // Firestorage Reference 를 이용해서 getDownloadUrl() 호출 시 404 에러가 계속 뜸. 이유를 모르겠음
   // Firestorage 에 있는 Url 정보를 Phone DB 에 그대로 적재함.
 
-  deviceHeaderColumnInfo = [ 'payPlanName', 'publicPrice', 'newDevice', 'changeDevice', 'moveNumber'];
+  deviceHeaderColumnInfo = ['payPlanName', 'publicPrice', 'newDevice', 'changeDevice', 'moveNumber'];
   deviceSecondHeaderColumnInfo = ['monthPay'];
 
   @Input() deviceXs: boolean;
@@ -45,7 +45,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   supportDeviceList: Array<any>;
   publicPriceList: Array<any>;
 
-  allInfo$: Observable<{ phoneLists: any[]; payPlans: any[]; promotions: any[] }>;
+  allInfo$: Observable<{ phoneLists: any[]; payPlans: IPayPlan[]; promotions: any[] }>;
   // all$: Observable<{ burgers: any[]; donuts: any[] }>;
   ObservablePhone: Observable<any[]>;
   ObservablePayPlan: Observable<any[]>;
@@ -75,6 +75,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
     // switchMap 사용. 모든 데이터를 한번에 가져 온다.
     this.GetAllDeviceInfomations();
 
+    //this.setPhoneAndPrices();
 
 
     // this.getPhonePrice();
@@ -92,7 +93,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   setPhoneAndPrices(): void {
     this.allInfo$ = combineLatest([
       this.firestore.collection('Phone').valueChanges(),
-      this.firestore.collection('PayPlan').valueChanges(),
+      this.firestore.collection<IPayPlan>('PayPlan').valueChanges(),
       this.firestore.collection('Promotion').doc(this.itemPage_promoCode).collection('support_device').valueChanges()
     ]).pipe(
       map(([phoneLists, payPlans, promotions]) => {
@@ -116,20 +117,31 @@ export class PromoItemComponent implements OnInit, OnDestroy {
           return combineLatest([
             of(PhoneLists),
             this.firestore.collection('Promotion').doc(this.itemPage_promoCode)
-              .collection('support_device').valueChanges()
+              .collection('support_device').valueChanges(),
+            this.firestore.collection<IPayPlan>("PayPlan").valueChanges()
           ]);
         }),
-        map(([list1, list2]) => {
+        map(([list1, list2, list3]) => {
           return list1.map(result => {
+
+            // PayPlan 의 값을 프로모션 데이터로 검색해서 동일한 값이 있을 때 프로모션 데이터를 갱신
+            const searchData = list2.filter(a => {
+              if (a.deviceName === result.ModelName) {
+                a.monthPay = (list3.find(x => x.name === a.planName)?.monthPay)
+                return list2;
+              }
+            });
+
+            // 내림 차순 정렬 추가
             return {
               ...result,
-              plans: list2.filter(a => a.deviceName === result.ModelName)
+              plans: searchData.sort((x,y) => x.monthPay > y.monthPay ? -1: 1),
             }
           })
         })
 
       );
-    this.joined$.subscribe(ref => console.log('SwitchMap data = ', ref));
+      this.joined$.subscribe(ref => console.log('SwitchMap data = ', ref));
   }
 
 
