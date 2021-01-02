@@ -22,7 +22,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   // Firestorage Reference 를 이용해서 getDownloadUrl() 호출 시 404 에러가 계속 뜸. 이유를 모르겠음
   // Firestorage 에 있는 Url 정보를 Phone DB 에 그대로 적재함.
 
-  deviceHeaderColumnInfo = ['payPlanName', 'publicPrice', 'newDevice', 'changeDevice', 'moveNumber'];
+  deviceHeaderColumnInfo = ['payPlanName', 'publicPrice', 'newDevice', 'moveNumber', 'changeDevice' ];
   deviceSecondHeaderColumnInfo = ['monthPay'];
 
   @Input() deviceXs: boolean;
@@ -60,6 +60,8 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    console.log('deviceXs = ',this.deviceXs);
 
     // 로그인 시 저장 된 프로모션 코드 가져오기
     this.itemPage_promoCode = this.deviceService.getUserPromoCode();
