@@ -1,8 +1,10 @@
+import { collectExternalReferences } from '@angular/compiler';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
+import { PHONE_DETAIL } from 'src/models/PhoneDetail';
 
 
 export const MEDIA_STORAGE_PATH = `img/`;
@@ -57,13 +59,26 @@ export class UploadCtrlComponent implements OnInit, OnDestroy {
 
         console.log('download url = ', this.downloadUrl);
         console.log('path = ', path);
+        this.db.collection<PHONE_DETAIL>('Phone', ref => ref.where('PhoneName', '==', this.deviceName)).stateChanges().pipe(take(1), map(result => {
+          return result.map(resultData => {
+            const idx = resultData.payload.doc.id;
+            const data = resultData.payload.doc.data();
 
-
-        // Phone Data base 에 이미지 경로 등록
-        // ex) this.db.collection('files').add( { downloadURL: this.downloadURL, path });
+            return { idx, ...data };
+          });
+        })).subscribe(response => {
+          if (response.length > 0) {
+            if (this.IsPrimary) {
+              for (let item of response) {
+                item.mainImgSrc = this.downloadUrl;
+                this.db.collection<PHONE_DETAIL>('Phone').doc(item.idx).update(item);
+              }
+            }
+          }
+        });
       })
     );
-    console.log('여기 확인 해 보셈 upload-ctrl.component');
+
   }
 
   isActive(snapshot): boolean {

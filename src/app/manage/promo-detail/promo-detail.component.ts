@@ -18,7 +18,6 @@ import { templateJitUrl } from '@angular/compiler';
 export class PromoDetailComponent implements OnInit, OnDestroy {
 
   typeDevice = false;
-  typePromo = false;
   index = '';
   isModify = false;
 
@@ -45,13 +44,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<PromoDetailComponent>,
 
   ) {
-    if (data.type === 'device') {
-      this.typeDevice = true;
-    }
 
-    if (data.type === 'promo') {
-      this.typePromo = true;
-    }
+    this.typeDevice = true;
     this.index = data.id;
 
     console.log('index = ', this.index);
@@ -64,18 +58,9 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
       this.isModify = true;
     }
 
-    // 프로모션으로 진입 시 초기화
-    if (this.typePromo) {
-      this.promotionGroup = this._formGroup.group({
-        company_name_ctrl: ['', Validators.required],
-        company_code_ctrl: ['', Validators.required],
-        promo_cost_ctrl: ['', Validators.required],
-      });
-    }
-
-    // console.log('supportData', this.data.supportDeviceData);
-    // console.log('phoneList', this.data.phoneList);
-    // console.log('planList =', this.data.planGroup);
+    console.log('supportData', this.data.supportDeviceData);
+    console.log('phoneList', this.data.phoneList);
+    console.log('planList =', this.data.planGroup);
 
     this.PhoneList = this.data.phoneList;
     this.PayPlanList = this.data.planGroup;
@@ -86,59 +71,6 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-  }
-  //#region 버튼 액션
-  // 행사 단말기 추가
-  addPromotion(): void {
-    const data = {
-      promotion_target: this.promotionGroup.get('company_code_ctrl').value,
-      promotion_target_company: this.promotionGroup.get('company_name_ctrl').value,
-    };
-
-    if (data.promotion_target.length === 0 || data.promotion_target_company.length === 0) {
-      alert('입력 값이 없습니다');
-      return;
-    }
-
-    this.deviceService
-      .getPromotionDb()
-      .add(data)
-      .then(() => {
-        const dialogResult: PromotionDialogResult = {
-          code: 0,
-          message: '성공'
-        };
-        this.dialogRef.close(dialogResult);
-      })
-      .catch((err) => {
-        const dialogResult: PromotionDialogResult = {
-          code: 99,
-          message: err
-        };
-        this.dialogRef.close(dialogResult);
-      });
-  }
-  // 취소
-  cancel(): void {
-    this.dialogRef.close({ code: -1, message: '' });
-  }
-  //#endregion
-
-  getSupportDeviceAndPlanList() {
-
-    this.deviceService.getPromotionDb()
-      .doc(this.index)
-      .collection('support_device', ref => ref.where('deviceName', '==', this.selectedDeviceName))
-      .stateChanges().pipe(take(1), map(result => {
-        return result.map(resultData => {
-          const idx = resultData.payload.doc.id;
-          const data = resultData.payload.doc.data();
-          return { idx, ...data };
-        });
-      })).subscribe((ref: Array<any>) => {
-        this.supportDevice = ref;
-        this.disableNetworkSelection = false;
-      });
   }
 
   // 순차 저장
@@ -182,6 +114,27 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
     }
 
 
+  }
+  // 취소
+  cancel(): void {
+    this.dialogRef.close({ code: -1, message: '' });
+  }
+
+  getSupportDeviceAndPlanList() {
+
+    this.deviceService.getPromotionDb()
+      .doc(this.index)
+      .collection('support_device', ref => ref.where('deviceName', '==', this.selectedDeviceName))
+      .stateChanges().pipe(take(1), map(result => {
+        return result.map(resultData => {
+          const idx = resultData.payload.doc.id;
+          const data = resultData.payload.doc.data();
+          return { idx, ...data };
+        });
+      })).subscribe((ref: Array<any>) => {
+        this.supportDevice = ref;
+        this.disableNetworkSelection = false;
+      });
   }
 
   onDeviceSelected(selectedDevice: string): void {
@@ -230,7 +183,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           newDevice: '0',
           planName: item.name,
           sktNetType: item.netKind,
-          monthPay: item.monthPay
+          monthPay: item.monthPay,
+          publicPrice: '0',
         }
       }
 
@@ -244,7 +198,8 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
           planName: item.name,
           sktNetType: item.netKind,
-          monthPay: item.monthPay
+          monthPay: item.monthPay,
+          publicPrice: foundedSupportedDevice.publicPrice
         };
       }
       else {
@@ -257,6 +212,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
           planName: item.name,
           sktNetType: item.netKind,
           monthPay: item.monthPay,
+          publicPrice: foundedSupportedDevice.publicPrice,
           idx: foundedSupportedDevice.idx
         };
 
@@ -271,7 +227,7 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
 
 }
 // TODO: 수정 쪽에 처리 하나도 안되어 있음
-// TODO: 공시 지원금은 단말기 별 + 요금제 별로 다르고, 기변 번이 신규와 상관없이 동일하다.
+// TODO: 공시 지원금은 단말기 별, 요금제 별로 다르고, 기변 번이 신규와 상관없이 동일하다.
 
 // TODO: 통신망 별로 테이블 입력 폼을 만들자
 // TODO: 망 정보를 가져와서 단말기의 5G, LTE 지원 상태에 따라서 입력 폼을 생성

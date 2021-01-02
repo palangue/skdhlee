@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 export class UploaderComponent implements OnInit {
 
-  @Input() deviceName = '갤럭시 S20 FE 5G';
+  @Input() deviceName: string;
 
   isHovering: boolean;
   files: File[] = [];
@@ -17,6 +17,7 @@ export class UploaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('input device  name = ', this.deviceName);
   }
 
   toggleHover(event: boolean): void {

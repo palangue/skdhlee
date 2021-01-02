@@ -14,7 +14,7 @@ import { PlanDetailComponent } from './../plan-detail/plan-detail.component';
 })
 export class PlanListComponent implements OnInit, OnDestroy {
 
-  planColumnData = ['payment', 'monthPay', 'monthlyDiscount', 'totallyDiscount', 'afterMonthPay', 'publicPrice', 'modify', 'delete'];
+  planColumnData = ['payment', 'monthPay', 'monthlyDiscount', 'totallyDiscount', 'afterMonthPay', 'modify', 'delete'];
   planSub: Subscription;
 
   planList: IUserPlan[];

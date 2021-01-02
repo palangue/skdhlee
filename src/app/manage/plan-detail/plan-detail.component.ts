@@ -32,7 +32,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         netKind: '',
         name: '',
         totallyPay: 0,
-        publicPrice: 0,
       };
       this.index = '';
     }

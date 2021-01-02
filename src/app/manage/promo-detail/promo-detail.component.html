@@ -1,26 +1,4 @@
-<div *ngIf="typePromo" class="popup-body" fxLayoutGap="16px" fxLayout="column">
-  <div fxLayoutAlign="center center" fxFlexFill>
-    <mat-toolbar color="primary">행사 업체 등록</mat-toolbar>
-  </div>
-
-  <form [formGroup]="promotionGroup" fxLayout="column" fxLayoutAlign="stretch">
-    <mat-form-field>
-      <mat-label>지원 회사 명</mat-label>
-      <input matInput placeholder="지원 회사 이름" formControlName="company_name_ctrl" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>행사 코드</mat-label>
-      <input matInput placeholder="지원 회사의 코드" formControlName="company_code_ctrl" />
-    </mat-form-field>
-    <div fxLayout="row" fxFlex="100">
-      <button mat-stroked-button (click)="addPromotion()" color="accent">
-        등록
-      </button>
-      <button mat-button (click)="cancel()">취소</button>
-    </div>
-  </form>
-</div>
-<div *ngIf="typeDevice" class="popup-body" fxLayoutGap="16px" [ngStyle]="{'margin': '16px 0px'}">
+<div class="popup-body" fxLayoutGap="16px" [ngStyle]="{'margin': '16px 0px'}">
 
   <mat-toolbar color="primary">단말기 복지금 관리</mat-toolbar>
 

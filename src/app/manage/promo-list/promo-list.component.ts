@@ -11,6 +11,7 @@ import { PromoDetailComponent } from '../promo-detail/promo-detail.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { IPayPlan, PlanDataGroup } from '../../../models/PaymentPlan';
+import { PromoDetailInsertComponent } from '../promo-detail-insert/promo-detail-insert.component';
 
 export interface COMPANY {
   name: string;
@@ -67,6 +68,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // TODO: 공시 지원금 분리 해주자
     this.getCompanyList();    // 업체 리스트
     this.getPayPlanList();    // 요금제 리스트
     // 단말기 선택 시 모든 요금제를 보여 줘야 한다.
@@ -81,7 +83,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
     this.payPlanListSub?.unsubscribe();
   }
 
-
+//#region 행사 업체 관련 펑션
   // 행사 업체의 단말기 리스트 가져오기
   btnSearchCompany(): void {
     this.supportDeviceSub?.unsubscribe();
@@ -108,7 +110,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
 
   // 행사 업체 추가
   btnAddPromotion(): void {
-    const dialogRef = this.dialog.open(PromoDetailComponent, {
+    const dialogRef = this.dialog.open(PromoDetailInsertComponent, {
       data: {
         width: '400px', type: 'promo',
         id: this.selectedCompany.idx,
@@ -125,7 +127,7 @@ export class PromoListComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+//#endregion
 
   //#region 단말기 추가/수정/삭제
   // 장치 추가

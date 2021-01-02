@@ -13,7 +13,7 @@ export interface IPayPlan {
   monthPay: number;
   monthlyPay: number;
   totallyPay: number;
-  publicPrice: number;
+  //publicPrice: number;
 }
 export interface IPlan {
   name: string;
