@@ -4,9 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { DeviceService } from '../../device.service';
 import { PromotionDialogResult, PromoSupportDialogData } from '../../../models/Promotion';
-import { map, take } from 'rxjs/operators';
-import { PHONE_DETAIL } from 'src/models/PhoneDetail';
-import { PlanDataGroup } from 'src/models/PaymentPlan';
 import { PromoDetailComponent } from '../promo-detail/promo-detail.component';
 
 

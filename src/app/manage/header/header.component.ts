@@ -1,6 +1,7 @@
-import { UserService } from './../../user.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { UserService } from './../../user.service';
 
 @Component({
   selector: 'app-header',

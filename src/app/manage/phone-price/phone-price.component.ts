@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PHONE_DETAIL } from 'src/models/PhoneDetail';
+import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 
 @Component({
   selector: 'app-phone-price',

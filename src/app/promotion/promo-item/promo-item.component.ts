@@ -8,7 +8,7 @@ import { map, take, switchMap } from 'rxjs/operators';
 import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { OrderService } from '../../order.service';
-import { IPayPlan } from 'src/models/PaymentPlan';
+import { IPayPlan } from '../../../models/PaymentPlan';
 
 
 

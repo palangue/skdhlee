@@ -2,9 +2,10 @@ import { trigger, style, state, transition, animate } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import { ICustomer } from '../../../models/Customer';
 

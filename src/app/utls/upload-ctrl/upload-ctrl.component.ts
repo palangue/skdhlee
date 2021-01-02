@@ -1,10 +1,10 @@
-import { collectExternalReferences } from '@angular/compiler';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { finalize, map, take } from 'rxjs/operators';
-import { PHONE_DETAIL } from 'src/models/PhoneDetail';
+
+import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 
 
 export const MEDIA_STORAGE_PATH = `img/`;
