@@ -59,12 +59,6 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
         size_y: '',
         size_z: '',
         storageSize: 0,
-        storage: {
-          ChangeDevice: 0,
-          MoveNumber: 0,
-          Size: 0,
-          NewDevice: 0,
-        },
         using_play_type: '',
         video: '',
         weight: '',

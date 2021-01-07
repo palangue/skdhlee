@@ -11,7 +11,6 @@ export interface PHONE_DETAIL {
   size_x: string;
   size_y: string;
   size_z: string;
-  storage: IPhoneStorage;     // 단말기 저장 공간 + 신규 + 기변 + 번호이동 요금 ( 사용 안해도 될 듯 )
   video: string;              // 동영상
   weight: string;             // 무게
   installment_type: string;   // 할인 타입( 선택 약정, 공시 지원금 )

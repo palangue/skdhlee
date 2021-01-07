@@ -40,8 +40,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { PlanDetailComponent } from './plan-detail/plan-detail.component';
 import { PlanListComponent } from './plan-list/plan-list.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { PhoneStorageComponent } from './phone-storage/phone-storage.component';
-import { PhonePriceComponent } from './phone-price/phone-price.component';
 import { PromoDetailInsertComponent } from './promo-detail-insert/promo-detail-insert.component';
 
 
@@ -76,7 +74,7 @@ const MaterialModules = [
 ]
 
 @NgModule({
-  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent, PlanListComponent, CustomerListComponent, PhoneStorageComponent, PhonePriceComponent, PromoDetailInsertComponent],
+  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent, PlanListComponent, CustomerListComponent, PromoDetailInsertComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
