@@ -20,10 +20,6 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
   phoneInfo: PHONE_DETAIL;
   tempPhoneInfo: PHONE_DETAIL;
 
-  storageList: Array<IPhoneStorage> = [
-    { Size: 128, NewDevice: 33330, ChangeDevice: 20000, MoveNumber: 40000 },
-    { Size: 256, NewDevice: 50000, ChangeDevice: 60000, MoveNumber: 70000 },
-  ];
 
   colorList: Array<IColorSet> = [
     { name: '러시안 블루', value: '#0000ff' },
@@ -51,7 +47,6 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
         camera_comment: '',
         colors: [],
         device_installment: [],
-        gov_price: 0,
         inches: '',
         installment_type: '',
         mainImgSrc: '',
@@ -63,9 +58,6 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
         size_x: '',
         size_y: '',
         size_z: '',
-        ChangeDevice: 0,
-        NewDevice: 0,
-        MoveNumber: 0,
         storageSize: 0,
         storage: {
           ChangeDevice: 0,
@@ -109,16 +101,17 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
       .catch(ref => console.log('error = ', ref));
   }
 
-  btnSetSupportMoney(): void {
-    if (this.phoneInfo.ModelName.length > 0) {
-      this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
-    }
-    else {
-      alert('단말기 정보를 확인하세요');
-      return;
-    }
+  // 2021.01.02 삭제
+  // btnSetSupportMoney(): void {
+  //   if (this.phoneInfo.ModelName.length > 0) {
+  //     this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
+  //   }
+  //   else {
+  //     alert('단말기 정보를 확인하세요');
+  //     return;
+  //   }
 
-  }
+  // }
   btnModifyStorageInfo(elementInfo): void {
     console.log(elementInfo);
   }

@@ -20,15 +20,16 @@
           </div>
         </form>
       </mat-step>
+      <!-- 2020.01.02 요금 문제 수정 필요 -->
       <mat-step [stepControl]="masterplanFormGroup" errorMessage="플랜을 선택 해 주세요">
         <form [formGroup]="masterplanFormGroup" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titleMasterPlan }}</ng-template>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="registerCtrl">
-            <mat-radio-button value="신규가입">신규 가입 {{ selectedPhoneInfo.NewDevice | number: '1.0-0' }} 원
+            <mat-radio-button value="신규가입">신규 가입 {{ selectedPhoneInfo.origin_price | number: '1.0-0' }} 원
             </mat-radio-button>
-            <mat-radio-button value="기기변경">기기 변경 {{ selectedPhoneInfo.ChangeDevice | number: '1.0-0' }} 원
+            <mat-radio-button value="기기변경">기기 변경 {{ selectedPhoneInfo.origin_price | number: '1.0-0' }} 원
             </mat-radio-button>
-            <mat-radio-button value="번호이동">번호 이동 {{ selectedPhoneInfo.MoveNumber | number: '1.0-0' }}</mat-radio-button>
+            <mat-radio-button value="번호이동">번호 이동 {{ selectedPhoneInfo.origin_price | number: '1.0-0' }}</mat-radio-button>
           </mat-radio-group>
         </form>
         <div>
@@ -42,7 +43,7 @@
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel #deviceLabel>{{
             titleDeviceInfo
-          }}</ng-template>
+            }}</ng-template>
           <!-- <label>단말기 용량 선택</label>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="device_storage_ctrl">
             <mat-radio-button *ngFor="let storage of selectedPhoneInfo.storageSize" [value]="storage">{{ storage }} G
@@ -66,7 +67,7 @@
         <form [formGroup]="deviceInstallmentFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel>{{
             titleDeviceInstallmentInfo
-          }}</ng-template>
+            }}</ng-template>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="deviceInstallmentCtrl">
             <mat-radio-button value="0">일시불</mat-radio-button>
             <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst">{{ inst }} 개월

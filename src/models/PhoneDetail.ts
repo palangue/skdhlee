@@ -19,13 +19,10 @@ export interface PHONE_DETAIL {
   net_type_lte: boolean;      // LTE 단말기 여부
   using_play_type: string;
   colors: Array<IColorSet>;   // 단말기 색상 리스트
-  gov_price: number;
+  
   device_installment: Array<number>;
   mainImgSrc: string;   // 메인 이미지 위치
   storageSize: number;  // 단말기 용량
-  NewDevice: number;    // 신규 가입 금액
-  ChangeDevice: number; // 기기 변경 금액
-  MoveNumber: number;   // 번호 이동 금액
   useGbn: boolean;
 }
 
