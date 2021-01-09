@@ -1,14 +1,14 @@
 <mat-toolbar fxLayoutAlign="space-between center" color='primary'>
   <span></span>
   <span *ngIf='!phoneInfo.PhoneName'>모델명</span>
-  <span *ngIf='phoneInfo.PhoneName'>{{ phoneInfo.PhoneName + ' ' + phoneInfo.storageSize}}</span>
+  <span *ngIf='phoneInfo.PhoneName'>{{ phoneInfo.PhoneName + ' ' + phoneInfo.storageSize}} G</span>
   <span></span>
 </mat-toolbar>
 <div mat-dialog-content>
   <div [ngStyle]="{ padding: '8px' }" class='mat-elevation-z8' fxLayoutGap="16px">
     <!-- 기본 정보 -->
     <div fxLayout='column' fxLayoutGap='16px'>
-      <mat-toolbar fxLayoutAlign='space-between center'>모델 정보<span></span><span ></span></mat-toolbar>
+      <mat-toolbar fxLayoutAlign='space-between center'>모델 정보<span></span><span></span></mat-toolbar>
       <div fxLayoutGap="16px">
         <mat-form-field>
           <mat-label>단말기 이름</mat-label>
@@ -20,7 +20,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>단말기 용량</mat-label>
-          <input matInput placeholder="숫자만 입력하세요." [(ngModel)]='phoneInfo.storageSize'/>
+          <input matInput placeholder="숫자만 입력하세요." [(ngModel)]='phoneInfo.storageSize' />
         </mat-form-field>
         <mat-form-field>
           <mat-label>화면 사이즈 (인치)</mat-label>
@@ -82,7 +82,7 @@
         </mat-form-field>
       </div>
     </div>
-    
+
     <!-- 휴대전화 정보 저장 -->
     <div fxLayout="row" fxLayoutGap="16px" fxFlexFill>
       <button mat-raised-button color="accent" (click)="btnSavePhoneDefaultInfo()">
@@ -96,27 +96,30 @@
     <!-- 오리진 코드 -->
     <div fxLayoutAlign="start center" fxLayout="column" fxLayoutGap="32px" fxFlexFill>
       <mat-card fxLayout="column" fxLayoutGap="16px" fxFlex="20%">
-        <mat-toolbar fxLayoutAlign='space-between center'><span>단말기 색상</span><span></span><button mat-raised-button color="primary">색상 추가</button></mat-toolbar>
-        
-        <table mat-table [dataSource]="colorList" class="mat-elevation-z8" fxFlexFill>
+        <mat-toolbar fxLayoutAlign='space-between center' color='primary'><span>단말기 색상</span><span></span><button mat-raised-button
+            color="primary" (click)='btnAddColor()'>색상 추가</button></mat-toolbar>
+
+        <table mat-table [dataSource]="phoneInfo.colors" class="mat-elevation-z8" fxFlexFill>
           <ng-container matColumnDef="color_name_kor">
             <th mat-header-cell *matHeaderCellDef>색상 이름</th>
-            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            <td mat-cell *matCellDef="let element">
+              <input matInput [(ngModel)]='element.name'>
+            </td>
           </ng-container>
           <ng-container matColumnDef="color_value">
             <th mat-header-cell *matHeaderCellDef>색상 값</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.value }}
+              <input matInput [(ngModel)]='element.value'>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="color_actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-              <button mat-raised-button (click)="btnModifyStorageInfo(element)" color="primary">
+              <button mat-raised-button (click)="btnModifyColor(element)" color="primary">
                 수정
               </button>
-              <button mat-button (click)="btnDeleteStorageInfo(element)" color="warn">
+              <button mat-button (click)="btnDeleteColor(element)" color="warn">
                 삭제
               </button>
             </td>

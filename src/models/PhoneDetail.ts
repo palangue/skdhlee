@@ -36,6 +36,11 @@ export interface IColorSet {
   name: string;
   value: string;
 }
+export interface IColorSetReturn{
+  code: number,
+  message: string,
+  colorSet: Array<IColorSet>;
+}
 
 export interface IPhoneStorage {
   Size: number;

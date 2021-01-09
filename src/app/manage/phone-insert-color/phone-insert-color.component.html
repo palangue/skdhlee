@@ -1,0 +1,14 @@
+<div fxLayout='column' fxLayoutGap='16px'>
+    <mat-form-field>
+        <mat-label>색상 이름</mat-label>
+        <input matInput [(ngModel)]='colorName'>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>색상 값</mat-label>
+        <input matInput [(ngModel)]='colorValue'>
+    </mat-form-field>
+    <div fxLayoutGap='8px'>
+        <button mat-flat-button color='primary' fxFlex='50' (click)='btnAddColor()'>저장</button>
+        <button mat-stroked-button color='primary' fxFlex='50' (click)='btnCancel()'>취소</button>
+    </div>
+</div>

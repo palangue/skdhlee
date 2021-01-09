@@ -41,6 +41,7 @@ import { PlanDetailComponent } from './plan-detail/plan-detail.component';
 import { PlanListComponent } from './plan-list/plan-list.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { PromoDetailInsertComponent } from './promo-detail-insert/promo-detail-insert.component';
+import { PhoneInsertColorComponent } from './phone-insert-color/phone-insert-color.component';
 
 
 
@@ -74,7 +75,7 @@ const MaterialModules = [
 ]
 
 @NgModule({
-  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent, PlanListComponent, CustomerListComponent, PromoDetailInsertComponent],
+  declarations: [ManagePromoComponent, HeaderComponent, NavbarComponent, PromoListComponent, LoginComponent, PhoneListComponent, PromoDetailComponent, PhoneDetailComponent, PlanDetailComponent, PlanListComponent, CustomerListComponent, PromoDetailInsertComponent, PhoneInsertColorComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

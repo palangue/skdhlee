@@ -1,10 +1,13 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { DeviceService } from '../../device.service';
-import { IPhoneStorage, PHONE_DETAIL, IColorSet } from '../../../models/PhoneDetail';
+import { PHONE_DETAIL, IColorSet, IColorSetReturn } from '../../../models/PhoneDetail';
+import { PhoneInsertColorComponent } from '../phone-insert-color/phone-insert-color.component';
+
 @Component({
   selector: 'app-phone-detail',
   templateUrl: './phone-detail.component.html',
@@ -20,12 +23,6 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
   phoneInfo: PHONE_DETAIL;
   tempPhoneInfo: PHONE_DETAIL;
 
-
-  colorList: Array<IColorSet> = [
-    { name: '러시안 블루', value: '#0000ff' },
-    { name: '이탈리안 레드', value: '#ff0000' }
-  ];
-
   storageTableColumns: string[] = ['storage', 'newDevice', 'changeDevice', 'moveNumber', 'actions'];
   colorTableColumns: string[] = ['color_name_kor', 'color_value', 'color_actions'];
 
@@ -33,7 +30,8 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService,
     private firestore: AngularFirestore,
     public dialogRef: MatDialogRef<PhoneDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog
   ) {
 
     if (data) {
@@ -94,23 +92,32 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
       .then(ref => console.log('set done ', ref))
       .catch(ref => console.log('error = ', ref));
   }
-
-  // 2021.01.02 삭제
-  // btnSetSupportMoney(): void {
-  //   if (this.phoneInfo.ModelName.length > 0) {
-  //     this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
-  //   }
-  //   else {
-  //     alert('단말기 정보를 확인하세요');
-  //     return;
-  //   }
-
-  // }
-  btnModifyStorageInfo(elementInfo): void {
-    console.log(elementInfo);
+  btnAddColor(): void {
+    const colorDialogRef = this.dialog.open(
+      PhoneInsertColorComponent,
+      {
+        data: this.phoneInfo.colors
+      });
+    colorDialogRef.afterClosed().subscribe((result: IColorSetReturn) => {
+      
+      if (result.code == 0) {
+        //this.phoneInfo.colors = result.colorSet;
+        // 성공 했을 때만 업데이트 한다.
+        this.btnModifyColor(null);
+      }
+      
+    });
   }
-  btnDeleteStorageInfo(elementInfo): void {
-    console.log(elementInfo);
+  btnModifyColor(elementInfo): void {
+    this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
+  }
+  btnDeleteColor(elementInfo): void {
+    var testIndex = this.phoneInfo.colors.indexOf(elementInfo);
+    console.log(testIndex);
+    if (testIndex > -1) {
+      this.phoneInfo.colors.splice(testIndex, 1);
+      this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).update(this.phoneInfo);
+    }
   }
 
 }
