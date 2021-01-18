@@ -18,13 +18,14 @@ import {MatRadioModule} from '@angular/material/radio';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Routes } from '@angular/router';
 import { OrderFooterComponent } from './order-footer/order-footer.component';
+import { OrderHeaderComponent } from './order-header/order-header.component';
 
 const routes : Routes = [
   {path : '', component:OrderPhoneComponent}
 ]
 
 @NgModule({
-  declarations: [OrderPhoneComponent, OrderFooterComponent],
+  declarations: [OrderPhoneComponent, OrderFooterComponent, OrderHeaderComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

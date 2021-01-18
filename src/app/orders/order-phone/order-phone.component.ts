@@ -21,7 +21,7 @@ import { IPaymentPlan } from '../../../models/PaymentPlan';
 
 export class OrderPhoneComponent implements OnInit, OnDestroy {
 
-  public selectedPhoneInfo: PHONE_DETAIL;
+  public selectedPhoneInfo: any;// PHONE_DETAIL;
 
   customer_name: string;
   customer_phone_number: string;
@@ -103,11 +103,12 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     // 로그인 된 프로모션 코드
     this.promo_code = this.deviceService.getUserPromoCode();
     // 장치 리스트
-    if (this.plan_sub) { this.plan_sub.unsubscribe(); }
-    this.plan_sub = this.orderService.getPayPlan().pipe(take(1)).subscribe((data) => {
-      this.promo_plan = data;
-    });
-
+    // if (this.plan_sub) { this.plan_sub.unsubscribe(); }
+    // this.plan_sub = this.orderService.getPayPlan().pipe(take(1)).subscribe((data) => {
+    //   this.promo_plan = data;
+    // });
+    // 요금제 리스트
+    console.log(this.selectedPhoneInfo.plans);
   }
 
   ngOnDestroy(): void {
@@ -165,7 +166,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     }
 
   }
-  // 통신 요금 납부 개월
+  // 통신 요금 납부 개월 ( 이거 안씀 )
   choosePayPlan(): void {
     this.selectedPayPlan = this.payplanFormGroup.get('payplan_ctrl').value;
 
@@ -173,10 +174,35 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
       this.titlePayPlan = this.selectedPayPlan + ' 요금제';
     }
   }
+  // 2021.01.19 통신 요금에 따른 복지 할인 금액 가져오기
+  getSupportMoney(planInfo: any): string {
+    switch (this.titleMasterPlan) {
+      case '신규가입':
+        return planInfo.newDevice;
+      case '기기변경':
+        return planInfo.changeDevice;
+      case '번호이동':
+        return planInfo.moveNumber;
+    }
+    return '';
+  }
+  getPublicPrice(): string {
+
+    if (this.titlePayPlan !== '통신 요금제 선택') {
+      for (let item of this.selectedPhoneInfo.plans) {
+        if (this.titlePayPlan === (item.planName + ' 요금제')) {
+          return item.publicPrice;
+        }
+      }
+    }
+
+    return '';
+  }
   //#endregion
 
   //#region Sync data subscription
-  setPayPlan(planData: IPaymentPlan): void {
+  setPayPlan(planData: any): void {
+    console.log('footer 쪽으로 데이터 pushing 하고 있네');
     this.orderService.sendPricing(planData);
   }
   setInstallment(installment: string): void {

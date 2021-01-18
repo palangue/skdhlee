@@ -25,7 +25,7 @@ export class OrderService {
     this.Database = db;
   }
   //#region 요금 데이터
-  sendPricing(price?: IPaymentPlan) {
+  sendPricing(price?: any) {
     this.pricing.next(price);
   }
   getPricingObserv() {
@@ -43,6 +43,7 @@ export class OrderService {
     return this.user_selected_phone;
   }
   setSelectPhone(selected: PHONE_DETAIL) {
+    console.log(selected);
     this.user_selected_phone = selected;
   }
 

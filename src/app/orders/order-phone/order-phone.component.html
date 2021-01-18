@@ -1,6 +1,11 @@
 <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
   <div>
-    <mat-label fxLayoutAlign="center" class="mat-title">{{ selectedPhoneInfo.PhoneName }} 구매 신청</mat-label>
+    <app-order-header [phonePrice]='selectedPhoneInfo.origin_price'
+      [phoneName]='selectedPhoneInfo.PhoneName'
+    ></app-order-header>
+  </div>
+  <div>
+    <!-- <mat-label fxLayoutAlign="center" class="mat-title">{{ selectedPhoneInfo.PhoneName }} 구매 신청</mat-label> -->
     <mat-vertical-stepper linear #stepper>
       <mat-step [stepControl]="customerFormGroup" errorMessage="고객님 정보가 누락 되었습니다.">
         <form [formGroup]="customerFormGroup" fxLayoutGap="16px">
@@ -25,11 +30,9 @@
         <form [formGroup]="masterplanFormGroup" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titleMasterPlan }}</ng-template>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="registerCtrl">
-            <mat-radio-button value="신규가입">신규 가입 {{ selectedPhoneInfo.origin_price | number: '1.0-0' }} 원
-            </mat-radio-button>
-            <mat-radio-button value="기기변경">기기 변경 {{ selectedPhoneInfo.origin_price | number: '1.0-0' }} 원
-            </mat-radio-button>
-            <mat-radio-button value="번호이동">번호 이동 {{ selectedPhoneInfo.origin_price | number: '1.0-0' }}</mat-radio-button>
+            <mat-radio-button value="신규가입">신규 가입</mat-radio-button>
+            <mat-radio-button value="기기변경">기기 변경</mat-radio-button>
+            <mat-radio-button value="번호이동">번호 이동</mat-radio-button>
           </mat-radio-group>
         </form>
         <div>
@@ -39,16 +42,53 @@
           </button>
         </div>
       </mat-step>
+      <mat-step [stepControl]="payplanFormGroup" errorMessage="요금제를 선택 해 주세요.">
+        <form [formGroup]="payplanFormGroup" fxLayout="column" fxLayoutGap="16px">
+          <ng-template matStepLabel>{{ titlePayPlan }}</ng-template>
+          <mat-radio-group fxLayout="column" formControlName="payplan_ctrl" fxLayoutGap="16px">
+            <mat-radio-button *ngFor="let plan of selectedPhoneInfo.plans" [value]="plan.planName" (click)="setPayPlan(plan)">
+              {{ plan.planName }}
+            <div>
+              월 통신 요금 : {{ plan.monthPay }}
+            </div>
+            <div>
+              복지 지원금으로 {{ getSupportMoney(plan)}} 원 단말기 추가 할인
+            </div>
+          </mat-radio-button>
+          </mat-radio-group>
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>이전 단계</button>
+          <button mat-button matStepperNext color="accent" (click)="choosePayPlan()">
+            다음 단계
+          </button>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="agreementFormGroup" errorMessage="약정 선택">
+        <form [formGroup]="agreementFormGroup" fxLayout="column" fxLayoutGap="16px">
+          <ng-template matStepLabel>{{ titleAgreementInfo }}</ng-template>
+          <mat-radio-group fxLayout="column" formControlName="agreement_ctrl" fxLayoutGap="16px">
+            <mat-radio-button (click)="setInstallment('공시지원금')" [value]="'공시지원금'">
+              공시지원금 {{getPublicPrice()}}
+            </mat-radio-button>
+            <mat-radio-button (click)="setInstallment('선택 약정 12 개월')" [value]="'선택 약정 12 개월'">선택 약정 12 개월
+            </mat-radio-button>
+            <mat-radio-button (click)="setInstallment('선택 약정 24 개월')" [value]="'선택 약정 24 개월'">선택 약정 24 개월
+            </mat-radio-button>
+          </mat-radio-group>
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>이전 단계</button>
+          <button mat-button matStepperNext color="accent" (click)="chooseAgreement()">
+            다음 단계
+          </button>
+        </div>
+      </mat-step>
       <mat-step [stepControl]="deviceFormGroup" errorMessage="단말기 선택 사항이 누락 되었습니다.">
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel #deviceLabel>{{
             titleDeviceInfo
             }}</ng-template>
-          <!-- <label>단말기 용량 선택</label>
-          <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="device_storage_ctrl">
-            <mat-radio-button *ngFor="let storage of selectedPhoneInfo.storageSize" [value]="storage">{{ storage }} G
-            </mat-radio-button>
-          </mat-radio-group> -->
           <mat-label>단말기 색상 선택</mat-label>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="device_color_ctrl">
             <div *ngIf="selectedColor">{{ selectedColor }}</div>
@@ -82,39 +122,8 @@
           </button>
         </div>
       </mat-step>
-      <mat-step [stepControl]="payplanFormGroup" errorMessage="요금제를 선택 해 주세요.">
-        <form [formGroup]="payplanFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{ titlePayPlan }}</ng-template>
-          <mat-radio-group fxLayout="column" formControlName="payplan_ctrl" fxLayoutGap="16px">
-            <mat-radio-button *ngFor="let plan of promo_plan" [value]="plan.name" (click)="setPayPlan(plan)">
-              {{ plan.name }}</mat-radio-button>
-          </mat-radio-group>
-        </form>
-        <div>
-          <button mat-button matStepperPrevious>이전 단계</button>
-          <button mat-button matStepperNext color="accent" (click)="choosePayPlan()">
-            다음 단계
-          </button>
-        </div>
-      </mat-step>
-      <mat-step [stepControl]="agreementFormGroup" errorMessage="약정 선택">
-        <form [formGroup]="agreementFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{ titleAgreementInfo }}</ng-template>
-          <mat-radio-group fxLayout="column" formControlName="agreement_ctrl" fxLayoutGap="16px">
-            <mat-radio-button (click)="setInstallment('공시지원금')" [value]="'공시지원금'">공시지원금</mat-radio-button>
-            <mat-radio-button (click)="setInstallment('선택 약정 12 개월')" [value]="'선택 약정 12 개월'">선택 약정 12 개월
-            </mat-radio-button>
-            <mat-radio-button (click)="setInstallment('선택 약정 24 개월')" [value]="'선택 약정 24 개월'">선택 약정 24 개월
-            </mat-radio-button>
-          </mat-radio-group>
-        </form>
-        <div>
-          <button mat-button matStepperPrevious>이전 단계</button>
-          <button mat-button matStepperNext color="accent" (click)="chooseAgreement()">
-            다음 단계
-          </button>
-        </div>
-      </mat-step>
+      
+      
       <mat-step>
         <ng-template matStepLabel>완료</ng-template>
         <p>

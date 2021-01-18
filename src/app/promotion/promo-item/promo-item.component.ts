@@ -248,5 +248,10 @@ export class PromoItemComponent implements OnInit, OnDestroy {
 
     return 0;
   }
+
+  CollapseMoney(money: number): number{
+    const m = money / 10000;
+    return m;
+  }
 }
 
