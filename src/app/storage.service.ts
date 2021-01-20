@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFireStorage, AngularFireStorageModule, AngularFireUploadTask } from '@angular/fire/storage';
-import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { from, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 

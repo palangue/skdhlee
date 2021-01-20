@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';

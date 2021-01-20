@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject } from 'rxjs';
-import { IPaymentPlan } from '../models/PaymentPlan';
+
 import { PHONE_DETAIL } from '../models/PhoneDetail';
 
 @Injectable({
