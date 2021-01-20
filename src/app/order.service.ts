@@ -13,6 +13,10 @@ export class OrderService {
   private readonly pricingObserv = this.pricing.asObservable();
   private installment = new Subject();
   private readonly installmentObserv = this.installment.asObservable();
+  private supportMoney = new Subject();
+  private readonly supportMoneyObserv = this.supportMoney.asObservable();
+  private deviceInstallment = new Subject();
+  private readonly deviceInstallmentObserv = this.deviceInstallment.asObservable();
 
   user_selected_phone: PHONE_DETAIL;
 
@@ -31,11 +35,23 @@ export class OrderService {
   getPricingObserv() {
     return this.pricingObserv;
   }
-  sendInstallment(installment?: string) {
+  sendInstallment(installment?: number) {
     this.installment.next(installment);
   }
   getInstallmentObserv() {
     return this.installmentObserv;
+  }
+  sendSupportMoney(supportMoney?: number){
+    this.supportMoney.next(supportMoney);
+  }
+  getSupportMoneyObserv(){
+    return this.supportMoneyObserv;
+  }
+  sendDeviceInstallment(installment?: number){
+    this.deviceInstallment.next(installment);
+  }
+  getDeviceInstallment(){
+    return this.deviceInstallmentObserv;
   }
   //#endregion
 

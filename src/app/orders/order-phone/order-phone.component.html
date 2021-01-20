@@ -1,8 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
   <div>
-    <app-order-header [phonePrice]='selectedPhoneInfo.origin_price'
-      [phoneName]='selectedPhoneInfo.PhoneName'
-    ></app-order-header>
+    <app-order-header [phonePrice]='selectedPhoneInfo.origin_price' [phoneName]='selectedPhoneInfo.ModelName'>
+    </app-order-header>
   </div>
   <div>
     <!-- <mat-label fxLayoutAlign="center" class="mat-title">{{ selectedPhoneInfo.PhoneName }} 구매 신청</mat-label> -->
@@ -46,15 +45,16 @@
         <form [formGroup]="payplanFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titlePayPlan }}</ng-template>
           <mat-radio-group fxLayout="column" formControlName="payplan_ctrl" fxLayoutGap="16px">
-            <mat-radio-button *ngFor="let plan of selectedPhoneInfo.plans" [value]="plan.planName" (click)="setPayPlan(plan)">
+            <mat-radio-button *ngFor="let plan of selectedPhoneInfo.plans" [value]="plan.planName"
+              (click)="setPayPlan(plan)">
               {{ plan.planName }}
-            <div>
-              월 통신 요금 : {{ plan.monthPay }}
-            </div>
-            <div>
-              복지 지원금으로 {{ getSupportMoney(plan)}} 원 단말기 추가 할인
-            </div>
-          </mat-radio-button>
+              <div>
+                월 통신 요금 : {{ plan.monthPay }}
+              </div>
+              <div>
+                복지 지원금으로 {{ getSupportMoney(plan)}} 원 단말기 추가 할인
+              </div>
+            </mat-radio-button>
           </mat-radio-group>
         </form>
         <div>
@@ -71,9 +71,9 @@
             <mat-radio-button (click)="setInstallment('공시지원금')" [value]="'공시지원금'">
               공시지원금 {{getPublicPrice()}}
             </mat-radio-button>
-            <mat-radio-button (click)="setInstallment('선택 약정 12 개월')" [value]="'선택 약정 12 개월'">선택 약정 12 개월
+            <mat-radio-button (click)="setInstallment('선택약정 12개월')" [value]="'선택 약정 12 개월'">선택 약정 12 개월
             </mat-radio-button>
-            <mat-radio-button (click)="setInstallment('선택 약정 24 개월')" [value]="'선택 약정 24 개월'">선택 약정 24 개월
+            <mat-radio-button (click)="setInstallment('선택약정 24개월')" [value]="'선택 약정 24 개월'">선택 약정 24 개월
             </mat-radio-button>
           </mat-radio-group>
         </form>
@@ -86,9 +86,7 @@
       </mat-step>
       <mat-step [stepControl]="deviceFormGroup" errorMessage="단말기 선택 사항이 누락 되었습니다.">
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel #deviceLabel>{{
-            titleDeviceInfo
-            }}</ng-template>
+          <ng-template matStepLabel #deviceLabel>{{titleDeviceInfo}}</ng-template>
           <mat-label>단말기 색상 선택</mat-label>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="device_color_ctrl">
             <div *ngIf="selectedColor">{{ selectedColor }}</div>
@@ -109,11 +107,11 @@
             titleDeviceInstallmentInfo
             }}</ng-template>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="deviceInstallmentCtrl">
-            <mat-radio-button value="0">일시불</mat-radio-button>
-            <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst">{{ inst }} 개월
+            <mat-radio-button value="0" (click)='setDeviceInstallment(1)'>일시불</mat-radio-button>
+            <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst" (click)='setDeviceInstallment(inst)'>{{ inst }} 개월
             </mat-radio-button>
           </mat-radio-group>
-          <div>할부 수수료 : 5.3 %</div>
+          <div>단말기 할부 수수료 : 5.3 %</div>
         </form>
         <div>
           <button mat-button matStepperPrevious>이전 단계</button>
@@ -122,15 +120,15 @@
           </button>
         </div>
       </mat-step>
-      
-      
+
+
       <mat-step>
         <ng-template matStepLabel>완료</ng-template>
         <p>
-          모든 항목이 완료 되었습니다. 하단 금액을 확인 하시고 주문하기를 눌러
+          모든 항목이 완료 되었습니다. <br/>
+          하단 예상 금액을 확인 하시고 주문하기를 눌러
           주문을 완료 하세요
         </p>
-        할부 원금, 할부 수수료 5.9% orderDialog
 
         <div>
           <button mat-button matStepperPrevious>뒤로</button>
@@ -140,6 +138,6 @@
     </mat-vertical-stepper>
   </div>
   <div>
-    <app-order-footer></app-order-footer>
+    <app-order-footer [originPrice]='selectedPhoneInfo.origin_price'></app-order-footer>
   </div>
 </div>

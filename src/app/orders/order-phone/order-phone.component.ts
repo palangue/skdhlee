@@ -26,6 +26,8 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   customer_name: string;
   customer_phone_number: string;
 
+  selectedSupportMoney = 0;
+
   promo_code: string;
 
   //#region local variable
@@ -41,7 +43,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   //#region stepper Label variable
   titleCustInfo = '고객님 연락처';
   titleMasterPlan = '가입방법';
-  titleDeviceInfo = '사양 선택';
+  titleDeviceInfo = '단말기 색상 선택';
   titleAgreementInfo = '통신 요금 약정 선택';
   titlePayPlan = '통신 요금제 선택';
   titleDeviceInstallmentInfo = '단말기 할부 선택';
@@ -145,10 +147,10 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
 
     if (this.selectedAgreement) {
       if (this.selectedAgreement === '공시지원금') {
-        this.titleAgreementInfo = this.selectedAgreement + '으로 단말기 가격 할인';
+        this.titleAgreementInfo = this.selectedAgreement + '으로 단말기 가격 할인을 받습니다';
       }
       else {
-        this.titleAgreementInfo = this.selectedAgreement + '로 25% 통신 요금 할인';
+        this.titleAgreementInfo = '선택약정으로' + this.selectedAgreement + '개월간 25% 통신 요금 할인을 받습니다';
       }
     }
   }
@@ -175,22 +177,27 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     }
   }
   // 2021.01.19 통신 요금에 따른 복지 할인 금액 가져오기
-  getSupportMoney(planInfo: any): string {
+  getSupportMoney(planInfo: any): number {
+
+    // TODO: 이 부분이 꼭 필요한지 확인 필수
     switch (this.titleMasterPlan) {
       case '신규가입':
-        return planInfo.newDevice;
+        this.selectedSupportMoney  = planInfo.newDevice;
       case '기기변경':
-        return planInfo.changeDevice;
+        this.selectedSupportMoney  = planInfo.changeDevice;
       case '번호이동':
-        return planInfo.moveNumber;
+        this.selectedSupportMoney  = planInfo.moveNumber;
     }
-    return '';
+    return this.selectedSupportMoney;
   }
+  // 2021.01.19 통신 요금제 선택에 따른 공시지원금 출력
   getPublicPrice(): string {
 
     if (this.titlePayPlan !== '통신 요금제 선택') {
       for (let item of this.selectedPhoneInfo.plans) {
-        if (this.titlePayPlan === (item.planName + ' 요금제')) {
+        const temp = this.titlePayPlan.indexOf(item.planName);
+
+        if (temp >= 0) {
           return item.publicPrice;
         }
       }
@@ -203,10 +210,35 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   //#region Sync data subscription
   setPayPlan(planData: any): void {
     console.log('footer 쪽으로 데이터 pushing 하고 있네');
+    switch (this.titleMasterPlan) {
+      case '신규가입':
+        this.selectedSupportMoney  = planData.newDevice;
+      case '기기변경':
+        this.selectedSupportMoney  = planData.changeDevice;
+      case '번호이동':
+        this.selectedSupportMoney  = planData.moveNumber;
+    }
     this.orderService.sendPricing(planData);
+    this.orderService.sendSupportMoney(this.selectedSupportMoney);
   }
+  // 공시지원금, 선택약정
   setInstallment(installment: string): void {
-    this.orderService.sendInstallment(installment);
+    switch (installment) {
+      case '공시지원금':
+        this.orderService.sendInstallment(Number(this.getPublicPrice()));
+        break;
+      case '선택약정 12개월':
+        this.orderService.sendInstallment(12);
+        break;
+      case '선택약정 24개월':
+        this.orderService.sendInstallment(24);
+        break;
+    }
+
+  }
+  // 단말기 할부 개월 수
+  setDeviceInstallment(installment: number): void{
+    this.orderService.sendDeviceInstallment(installment);
   }
   //#endregion
 
