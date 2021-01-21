@@ -1,4 +1,4 @@
-<div class="popup-body" fxLayoutGap="16px" [ngStyle]="{'margin': '16px 0px'}">
+<div class="popup-body" fxLayout='column' fxLayoutGap="16px" [ngStyle]="{'margin': '16px 0px'}">
 
   <mat-toolbar color="primary">단말기 복지금 관리</mat-toolbar>
 
@@ -24,17 +24,21 @@
     </mat-form-field>
 
   </div>
-
-  <mat-card *ngIf='selectedNetType && selectedDeviceName' class='mat-elevation-z8'>
-    <div *ngFor='let deviceItem of selectedSupportDeviceAndPlanList'>
-      <span *ngIf='deviceItem.sktNetType === selectedNetType' fxLayoutAlign='space-between center'>
-        <mat-label>{{deviceItem.planName}}</mat-label>
-        <span></span>
-        <span>
+  <!-- 복지금 정보 -->
+  <div *ngIf='selectedNetType && selectedDeviceName' fxLayout='column' fxLayoutGap='16px'>
+    <div class='mat-elevation-z2' *ngFor='let deviceItem of selectedSupportDeviceAndPlanList' fxLayout='column'
+      fxLayoutGap='16px' [ngStyle]="{'padding': '8px'}">
+      <mat-label [ngStyle]="{'font-size': '18px', 'color' : 'tomato'}">{{deviceItem.planName}}</mat-label>
+      <span *ngIf='deviceItem.sktNetType === selectedNetType'>
+        <!-- 공시 지원금 -->
+        <div>
           <mat-form-field>
             <mat-label>공시 지원금</mat-label>
-            <input matInput [(ngModel)]='deviceItem.publicPrice'/>
+            <input matInput [(ngModel)]='deviceItem.publicPrice' />
           </mat-form-field>
+        </div>
+        <!-- 공시 지원 복지금 -->
+        <div fxLayoutGap='8px'>
           <mat-form-field>
             <mat-label>공시 신규 복지금</mat-label>
             <input matInput [(ngModel)]="deviceItem.newDevice" />
@@ -47,59 +51,25 @@
             <mat-label>공시 기변 복지금</mat-label>
             <input matInput [(ngModel)]="deviceItem.changeDevice" />
           </mat-form-field>
-        </span>
+        </div>
+        <!-- 선택 약정 복지금 -->
+        <div fxLayoutGap='8px'>
+          <mat-form-field>
+            <mat-label>약정 신규 복지금</mat-label>
+            <input matInput [(ngModel)]='deviceItem.newDeviceInstallment'>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>약정 번호이동 복지금</mat-label>
+            <input matInput [(ngModel)]='deviceItem.moveNumberInstallment'>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>약정 기기변경 복지금</mat-label>
+            <input matInput [(ngModel)]='deviceItem.changeDeviceInstallment'>
+          </mat-form-field>
+        </div>
       </span>
     </div>
-    <button mat-button color='primary' (click)='btnSave()'>복지금 저장</button>
-  </mat-card>
-  <!-- <form [formGroup]='planGroup'>
-    <mat-card fxLayoutGap="4px" class='mat-elevation-z8' [ngStyle]="{'margin': '8px'}">
-      <div fxLayoutAlign='space-between center'>
-        <span></span>
-        <button mat-raised-button color='primary' (click)='btnAddPromotionPlan()'>복지금 등록</button>
-      </div>
-      <div fxLayout='row' fxLayoutGap='4px'>
-        <mat-form-field>
-          <mat-label>공시 신규</mat-label>
-          <input matInput formControlName='newPlanCtrl' />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>공시 기변</mat-label>
-          <input matInput formControlName='changePlanCtrl' />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>공시 번이</mat-label>
-          <input matInput formControlName='movePlanCtrl' />
-        </mat-form-field>
-      </div>
-      
-      <div fxLayout='row' fxLayoutGap='4px'>
-        <mat-form-field>
-          <mat-label>약정 신규</mat-label>
-          <input matInput />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>약정 기변</mat-label>
-          <input matInput />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>약정 번이</mat-label>
-          <input matInput />
-        </mat-form-field>
-      </div>
-    </mat-card>
-  </form> -->
-
-  <!-- 등록 / 취소 -->
-  <!-- <div>
-
-    <button mat-raised-button color="primary" (click)="addDevice()" *ngIf="!isModify">
-      단말기 등록
-    </button>
-    <button mat-raised-button color="primary" (click)="updateDevice()" *ngIf="isModify">
-      수정
-    </button>
-    <button mat-button color="warn" (click)="cancel()">취소</button>
-  </div> -->
+    <button mat-raised-button color='primary' (click)='btnSave()'>복지금 저장</button>
+  </div>
 
 </div>

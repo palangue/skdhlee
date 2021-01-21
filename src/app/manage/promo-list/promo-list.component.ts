@@ -158,33 +158,6 @@ export class PromoListComponent implements OnInit, OnDestroy {
       }
     });
   }
-  // 장치 수정
-  promo_item_modify(data, data2): void {
-    if (this.selectedCompany.idx.length === 0) {
-      alert('업체를 선택 해 주세요');
-      return;
-    }
-
-    const dialogRef = this.dialog.open(PromoDetailComponent, {
-      data: {
-        width: '400px',
-        type: 'device',
-        id: this.selectedCompany.idx,
-        company: this.selectedCompany.promotion_target_company,
-        code: this.selectedCompany.promotion_target,
-        supportDeviceData: data,
-        phoneList: this.phoneList
-      }
-    });
-    dialogRef.afterClosed().subscribe((result: PromotionDialogResult) => {
-      if (result.code === 0) {
-        alert('저장 성공');
-      }
-      else if (result.code === 99) {
-        alert(result.message);
-      }
-    });
-  }
 
   // 장치 삭제
   promo_item_delete(data): void {

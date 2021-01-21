@@ -174,16 +174,22 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
 
       let foundedSupportedDevice = listOfSupportedList.find(x => x.sktNetType === item.netKind && x.planName === item.name);
 
+      // 찾은 데이터가 없을 때
       if (foundedSupportedDevice === undefined) {
         foundedSupportedDevice = {
-          changeDevice: '0',
           deviceName: this.selectedDeviceName,
-          moveNumber: '0',
-          newDevice: '0',
           planName: item.name,
           sktNetType: item.netKind,
           monthPay: item.monthPay,
           publicPrice: '0',
+          // 공시 지원금
+          changeDevice: '0',
+          moveNumber: '0',
+          newDevice: '0',
+          // 선택약정
+          changeDeviceInstallment: '0',
+          moveNumberInstallment: '0',
+          newDeviceInstallment: '0',
         }
       }
 
@@ -191,28 +197,38 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
       if (foundedSupportedDevice.idx === undefined) {
         tempItem =
         {
-          changeDevice: foundedSupportedDevice.changeDevice ? foundedSupportedDevice.changeDevice : '0',
           deviceName: this.selectedDeviceName,
-          moveNumber: foundedSupportedDevice.moveNumber ? foundedSupportedDevice.moveNumber : '0',
-          newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
           planName: item.name,
           sktNetType: item.netKind,
           monthPay: item.monthPay,
-          publicPrice: foundedSupportedDevice.publicPrice
+          publicPrice: foundedSupportedDevice.publicPrice,
+          // 공시지원금
+          newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
+          changeDevice: foundedSupportedDevice.changeDevice ? foundedSupportedDevice.changeDevice : '0',
+          moveNumber: foundedSupportedDevice.moveNumber ? foundedSupportedDevice.moveNumber : '0',
+          // 선택약정
+          newDeviceInstallment: foundedSupportedDevice.newDeviceInstallment ? foundedSupportedDevice.newDeviceInstallment : 0,
+          changeDeviceInstallment: foundedSupportedDevice.changeDeviceInstallment ? foundedSupportedDevice.changeDeviceInstallment : 0,
+          moveNumberInstallment: foundedSupportedDevice.moveNumberInstallment ? foundedSupportedDevice.moveNumberInstallment : 0,
         };
       }
       else {
         tempItem =
         {
-          changeDevice: foundedSupportedDevice.changeDevice ? foundedSupportedDevice.changeDevice : '0',
+          idx: foundedSupportedDevice.idx,
           deviceName: this.selectedDeviceName,
-          moveNumber: foundedSupportedDevice.moveNumber ? foundedSupportedDevice.moveNumber : '0',
-          newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
           planName: item.name,
           sktNetType: item.netKind,
           monthPay: item.monthPay,
           publicPrice: foundedSupportedDevice.publicPrice,
-          idx: foundedSupportedDevice.idx
+          // 공시 지원금
+          changeDevice: foundedSupportedDevice.changeDevice ? foundedSupportedDevice.changeDevice : '0',
+          moveNumber: foundedSupportedDevice.moveNumber ? foundedSupportedDevice.moveNumber : '0',
+          newDevice: foundedSupportedDevice.newDevice ? foundedSupportedDevice.newDevice : '0',
+          // 선택약정
+          newDeviceInstallment: foundedSupportedDevice.newDeviceInstallment ? foundedSupportedDevice.newDeviceInstallment : 0,
+          changeDeviceInstallment: foundedSupportedDevice.changeDeviceInstallment ? foundedSupportedDevice.changeDeviceInstallment : 0,
+          moveNumberInstallment: foundedSupportedDevice.moveNumberInstallment ? foundedSupportedDevice.moveNumberInstallment : 0,
         };
 
       }
