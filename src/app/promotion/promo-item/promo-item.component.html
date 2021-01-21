@@ -10,6 +10,7 @@
 
         <ng-container *ngIf='joined$ | async; else loading; let joined'>
             <div class='mat-card' [ngStyle]="{'margin': '16px'}" *ngFor='let phoneItem of joined'>
+                <!-- 작은 화면 -->
                 <div *ngIf='deviceXs' class='mat-card-content'>
                     <mat-toolbar color='primary'>{{ phoneItem.ModelName }}</mat-toolbar>
                     <div fxLayout='column'>
@@ -20,7 +21,8 @@
                                 <mat-label fxLayoutAlign='space-between center'>
                                     <span [ngStyle]="{'font-size': '16px'}">출고가 : </span>
                                     <span></span>
-                                    <span [ngStyle]="{'font-size': '16px'}">{{phoneItem.origin_price | number:'1.0-0' }}</span>
+                                    <span [ngStyle]="{'font-size': '16px'}">{{phoneItem.origin_price | number:'1.0-0'
+                                        }}</span>
                                 </mat-label>
                                 <mat-label fxLayoutAlign='space-between center'>
                                     <span>색상 : </span>
@@ -117,20 +119,19 @@
                     </div>
 
                 </div>
+                <!-- 큰 화면 -->
                 <div *ngIf='!deviceXs' class='mat-card-content'>
-                    <mat-toolbar color='primary'>
-                        <span fxFlex='40'>{{ phoneItem.ModelName }}</span>
-                        <span fxFlex='30'>출고가 {{phoneItem.origin_price | number:'1.0-0' }}</span>
-                        <span fxFlex='30'></span>
-                    </mat-toolbar>
+                    <mat-toolbar color='primary'>{{ phoneItem.ModelName }}</mat-toolbar>
                     <div fxLayout='row'>
                         <!-- 이미지 리사이징 때문에 이미지만 mat card 사용 -->
                         <mat-card fxFlex='30' class='mat-elevation-z0'>
                             <img mat-card-image [src]="phoneItem.mainImgSrc">
                             <mat-card-content>
                                 <mat-label fxLayoutAlign='space-between center'>
-                                    <span>출고가 : </span><span></span><span [ngStyle]='{"color" : "blue"}'>{{
-                                        phoneItem.origin_price | number:'1.0-0' }} 원</span>
+                                    <span [ngStyle]="{'font-size': '16px'}">출고가 : </span>
+                                    <span></span>
+                                    <span [ngStyle]='{"font-size": "16px", "color" : "blue"}'>{{phoneItem.origin_price |
+                                        number:'1.0-0' }} 원</span>
                                 </mat-label>
                                 <mat-label fxLayoutAlign='space-between center'>
                                     <span>색상 : </span>
