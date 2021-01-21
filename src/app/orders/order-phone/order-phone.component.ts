@@ -43,7 +43,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   titleCustInfo = '고객님 연락처';
   titleMasterPlan = '가입방법';
   titleDeviceInfo = '단말기 색상 선택';
-  titleAgreementInfo = '통신 요금 약정 선택';
+  titleAgreementInfo = '할인 방법을 선택 해 주세요';
   titlePayPlan = '통신 요금제 선택';
   titleDeviceInstallmentInfo = '단말기 할부 선택';
   //#endregion
@@ -181,13 +181,12 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     // TODO: 이 부분이 꼭 필요한지 확인 필수
     switch (this.titleMasterPlan) {
       case '신규가입':
-        this.selectedSupportMoney  = planInfo.newDevice;
+        return planInfo.newDevice;
       case '기기변경':
-        this.selectedSupportMoney  = planInfo.changeDevice;
+        return planInfo.changeDevice;
       case '번호이동':
-        this.selectedSupportMoney  = planInfo.moveNumber;
+        return planInfo.moveNumber;
     }
-    return this.selectedSupportMoney;
   }
   // 2021.01.19 통신 요금제 선택에 따른 공시지원금 출력
   getPublicPrice(): string {
@@ -212,10 +211,13 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     switch (this.titleMasterPlan) {
       case '신규가입':
         this.selectedSupportMoney  = planData.newDevice;
+        break;
       case '기기변경':
         this.selectedSupportMoney  = planData.changeDevice;
+        break;
       case '번호이동':
         this.selectedSupportMoney  = planData.moveNumber;
+        break;
     }
     this.orderService.sendPricing(planData);
     this.orderService.sendSupportMoney(this.selectedSupportMoney);

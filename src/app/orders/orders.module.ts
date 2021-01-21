@@ -12,6 +12,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 
@@ -19,6 +20,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { Routes } from '@angular/router';
 import { OrderFooterComponent } from './order-footer/order-footer.component';
 import { OrderHeaderComponent } from './order-header/order-header.component';
+import { UtlsModule } from '../utls/utls.module';
 
 const routes : Routes = [
   {path : '', component:OrderPhoneComponent}
@@ -39,7 +41,9 @@ const routes : Routes = [
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
+    MatToolbarModule,
+    UtlsModule
   ],
   exports: [
     OrderPhoneComponent

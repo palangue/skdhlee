@@ -57,25 +57,38 @@ export class UploadCtrlComponent implements OnInit, OnDestroy {
       finalize(async () => {
         this.downloadUrl = await ref.getDownloadURL().toPromise();
 
-        console.log('download url = ', this.downloadUrl);
-        console.log('path = ', path);
-        this.db.collection<PHONE_DETAIL>('Phone', ref => ref.where('PhoneName', '==', this.deviceName)).stateChanges().pipe(take(1), map(result => {
-          return result.map(resultData => {
-            const idx = resultData.payload.doc.id;
-            const data = resultData.payload.doc.data();
+        console.log('download url = ', this.downloadUrl, path);
+        console.log('deviceName = ', this.deviceName);
+        this.db.collection<PHONE_DETAIL>('Phone', ref => ref.where('ModelName', '==', this.deviceName))
+          .stateChanges().pipe(take(1), map(result => {
+            return result.map(resultData => {
+              const idx = resultData.payload.doc.id;
+              const data = resultData.payload.doc.data();
 
-            return { idx, ...data };
-          });
-        })).subscribe(response => {
-          if (response.length > 0) {
-            if (this.IsPrimary) {
-              for (let item of response) {
-                item.mainImgSrc = this.downloadUrl;
-                this.db.collection<PHONE_DETAIL>('Phone').doc(item.idx).update(item);
+              console.log(idx,data);
+
+              return { idx, ...data };
+            });
+          })).subscribe(response => {
+            
+            console.log(response);
+            
+            if (response.length > 0) {
+              if (this.IsPrimary) {
+
+                console.log(this.IsPrimary);
+
+                for (let item of response) {
+                  console.log(item.idx, item.mainImgSrc);
+
+                  item.mainImgSrc = this.downloadUrl;
+                  this.db.collection<PHONE_DETAIL>('Phone').doc(item.idx).update(item)
+                    .then(() => alert('성공'))
+                    .catch((err) => alert(err));
+                }
               }
             }
-          }
-        });
+          });
       })
     );
 

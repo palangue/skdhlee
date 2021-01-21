@@ -2,23 +2,26 @@
     제조사별 정렬, 보임 여부
     통신망 별 정렬, 보임 여부
  -->
-<p *ngIf='deviceXs'>promo-item ok</p>
+<!-- <p *ngIf='deviceXs'>promo-item ok</p> -->
 
 <div fxLayoutAlign='center start'>
-    <div class='mat-elevation-z8' [ngStyle]="{'margin': '16px'}" fxFlex='50%' fxFlex.xs='100%' fxFlex.sm='100%' fxFlex.md='80%'>
-        
+    <div class='mat-elevation-z8' [ngStyle]="{'margin': '16px'}" fxFlex='50%' fxFlex.xs='100%' fxFlex.sm='100%'
+        fxFlex.md='80%'>
+
         <ng-container *ngIf='joined$ | async; else loading; let joined'>
             <div class='mat-card' [ngStyle]="{'margin': '16px'}" *ngFor='let phoneItem of joined'>
                 <div *ngIf='deviceXs' class='mat-card-content'>
-                    <mat-toolbar color='primary' >
-                        <span fxFlex='60'>{{ phoneItem.ModelName }}</span>
-                        <span fxFlex='40'>출고가 {{phoneItem.origin_price | number:'1.0-0' }}</span>
-                    </mat-toolbar>
+                    <mat-toolbar color='primary'>{{ phoneItem.ModelName }}</mat-toolbar>
                     <div fxLayout='column'>
                         <!-- 이미지 리사이징 때문에 이미지만 mat card 사용 -->
                         <mat-card class='mat-elevation-z0'>
                             <img mat-card-image [src]="phoneItem.mainImgSrc">
                             <mat-card-content>
+                                <mat-label fxLayoutAlign='space-between center'>
+                                    <span [ngStyle]="{'font-size': '16px'}">출고가 : </span>
+                                    <span></span>
+                                    <span [ngStyle]="{'font-size': '16px'}">{{phoneItem.origin_price | number:'1.0-0' }}</span>
+                                </mat-label>
                                 <mat-label fxLayoutAlign='space-between center'>
                                     <span>색상 : </span>
                                     <span></span>
@@ -69,7 +72,8 @@
                                             <!-- {{ (phoneItem.origin_price - element.publicPrice - element.newDevice) |
                                             number:
                                             '1.0-0' }} -->
-                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice - element.newDevice)}} 만
+                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.newDevice)}} 만
                                         </div>
 
                                     </td>
@@ -82,7 +86,8 @@
                                             <!-- {{ (phoneItem.origin_price - element.publicPrice - element.moveNumber) |
                                             number:
                                             '1.0-0' }} -->
-                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice - element.moveNumber)}} 만
+                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.moveNumber)}} 만
                                         </div>
                                     </td>
                                 </ng-container>
@@ -93,11 +98,12 @@
                                         <div [ngStyle]="{'color': 'tomato'}">
                                             <!-- {{ (phoneItem.origin_price - element.publicPrice - element.changeDevice) |
                                             number: '1.0-0' }} -->
-                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice - element.changeDevice) }} 만
+                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.changeDevice) }} 만
                                         </div>
                                     </td>
                                 </ng-container>
-                                
+
 
                                 <!-- <ng-container matColumnDef='monthPay'>
                                         <th mat-header-cell *matHeaderCellDef>월 통신요금</th>
@@ -112,7 +118,7 @@
 
                 </div>
                 <div *ngIf='!deviceXs' class='mat-card-content'>
-                    <mat-toolbar color='primary' >
+                    <mat-toolbar color='primary'>
                         <span fxFlex='40'>{{ phoneItem.ModelName }}</span>
                         <span fxFlex='30'>출고가 {{phoneItem.origin_price | number:'1.0-0' }}</span>
                         <span fxFlex='30'></span>
@@ -209,7 +215,7 @@
                                         </div>
                                     </td>
                                 </ng-container>
-                                
+
 
                                 <!-- <ng-container matColumnDef='monthPay'>
                                         <th mat-header-cell *matHeaderCellDef>월 통신요금</th>
@@ -235,4 +241,3 @@
         loading...
     </ng-template>
 </div>
-

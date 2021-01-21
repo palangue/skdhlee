@@ -82,11 +82,13 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
 
   // 월 단말기 할부 요금 계산
   getMonthPayOfDeviceInstallment(): number {
-    const monthDevicePay = (this.originPrice - this.supportMoney - this.publicPrice) / this.deviceInstallment;
+    const minusAmount = (this.originPrice - this.supportMoney - this.publicPrice);
+    const monthDevicePay = minusAmount / this.deviceInstallment;
 
     if (this.deviceInstallment === 1) this.calculatedDeviceMonthPay = monthDevicePay;
-    else this.calculatedDeviceMonthPay = monthDevicePay - (monthDevicePay * 0.059);
+    else this.calculatedDeviceMonthPay = monthDevicePay + (monthDevicePay * 0.059);
 
+    if (this.calculatedDeviceMonthPay < 0) this.calculatedDeviceMonthPay = 0;
     return this.calculatedDeviceMonthPay;
   }
 
@@ -100,6 +102,7 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
     return (this.calculatedMonthPay);
   }
 
+  // 월 요금 합산. 월 단말기 할부금 + 월 툥신 요금
   getTotalMonthPay(): number {
     return Number(this.calculatedDeviceMonthPay) + Number(this.calculatedMonthPay);
   }

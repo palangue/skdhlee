@@ -1,4 +1,4 @@
-<p *ngIf='deviceXs'>promo-main ok</p>
+<!-- <p *ngIf='deviceXs'>promo-main ok</p> -->
 
 <div fxLayout='row' fxLayoutAlign='center center' fxFlexFill class='main-div'>
     <mat-card *ngIf='deviceXs' fxFlex='80%' fxLayout='column'>
@@ -14,7 +14,7 @@
                 <span *ngIf='invalid_code' class='main-span-error-code' >프로모션 코드가 일치하지 않습니다.</span>
             </div>
             <br/>
-            <button mat-raised-button color="accent" (click)='ConfirmPromoCode()'>제출</button>
+            <button mat-raised-button color="accent" (click)='ConfirmPromoCode()'>코드 입력</button>
         </form>
     </mat-card>
     <mat-card *ngIf='!deviceXs' fxFlex='50%' fxLayout='column'>
@@ -30,7 +30,7 @@
                 <span *ngIf='invalid_code' class='main-span-error-code' >프로모션 코드가 일치하지 않습니다.</span>
             </div>
             <br/>
-            <button mat-raised-button color="accent" (click)='ConfirmPromoCode()'>제출</button>
+            <button mat-raised-button color="accent" (click)='ConfirmPromoCode()'>코드 입력</button>
         </form>
     </mat-card>
 </div>
