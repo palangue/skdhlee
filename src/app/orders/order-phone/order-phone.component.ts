@@ -177,8 +177,6 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   }
   // 2021.01.19 통신 요금에 따른 복지 할인 금액 가져오기
   getSupportMoney(planInfo: any): number {
-
-    // TODO: 이 부분이 꼭 필요한지 확인 필수
     switch (this.titleMasterPlan) {
       case '신규가입':
         return planInfo.newDevice;
@@ -187,6 +185,22 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
       case '번호이동':
         return planInfo.moveNumber;
     }
+  }
+  getInstallmentMoney(planInfo: any): number{
+    switch (this.titleMasterPlan) {
+      case '신규가입':
+        return planInfo.newDeviceInstallment;
+      case '기기변경':
+        return planInfo.changeDeviceInstallment;
+      case '번호이동':
+        return planInfo.moveNumberInstallment;
+    }
+  }
+  getMonthPlanAmount(plan: any): number {
+    const monthAmount = plan.monthPay * 0.25;
+
+    //return monthAmount * 24;
+    return plan.monthPay - monthAmount;
   }
   // 2021.01.19 통신 요금제 선택에 따른 공시지원금 출력
   getPublicPrice(): string {

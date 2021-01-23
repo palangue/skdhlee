@@ -1,3 +1,18 @@
+table{
+  width: 200px;
+  border-collapse: collapse;
+  padding: 8px;
+}
+th{
+  width: 150px;
+  border: 1px solid tomato;
+}
+td{
+  text-align: right;
+  border: 1px solid tomato;
+}
+
+
 .example-container .mat-form-field + .mat-form-field {
     margin-left: 8px;
   }

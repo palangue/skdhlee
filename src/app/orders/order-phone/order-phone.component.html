@@ -24,7 +24,7 @@
           </div>
         </form>
       </mat-step>
-      <!-- 2020.01.02 요금 문제 수정 필요 -->
+      <!-- 신규, 기변, 번호이동 -->
       <mat-step [stepControl]="masterplanFormGroup" errorMessage="플랜을 선택 해 주세요">
         <form [formGroup]="masterplanFormGroup" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titleMasterPlan }}</ng-template>
@@ -41,18 +41,36 @@
           </button>
         </div>
       </mat-step>
+      <!-- 요금제 선택 -->
       <mat-step [stepControl]="payplanFormGroup" errorMessage="요금제를 선택 해 주세요.">
         <form [formGroup]="payplanFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titlePayPlan }}</ng-template>
           <mat-radio-group fxLayout="column" formControlName="payplan_ctrl" fxLayoutGap="16px">
             <mat-radio-button *ngFor="let plan of selectedPhoneInfo.plans" [value]="plan.planName"
               (click)="setPayPlan(plan)">
-              {{ plan.planName }}
+              <span [ngStyle]="{'font-size': '16px', 'font-weight': 'bold'}">{{ plan.planName }}</span>
               <div>
                 월 통신 요금 : {{ plan.monthPay }}
               </div>
               <div>
-                임직원 할인으로 {{ getSupportMoney(plan)}} 원 단말기 추가 할인
+                <table>
+                  <th>공시지원</th>
+                  <th>임직원할인</th>
+                  <tr>
+                    <td>{{ plan.publicPrice | number: '1.0-0' }} 원</td>
+                    <td>{{getSupportMoney(plan) | number: '1.0-0'}} 원</td>
+                  </tr>
+                </table>
+              </div>
+              <div>
+                <table>
+                  <th>요금할인 25%</th>
+                  <th>임직원할인</th>
+                  <tr>
+                    <td>월 기본료: {{getMonthPlanAmount(plan) | number: '1.0-0'}} 원</td>
+                    <td>{{ getInstallmentMoney(plan) | number: '1.0-0' }} 원</td>
+                  </tr>
+                </table>
               </div>
             </mat-radio-button>
           </mat-radio-group>
@@ -64,6 +82,7 @@
           </button>
         </div>
       </mat-step>
+      <!-- 공시지원, 선택약정 -->
       <mat-step [stepControl]="agreementFormGroup" errorMessage="약정 선택">
         <form [formGroup]="agreementFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titleAgreementInfo }}</ng-template>
@@ -85,6 +104,7 @@
           </button>
         </div>
       </mat-step>
+      <!-- 단말기 할인 방법 수정 -->
       <mat-step [stepControl]="deviceInstallmentFormGroup" errorMessage="단말기 요금 납부 방법이 누락 되었습니다">
         <form [formGroup]="deviceInstallmentFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel>{{
@@ -92,7 +112,8 @@
             }}</ng-template>
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="deviceInstallmentCtrl">
             <mat-radio-button value="0" (click)='setDeviceInstallment(1)'>일시불</mat-radio-button>
-            <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst" (click)='setDeviceInstallment(inst)'>{{ inst }} 개월
+            <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst"
+              (click)='setDeviceInstallment(inst)'>{{ inst }} 개월
             </mat-radio-button>
           </mat-radio-group>
           <div>단말기 할부 수수료 : 5.9 %</div>
@@ -104,6 +125,7 @@
           </button>
         </div>
       </mat-step>
+      <!-- 단말기 색상 -->
       <mat-step [stepControl]="deviceFormGroup" errorMessage="단말기 선택 사항이 누락 되었습니다.">
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel #deviceLabel>{{titleDeviceInfo}}</ng-template>
@@ -112,9 +134,10 @@
             <div *ngIf="selectedColor">{{ selectedColor }}</div>
             <mat-radio-button *ngFor="let color of selectedPhoneInfo.colors" [value]="color.name">
               <div fxLayout='row' fxLayoutGap='4px'>
-                <app-color-box [phoneColor]='color.value'></app-color-box><span [ngStyle]="{'font-size': '16px'}">{{ color.name }}</span>
+                <app-color-box [phoneColor]='color.value'></app-color-box><span [ngStyle]="{'font-size': '16px'}">{{
+                  color.name }}</span>
               </div>
-              
+
             </mat-radio-button>
           </mat-radio-group>
         </form>
@@ -125,11 +148,11 @@
           </button>
         </div>
       </mat-step>
-      
+
       <mat-step>
         <ng-template matStepLabel>완료</ng-template>
         <p>
-          모든 항목이 완료 되었습니다. <br/>
+          모든 항목이 완료 되었습니다. <br />
           하단 예상 금액을 확인 하시고 주문하기를 눌러
           주문을 완료 하세요
         </p>
