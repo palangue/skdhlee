@@ -85,6 +85,25 @@
           </button>
         </div>
       </mat-step>
+      <mat-step [stepControl]="deviceInstallmentFormGroup" errorMessage="단말기 요금 납부 방법이 누락 되었습니다">
+        <form [formGroup]="deviceInstallmentFormGroup" fxLayout="column" fxLayoutGap="16px">
+          <ng-template matStepLabel>{{
+            titleDeviceInstallmentInfo
+            }}</ng-template>
+          <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="deviceInstallmentCtrl">
+            <mat-radio-button value="0" (click)='setDeviceInstallment(1)'>일시불</mat-radio-button>
+            <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst" (click)='setDeviceInstallment(inst)'>{{ inst }} 개월
+            </mat-radio-button>
+          </mat-radio-group>
+          <div>단말기 할부 수수료 : 5.9 %</div>
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>이전 단계</button>
+          <button mat-button matStepperNext color="accent" (click)="chooseDeviceInstallment()">
+            다음 단계
+          </button>
+        </div>
+      </mat-step>
       <mat-step [stepControl]="deviceFormGroup" errorMessage="단말기 선택 사항이 누락 되었습니다.">
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel #deviceLabel>{{titleDeviceInfo}}</ng-template>
@@ -106,27 +125,7 @@
           </button>
         </div>
       </mat-step>
-      <mat-step [stepControl]="deviceInstallmentFormGroup" errorMessage="단말기 요금 납부 방법이 누락 되었습니다">
-        <form [formGroup]="deviceInstallmentFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{
-            titleDeviceInstallmentInfo
-            }}</ng-template>
-          <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="deviceInstallmentCtrl">
-            <mat-radio-button value="0" (click)='setDeviceInstallment(1)'>일시불</mat-radio-button>
-            <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst" (click)='setDeviceInstallment(inst)'>{{ inst }} 개월
-            </mat-radio-button>
-          </mat-radio-group>
-          <div>단말기 할부 수수료 : 5.9 %</div>
-        </form>
-        <div>
-          <button mat-button matStepperPrevious>이전 단계</button>
-          <button mat-button matStepperNext color="accent" (click)="chooseDeviceInstallment()">
-            다음 단계
-          </button>
-        </div>
-      </mat-step>
-
-
+      
       <mat-step>
         <ng-template matStepLabel>완료</ng-template>
         <p>

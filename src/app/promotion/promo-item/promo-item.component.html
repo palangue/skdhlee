@@ -40,7 +40,6 @@
 
                                 </mat-label>
                             </mat-card-content>
-
                         </mat-card>
                         <!-- {{ phoneItem.net_type_5g }} -->
                         <div *ngIf='phoneItem.plans.length > 0'>
@@ -49,7 +48,7 @@
                                 <ng-container matColumnDef='payPlanName'>
                                     <th mat-header-cell *matHeaderCellDef>요금제
                                     <td mat-cell *matCellDef='let element'>
-                                        <div>
+                                        <div [ngStyle]="{'font-weight': 'bolder', 'font-size': '16px'}">
                                             {{ element.planName }}
                                         </div>
                                         <div>
@@ -60,36 +59,41 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef='publicPrice'>
-                                    <th mat-header-cell *matHeaderCellDef class='table-money'>공시지원금</th>
-                                    <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <!-- {{ element.publicPrice | number: '1.0-0' }} -->
-                                        {{ CollapseMoney(element.publicPrice) }} 만
+                                    <th mat-header-cell *matHeaderCellDef class='table-money-center'>할인방법</th>
+                                    <td mat-cell *matCellDef='let element' class='table-money-center'>
+                                        <div [ngStyle]="{'color': 'darkblue'}">
+                                            공시
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato'}">
+                                            약정
+                                        </div>
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef='newDevice'>
                                     <th mat-header-cell *matHeaderCellDef class='table-money'>신규 가입</th>
                                     <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <div [ngStyle]="{'color': 'tomato'}">
-                                            <!-- {{ (phoneItem.origin_price - element.publicPrice - element.newDevice) |
-                                            number:
-                                            '1.0-0' }} -->
+                                        <div [ngStyle]="{'color': 'darkblue', 'font-weight' : 'bold'}">
                                             {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
-                                            element.newDevice)}} 만
+                                            element.newDevice)}}
                                         </div>
-
+                                        <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
+                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.newDeviceInstallment)}}
+                                        </div>
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef='moveNumber'>
                                     <th mat-header-cell *matHeaderCellDef class='table-money'>번호 이동</th>
                                     <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <div [ngStyle]="{'color': 'tomato'}">
-                                            <!-- {{ (phoneItem.origin_price - element.publicPrice - element.moveNumber) |
-                                            number:
-                                            '1.0-0' }} -->
+                                        <div [ngStyle]="{'color': 'darkblue', 'font-weight' : 'bold'}">
                                             {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
-                                            element.moveNumber)}} 만
+                                            element.moveNumber)}}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
+                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.moveNumberInstallment)}}
                                         </div>
                                     </td>
                                 </ng-container>
@@ -97,11 +101,13 @@
                                 <ng-container matColumnDef='changeDevice'>
                                     <th mat-header-cell *matHeaderCellDef class='table-money'>기기 변경</th>
                                     <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <div [ngStyle]="{'color': 'tomato'}">
-                                            <!-- {{ (phoneItem.origin_price - element.publicPrice - element.changeDevice) |
-                                            number: '1.0-0' }} -->
+                                        <div [ngStyle]="{'color': 'darkblue', 'font-weight' : 'bold'}">
                                             {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
-                                            element.changeDevice) }} 만
+                                            element.changeDevice) }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
+                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.changeDeviceInstallment) }}
                                         </div>
                                     </td>
                                 </ng-container>
@@ -158,7 +164,7 @@
                                 <ng-container matColumnDef='payPlanName'>
                                     <th mat-header-cell *matHeaderCellDef>요금제
                                     <td mat-cell *matCellDef='let element'>
-                                        <div>
+                                        <div [ngStyle]="{'font-weight': 'bolder', 'font-size': '16px'}">
                                             {{ element.planName }}
                                         </div>
                                         <div>
@@ -169,22 +175,24 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef='publicPrice'>
-                                    <th mat-header-cell *matHeaderCellDef class='table-money'>공시지원금</th>
-                                    <td mat-cell *matCellDef='let element' class='table-money'>
-                                        {{ element.publicPrice | number: '1.0-0' }}
+                                    <th mat-header-cell *matHeaderCellDef class='table-money-center'>할인방법</th>
+                                    <td mat-cell *matCellDef='let element' class='table-money-center'>
+                                        <div [ngStyle]="{'color': 'darkblue'}">공시지원</div>
+                                        <div [ngStyle]="{'color': 'tomato'}">약정할인</div>
                                     </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef='newDevice'>
                                     <th mat-header-cell *matHeaderCellDef class='table-money'>신규 가입</th>
                                     <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <!-- <div>
-                                            {{ element.newDevice | number: '1.0-0' }}
-                                        </div> -->
-                                        <div [ngStyle]="{'color': 'tomato'}">
-                                            {{ (phoneItem.origin_price - element.publicPrice - element.newDevice) |
-                                            number:
-                                            '1.0-0' }}
+                                        <div [ngStyle]="{'color': 'darkblue', 'font-weight' : 'bold'}">
+                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.newDevice)
+                                            }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
+                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.newDeviceInstallment) }}
                                         </div>
 
                                     </td>
@@ -193,13 +201,13 @@
                                 <ng-container matColumnDef='moveNumber'>
                                     <th mat-header-cell *matHeaderCellDef class='table-money'>번호 이동</th>
                                     <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <!-- <div>
-                                            {{ element.moveNumber | number: '1.0-0' }}
-                                        </div> -->
-                                        <div [ngStyle]="{'color': 'tomato'}">
-                                            {{ (phoneItem.origin_price - element.publicPrice - element.moveNumber) |
-                                            number:
-                                            '1.0-0' }}
+                                        <div [ngStyle]="{'color': 'darkblue', 'font-weight' : 'bold'}">
+                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.moveNumber) }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
+                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.moveNumberInstallment) }}
                                         </div>
                                     </td>
                                 </ng-container>
@@ -207,12 +215,13 @@
                                 <ng-container matColumnDef='changeDevice'>
                                     <th mat-header-cell *matHeaderCellDef class='table-money'>기기 변경</th>
                                     <td mat-cell *matCellDef='let element' class='table-money'>
-                                        <!-- <div>
-                                            임직원 할인 {{ element.changeDevice | number: '1.0-0' }}
-                                        </div> -->
-                                        <div [ngStyle]="{'color': 'tomato'}">
-                                            {{ (phoneItem.origin_price - element.publicPrice - element.changeDevice) |
-                                            number: '1.0-0' }}
+                                        <div [ngStyle]="{'color': 'darkblue', 'font-weight' : 'bold'}">
+                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.changeDevice) }}
+                                        </div>
+                                        <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
+                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            element.changeDeviceInstallment) }}
                                         </div>
                                     </td>
                                 </ng-container>
