@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderPhoneComponent } from './order-phone/order-phone.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -43,7 +44,8 @@ const routes : Routes = [
     MatDialogModule,
     MatRadioModule,
     MatToolbarModule,
-    UtlsModule
+    UtlsModule,
+    ClipboardModule
   ],
   exports: [
     OrderPhoneComponent
