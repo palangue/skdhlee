@@ -130,7 +130,8 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
       promo_company: '',
       promo_name: '',
       submitData: '',
-      subscription_type: '',
+      masterPlan: '',
+      payPlan:'',
     };
 
   }

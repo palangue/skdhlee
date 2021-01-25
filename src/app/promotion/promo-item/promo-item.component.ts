@@ -31,7 +31,6 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   itemPage_promoCode: string;   // 사용자 입력 프로모션 코드
   //itemPageDocumentId: string;   // 검색 된 프로모션 코드 문서
 
-  gov_price: number;
   agreement_price_max: number;
   support_price: number;
 
@@ -166,6 +165,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   }
 
   btnBuy(pd: PHONE_DETAIL): void {
+    console.log(pd);
     this.orderService.setSelectPhone(pd);
     this.route.navigate(['orders']);
   }

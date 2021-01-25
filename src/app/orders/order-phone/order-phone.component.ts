@@ -7,6 +7,7 @@ import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { OrderService } from '../../order.service';
 import { IPaymentPlan } from '../../../models/PaymentPlan';
+import { ICustomer } from '../../../models/Customer';
 
 
 @Component({
@@ -101,6 +102,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
 
     // 선택한 장치 정보
     this.selectedPhoneInfo = this.orderService.getSelectedPhone();
+    this.selectedPhoneName = this.selectedPhoneInfo.PhoneName;
     // 로그인 된 프로모션 코드
     this.promo_code = this.deviceService.getUserPromoCode();
     // 장치 리스트
@@ -254,5 +256,28 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
+  temp(){
+
+    let aaa: ICustomer = {
+      submitData :'',
+      promo_name : '',
+      promo_company: this.promo_code,
+      isDone : false,
+      installment_plan: this.selectedDeviceInstallment.toString(),
+      device_storage: this.selectedStorage.toString(),
+      device_name: this.selectedPhoneName,
+      device_color:this.selectedColor,
+      customer_name:this.customer_name,
+      customer_mobile: this.customer_phone_number,
+      masterPlan: this.selectedMasterPlan,
+      payPlan: this.selectedPayPlan
+    }
+    //this.selectedPhoneInfo;// PHONE_DETAIL;
+
+
+  console.log(this.selectedPhoneInfo);
+  console.log('=== ', this.selectedAgreement, this.selectedPayPlan);
+  console.log(aaa);
+  }
 
 }

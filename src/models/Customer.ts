@@ -8,7 +8,8 @@ export interface ICustomer {
   installment_plan: string;       // 할부 개월 수
   promo_company: string;          // 프로모션 회사 코드
   promo_name: string;             // 프로모션 회사 명
-  subscription_type: string;      // 요금제
+  masterPlan: string;             // 신규, 기변, 번호이동
+  payPlan: string;                // 요금제
   isDone: boolean;                // 처리 유무
 }
 // export interface ICustomerMore {

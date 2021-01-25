@@ -1,14 +1,14 @@
-<div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlexFill>
-  <div>
+<div fxLayout="column" fxFlexFill>
+  <div fxFlex='10'>
     <app-order-header [phonePrice]='selectedPhoneInfo.origin_price' [phoneName]='selectedPhoneInfo.ModelName'>
     </app-order-header>
   </div>
-  <div fxLayoutAlign='center center'>
+  <div fxFlex='70'>
     <!-- <mat-label fxLayoutAlign="center" class="mat-title">{{ selectedPhoneInfo.PhoneName }} 구매 신청</mat-label> -->
     <mat-horizontal-stepper linear #stepper>
       <mat-step [stepControl]="customerFormGroup" errorMessage="고객님 정보가 누락 되었습니다.">
         <form [formGroup]="customerFormGroup" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{ titleCustInfo }}</ng-template>
+          <!-- <ng-template matStepLabel>{{ titleCustInfo }}</ng-template> -->
           <mat-form-field appearance="standard">
             <mat-label>성명</mat-label>
             <input matInput placeholder="고객님 성함" formControlName="customer_name_ctrl" required />
@@ -27,7 +27,7 @@
       <!-- 신규, 기변, 번호이동 -->
       <mat-step [stepControl]="masterplanFormGroup" errorMessage="플랜을 선택 해 주세요">
         <form [formGroup]="masterplanFormGroup" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{ titleMasterPlan }}</ng-template>
+          <!-- <ng-template matStepLabel>{{ titleMasterPlan }}</ng-template> -->
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="registerCtrl">
             <mat-radio-button value="신규가입">신규 가입</mat-radio-button>
             <mat-radio-button value="기기변경">기기 변경</mat-radio-button>
@@ -44,9 +44,7 @@
       <!-- 단말기 할부 개월 설정 -->
       <mat-step [stepControl]="deviceInstallmentFormGroup" errorMessage="단말기 요금 납부 방법이 누락 되었습니다">
         <form [formGroup]="deviceInstallmentFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{
-            titleDeviceInstallmentInfo
-            }}</ng-template>
+          <!-- <ng-template matStepLabel>{{titleDeviceInstallmentInfo}}</ng-template> -->
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="deviceInstallmentCtrl">
             <mat-radio-button value="0" (click)='setDeviceInstallment(1)'>일시불</mat-radio-button>
             <mat-radio-button *ngFor="let inst of selectedPhoneInfo.device_installment" [value]="inst"
@@ -65,7 +63,7 @@
       <!-- 요금제 선택 -->
       <mat-step [stepControl]="payplanFormGroup" errorMessage="요금제를 선택 해 주세요.">
         <form [formGroup]="payplanFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{ titlePayPlan }}</ng-template>
+          <!-- <ng-template matStepLabel>{{ titlePayPlan }}</ng-template> -->
           <!-- 2021.01.22 요금 선택을 테이블 형태로 변경 -->
           <mat-card *ngFor='let plan of selectedPhoneInfo.plans' >
             <mat-card-content fxLayout='column' fxLayoutGap='16px'>
@@ -112,7 +110,7 @@
       <!-- 단말기 색상 -->
       <mat-step [stepControl]="deviceFormGroup" errorMessage="단말기 선택 사항이 누락 되었습니다.">
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel #deviceLabel>{{titleDeviceInfo}}</ng-template>
+          <!-- <ng-template matStepLabel #deviceLabel>{{titleDeviceInfo}}</ng-template> -->
           <!-- <mat-label>단말기 색상 선택</mat-label> -->
           <mat-radio-group fxLayout="column" fxLayoutGap="16px" formControlName="device_color_ctrl">
             <div *ngIf="selectedColor">{{ selectedColor }}</div>
@@ -144,11 +142,12 @@
         <div>
           <button mat-button matStepperPrevious>뒤로</button>
           <!-- <button mat-button (click)="stepper.reset()">다시 선택</button> -->
+          <button mat-button (click)='temp()'>테스트</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>
   </div>
-  <div>
+  <div fxFlex='20'>
     <app-order-footer [originPrice]='selectedPhoneInfo.origin_price'></app-order-footer>
   </div>
 </div>
