@@ -78,8 +78,7 @@
                                             element.newDevice)}}
                                         </div>
                                         <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
-                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
-                                            element.newDeviceInstallment)}}
+                                            {{ CollapseMoney(phoneItem.origin_price - element.newDeviceInstallment)}}
                                         </div>
                                     </td>
                                 </ng-container>
@@ -92,7 +91,7 @@
                                             element.moveNumber)}}
                                         </div>
                                         <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
-                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            {{ CollapseMoney(phoneItem.origin_price -
                                             element.moveNumberInstallment)}}
                                         </div>
                                     </td>
@@ -106,7 +105,7 @@
                                             element.changeDevice) }}
                                         </div>
                                         <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
-                                            {{ CollapseMoney(phoneItem.origin_price - element.publicPrice -
+                                            {{ CollapseMoney(phoneItem.origin_price -
                                             element.changeDeviceInstallment) }}
                                         </div>
                                     </td>
@@ -191,7 +190,7 @@
                                             }}
                                         </div>
                                         <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
-                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            {{ FullMoney(phoneItem.origin_price -
                                             element.newDeviceInstallment) }}
                                         </div>
 
@@ -206,7 +205,7 @@
                                             element.moveNumber) }}
                                         </div>
                                         <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
-                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            {{ FullMoney(phoneItem.origin_price -
                                             element.moveNumberInstallment) }}
                                         </div>
                                     </td>
@@ -220,7 +219,7 @@
                                             element.changeDevice) }}
                                         </div>
                                         <div [ngStyle]="{'color': 'tomato', 'font-weight' : 'bold'}">
-                                            {{ FullMoney(phoneItem.origin_price - element.publicPrice -
+                                            {{ FullMoney(phoneItem.origin_price -
                                             element.changeDeviceInstallment) }}
                                         </div>
                                     </td>

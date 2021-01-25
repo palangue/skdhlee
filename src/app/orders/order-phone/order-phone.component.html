@@ -67,44 +67,40 @@
         <form [formGroup]="payplanFormGroup" fxLayout="column" fxLayoutGap="16px">
           <ng-template matStepLabel>{{ titlePayPlan }}</ng-template>
           <!-- 2021.01.22 요금 선택을 테이블 형태로 변경 -->
-
-
-
-
-
-
-
-
-
-          <mat-radio-group fxLayout="column" formControlName="payplan_ctrl" fxLayoutGap="16px">
-            <mat-radio-button *ngFor="let plan of selectedPhoneInfo.plans" [value]="plan.planName"
-              (click)="setPayPlan(plan)">
-              <span [ngStyle]="{'font-size': '16px', 'font-weight': 'bold'}">{{ plan.planName }}</span>
-              <div>
-                월 통신 요금 : {{ plan.monthPay }}
+          <mat-card *ngFor='let plan of selectedPhoneInfo.plans' >
+            <mat-card-content fxLayout='column' fxLayoutGap='16px'>
+              <div [ngStyle]="{'font-weight': 'bold', 'font-size': '18px'}">
+                {{ plan.planName}}
               </div>
-              <div>
-                <table>
-                  <th>공시지원</th>
-                  <th>임직원할인</th>
-                  <tr>
-                    <td>{{ plan.publicPrice | number: '1.0-0' }} 원</td>
-                    <td>{{getSupportMoney(plan) | number: '1.0-0'}} 원</td>
-                  </tr>
-                </table>
+              <div fxLayout='row' fxLayoutAlign='space-between center' fxLayoutGap='8px'>
+                <button mat-stroked-button color='primary' (click)='btnSetPublic(plan)'>
+                  <table>
+                    <th>공시지원</th>
+                    <th>임직원할인</th>
+                    <tr>
+                      <td>{{ plan.publicPrice | number: '1.0-0' }} 원</td>
+                      <td>{{ (getSupportMoney(plan)/10000) | number: '1.0-0'}}만 원</td>
+                    </tr>
+                  </table>
+                </button>
+                <button mat-stroked-button color='warn' (click)='btnSetInstallment(plan)'>
+                  <table>
+                    <th>요금할인 25%</th>
+                    <th>임직원할인</th>
+                    <tr>
+                      <td>월 기본료: {{getMonthPlanAmount(plan) | number: '1.0-0'}} 원</td>
+                      <td>{{ (getInstallmentMoney(plan) / 10000) | number: '1.0-0' }}만 원</td>
+                    </tr>
+                  </table>
+                </button>
               </div>
-              <div>
-                <table>
-                  <th>요금할인 25%</th>
-                  <th>임직원할인</th>
-                  <tr>
-                    <td>월 기본료: {{getMonthPlanAmount(plan) | number: '1.0-0'}} 원</td>
-                    <td>{{ getInstallmentMoney(plan) | number: '1.0-0' }} 원</td>
-                  </tr>
-                </table>
-              </div>
-            </mat-radio-button>
-          </mat-radio-group>
+            </mat-card-content>
+          </mat-card>
+
+
+
+
+
         </form>
         <div>
           <button mat-button matStepperPrevious>이전 단계</button>
@@ -113,29 +109,6 @@
           </button>
         </div>
       </mat-step>
-      <!-- 공시지원, 선택약정 -->
-      <mat-step [stepControl]="agreementFormGroup" errorMessage="약정 선택">
-        <form [formGroup]="agreementFormGroup" fxLayout="column" fxLayoutGap="16px">
-          <ng-template matStepLabel>{{ titleAgreementInfo }}</ng-template>
-          <mat-radio-group fxLayout="column" formControlName="agreement_ctrl" fxLayoutGap="16px">
-            <mat-radio-button (click)="setInstallment('공시지원금')" [value]="'공시지원금'">
-              공시지원금
-              <!-- 공시지원금 ( 임직원 할인 {{getPublicPrice() }} 원 ) -->
-            </mat-radio-button>
-            <!-- <mat-radio-button (click)="setInstallment('선택약정 12개월')" [value]="'선택 약정 12 개월'">선택 약정 12 개월 ( 임직원 할인 )
-            </mat-radio-button> -->
-            <mat-radio-button (click)="setInstallment('선택약정 24개월')" [value]="'선택 약정 24 개월'">선택 약정 24 개월
-            </mat-radio-button>
-          </mat-radio-group>
-        </form>
-        <div>
-          <button mat-button matStepperPrevious>이전 단계</button>
-          <button mat-button matStepperNext color="accent" (click)="chooseAgreement()">
-            다음 단계
-          </button>
-        </div>
-      </mat-step>
-      
       <!-- 단말기 색상 -->
       <mat-step [stepControl]="deviceFormGroup" errorMessage="단말기 선택 사항이 누락 되었습니다.">
         <form [formGroup]="deviceFormGroup" fxLayout="column" fxLayoutGap="16px">

@@ -39,21 +39,25 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // 통신요금 동기화
+    // 월 통신요금 동기화
     this.pricing_subscription = this.orderService.getPricingObserv().subscribe(
       (ref: any) => {
         this.monthPayAmount = ref.monthPay
       }
     );
-    // 통신요금 할부 개월 동기화
+    // 선택약정, 공시지원
+    // 공시지원 : 공시지원 금액을 받는다.
+    // 선택 약정 : 개월 수를 받는다. 12개월 24개월 모두 25% 할인 설정을 한다.
     this.installment_subscription = this.orderService.getInstallmentObserv().subscribe(
       (ref: number) => {
         if (ref === 24 || ref === 12) {
+          console.log("선택약정으로 체크 됨");
           this.publicPrice = 0;
           this.discountMonth = ref;
           this.discountPercent = 0.25;
         }
         else {
+          console.log("공시지원으로 체크 됨");
           this.publicPrice = ref;
           this.discountMonth = 0;
           this.discountPercent = 1.0;

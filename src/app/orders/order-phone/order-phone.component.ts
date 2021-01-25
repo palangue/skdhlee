@@ -109,7 +109,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     //   this.promo_plan = data;
     // });
     // 요금제 리스트
-    console.log(this.selectedPhoneInfo.plans);
+    //console.log(this.selectedPhoneInfo.plans);
   }
 
   ngOnDestroy(): void {
@@ -175,27 +175,8 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
       this.titlePayPlan = this.selectedPayPlan + ' 요금제';
     }
   }
-  // 2021.01.19 통신 요금에 따른 복지 할인 금액 가져오기
-  getSupportMoney(planInfo: any): number {
-    switch (this.titleMasterPlan) {
-      case '신규가입':
-        return planInfo.newDevice;
-      case '기기변경':
-        return planInfo.changeDevice;
-      case '번호이동':
-        return planInfo.moveNumber;
-    }
-  }
-  getInstallmentMoney(planInfo: any): number{
-    switch (this.titleMasterPlan) {
-      case '신규가입':
-        return planInfo.newDeviceInstallment;
-      case '기기변경':
-        return planInfo.changeDeviceInstallment;
-      case '번호이동':
-        return planInfo.moveNumberInstallment;
-    }
-  }
+  //#endregion
+  
   getMonthPlanAmount(plan: any): number {
     const monthAmount = plan.monthPay * 0.25;
 
@@ -217,39 +198,55 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
 
     return '';
   }
-  //#endregion
+  
 
-  //#region Sync data subscription
-  setPayPlan(planData: any): void {
-    console.log('footer 쪽으로 데이터 pushing 하고 있네');
+  
+  
+  // 공시지원금 셋팅
+  btnSetPublic(plan: any): void{
+    this.payplanFormGroup = this._formBuilder.group({
+      payplan_ctrl: ['공시지원금', Validators.required]
+    });
+    this.titlePayPlan = plan.planName;
+
+    console.log('공시지원금 설정 = ', plan.publicPrice);
+    this.orderService.sendPublicPrice(plan.publicPrice);
+    this.orderService.sendPricing(plan);
+    this.orderService.sendSupportMoney(this.getSupportMoney(plan));
+    this.orderService.sendInstallment(plan.publicPrice);
+  }
+  getSupportMoney(plan: any): number{
     switch (this.titleMasterPlan) {
       case '신규가입':
-        this.selectedSupportMoney  = planData.newDevice;
-        break;
+        return plan.newDevice;
       case '기기변경':
-        this.selectedSupportMoney  = planData.changeDevice;
-        break;
+        return plan.changeDevice;
       case '번호이동':
-        this.selectedSupportMoney  = planData.moveNumber;
-        break;
+        return plan.moveNumber;
     }
-    this.orderService.sendPricing(planData);
-    this.orderService.sendSupportMoney(this.selectedSupportMoney);
+    
   }
-  // 공시지원금, 선택약정
-  setInstallment(installment: string): void {
-    switch (installment) {
-      case '공시지원금':
-        this.orderService.sendInstallment(Number(this.getPublicPrice()));
-        break;
-      case '선택약정 12개월':
-        this.orderService.sendInstallment(12);
-        break;
-      case '선택약정 24개월':
-        this.orderService.sendInstallment(24);
-        break;
+  // 선택약정 셋팅
+  btnSetInstallment(plan: any): void{
+    this.payplanFormGroup = this._formBuilder.group({
+      payplan_ctrl: ['선택약정 24개월', Validators.required]
+    });
+    this.titlePayPlan = plan.planName;
+    
+    this.orderService.sendPublicPrice(0);
+    this.orderService.sendPricing(plan);
+    this.orderService.sendSupportMoney(this.getInstallmentMoney(plan));
+    this.orderService.sendInstallment(24);
+  }
+  getInstallmentMoney(plan: any): number{
+    switch (this.titleMasterPlan) {
+      case '신규가입':
+        return plan.newDeviceInstallment;
+      case '기기변경':
+        return plan.changeDeviceInstallment;
+      case '번호이동':
+        return plan.moveNumberInstallment;
     }
-
   }
   // 단말기 할부 개월 수
   setDeviceInstallment(installment: number): void{
