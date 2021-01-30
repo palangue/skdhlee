@@ -17,7 +17,7 @@ export class DeviceService {
   private Database: AngularFirestore;
   private CollectionArray = {};
 
-  private userPromoCode = '';
+  private userPromoCode: Promotion;
 
 
   //#region 이미지 서비스1!
@@ -31,10 +31,10 @@ export class DeviceService {
   ];
 
   //#region User Promotion Code
-  getUserPromoCode(): string {
+  getUserPromoCode(): Promotion {
     return this.userPromoCode;
   }
-  setUserPromoCode(value: string): void {
+  setUserPromoCode(value: Promotion): void {
     this.userPromoCode = value;
   }
   //#endregion

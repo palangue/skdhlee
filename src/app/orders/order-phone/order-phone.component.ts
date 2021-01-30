@@ -29,6 +29,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   selectedSupportMoney = 0;
 
   promo_code: string;
+  promo_company: string;
 
   //#region local variable
   selectedPhoneName: string;
@@ -104,7 +105,8 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     this.selectedPhoneInfo = this.orderService.getSelectedPhone();
     this.selectedPhoneName = this.selectedPhoneInfo.PhoneName;
     // 로그인 된 프로모션 코드
-    this.promo_code = this.deviceService.getUserPromoCode();
+    this.promo_code = this.deviceService.getUserPromoCode().idx;
+    this.promo_company = this.deviceService.getUserPromoCode().promotion_target_company;
     // 장치 리스트
     // if (this.plan_sub) { this.plan_sub.unsubscribe(); }
     // this.plan_sub = this.orderService.getPayPlan().pipe(take(1)).subscribe((data) => {
@@ -261,7 +263,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     let aaa: ICustomer = {
       submitData :'',
       promo_name : '',
-      promo_company: this.promo_code,
+      promo_company: this.promo_company,
       isDone : false,
       installment_plan: this.selectedDeviceInstallment.toString(),
       device_storage: this.selectedStorage.toString(),

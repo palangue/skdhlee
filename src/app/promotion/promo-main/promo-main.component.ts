@@ -37,12 +37,14 @@ export class PromoMainComponent implements OnInit {
 
   ConfirmPromoCode(): void {
 
-    this.deviceService.getPromotionTarget('Promotion', this.promo_code).subscribe((ref: Promotion[]) => {
+    this.deviceService.getPromotionTarget('Promotion', this.promo_code)
+    .subscribe((ref: Promotion[]) => {
       console.log(ref);
       if (ref.length === 1) {
         this.invalid_code = false;
-        this.deviceService.setUserPromoCode(ref[0].idx);
-        this.dbService.addData(true, { promo_code: this.promo_code, visible: true })
+
+        this.deviceService.setUserPromoCode(ref[0]);
+        this.dbService.addData(true, { promo_code: ref[0].promotion_target, promo_company: ref[0].promotion_target_company, visible: true })
         //this.rout.navigate(['/promo-items']);
       }
       else {

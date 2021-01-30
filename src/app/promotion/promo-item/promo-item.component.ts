@@ -9,6 +9,7 @@ import { DeviceService } from '../../device.service';
 import { PHONE_DETAIL } from '../../../models/PhoneDetail';
 import { OrderService } from '../../order.service';
 import { IPayPlan } from '../../../models/PaymentPlan';
+import { Promotion } from '../../../models/Promotion';
 
 
 
@@ -28,13 +29,15 @@ export class PromoItemComponent implements OnInit, OnDestroy {
   @Input() deviceXs: boolean;
 
   // 로그인 된 프로모션 코드
+  promo: Promotion;
   itemPage_promoCode: string;   // 사용자 입력 프로모션 코드
+  
   //itemPageDocumentId: string;   // 검색 된 프로모션 코드 문서
 
   agreement_price_max: number;
   support_price: number;
 
-
+  promotionSub: Subscription;
   phoneListSub: Subscription;
   payPlan: Array<IPayPlan>;
 
@@ -63,7 +66,8 @@ export class PromoItemComponent implements OnInit, OnDestroy {
     console.log('deviceXs = ', this.deviceXs);
 
     // 로그인 시 저장 된 프로모션 코드 가져오기
-    this.itemPage_promoCode = this.deviceService.getUserPromoCode();
+    this.promo = this.deviceService.getUserPromoCode();
+    this.itemPage_promoCode  = this.promo.idx;
 
     if (this.itemPage_promoCode.length === 0) {
       alert('행사 코드를 수집하지 못했습니다. 새로고침 해 주세요');
@@ -89,6 +93,7 @@ export class PromoItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.phoneListSub?.unsubscribe();
+    this.promotionSub?.unsubscribe();
   }
 
   setPhoneAndPrices(): void {
@@ -98,12 +103,13 @@ export class PromoItemComponent implements OnInit, OnDestroy {
       this.firestore.collection('Promotion').doc(this.itemPage_promoCode).collection('support_device').valueChanges()
     ]).pipe(
       map(([phoneLists, payPlans, promotions]) => {
+        console.log('setPhoneAndPrices', promotions, payPlans);
         return { phoneLists, payPlans, promotions };
       })
     );
-    this.allInfo$.subscribe(ref => {
-      console.log('All data = ', ref)
-    });
+    // this.allInfo$.subscribe(ref => {
+    //   console.log('All data = ', ref)
+    // });
   }
 
   // switchMap 사용
