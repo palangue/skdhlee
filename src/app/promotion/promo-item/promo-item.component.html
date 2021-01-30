@@ -5,7 +5,7 @@
 <!-- <p *ngIf='deviceXs'>promo-item ok</p> -->
 
 <div fxLayoutAlign='center start'>
-    <div class='mat-elevation-z8' [ngStyle]="{'margin': '16px'}" fxFlex='50%' fxFlex.xs='100%' fxFlex.sm='100%'
+    <div fxFlex='50%' fxFlex.xs='100%' fxFlex.sm='100%'
         fxFlex.md='80%'>
 
         <ng-container *ngIf='joined$ | async; else loading; let joined'>
