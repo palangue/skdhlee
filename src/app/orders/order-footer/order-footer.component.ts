@@ -112,11 +112,6 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
     return Number(this.calculatedDeviceMonthPay) + Number(this.calculatedMonthPay);
   }
 
-  phoneCall(): void {
-    alert('전화 상담 클릭 했다');
-    
-  }
-
   savePhoneDetail(): void {
     alert(Date.now().toString());
     let orderInfo: ICustomer = {

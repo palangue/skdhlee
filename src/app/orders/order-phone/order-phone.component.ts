@@ -105,15 +105,9 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
     this.selectedPhoneInfo = this.orderService.getSelectedPhone();
     this.selectedPhoneName = this.selectedPhoneInfo.PhoneName;
     // 로그인 된 프로모션 코드
-    this.promo_code = this.deviceService.getUserPromoCode().idx;
+    this.promo_code = this.deviceService.getUserPromoCode().promotion_target;
     this.promo_company = this.deviceService.getUserPromoCode().promotion_target_company;
-    // 장치 리스트
-    // if (this.plan_sub) { this.plan_sub.unsubscribe(); }
-    // this.plan_sub = this.orderService.getPayPlan().pipe(take(1)).subscribe((data) => {
-    //   this.promo_plan = data;
-    // });
-    // 요금제 리스트
-    //console.log(this.selectedPhoneInfo.plans);
+    
   }
 
   ngOnDestroy(): void {
@@ -261,9 +255,9 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   temp(){
 
     let aaa: ICustomer = {
-      submitData :'',
-      promo_name : '',
-      promo_company: this.promo_company,
+      submitData : Date.now().toString(),
+      promo_name : this.promo_company,
+      promo_company: this.promo_code,
       isDone : false,
       installment_plan: this.selectedDeviceInstallment.toString(),
       device_storage: this.selectedStorage.toString(),
@@ -280,6 +274,10 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
   console.log(this.selectedPhoneInfo);
   console.log('=== ', this.selectedAgreement, this.selectedPayPlan);
   console.log(aaa);
+  }
+
+  OrderClicked(event$): void {
+    console.log(event$);
   }
 
 }
