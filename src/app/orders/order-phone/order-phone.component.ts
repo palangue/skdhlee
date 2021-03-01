@@ -259,7 +259,7 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
       promo_name : this.promo_company,
       promo_company: this.promo_code,
       isDone : false,
-      installment_plan: this.selectedDeviceInstallment.toString(),
+      installment_plan: this.selectedDeviceInstallment === 0 ? "일시불" : "단말기할부 " + this.selectedDeviceInstallment + " 개월",
       device_storage: this.selectedStorage.toString(),
       device_name: this.selectedPhoneName,
       device_color:this.selectedColor,
@@ -269,11 +269,9 @@ export class OrderPhoneComponent implements OnInit, OnDestroy {
       payPlan: this.selectedPayPlan
     }
     //this.selectedPhoneInfo;// PHONE_DETAIL;
+    this.orderService.SaveCustomerOrder(aaa);
 
 
-  console.log(this.selectedPhoneInfo);
-  console.log('=== ', this.selectedAgreement, this.selectedPayPlan);
-  console.log(aaa);
   }
 
   OrderClicked(event$): void {

@@ -114,6 +114,7 @@ export class OrderFooterComponent implements OnInit, OnDestroy {
 
   savePhoneDetail(): void {
     alert(Date.now().toString());
+
     let orderInfo: ICustomer = {
       customer_mobile : '',
       customer_name : '',

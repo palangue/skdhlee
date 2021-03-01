@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject } from 'rxjs';
+import { ICustomer } from 'src/models/Customer';
 
 import { PHONE_DETAIL } from '../models/PhoneDetail';
 
@@ -94,6 +95,9 @@ export class OrderService {
 
     return this.CollectionRef['PayPlan'];
   }
-
+  SaveCustomerOrder(data: ICustomer)
+  {
+    this.Database.collection("Customers").add(data);
+  }
 
 }
