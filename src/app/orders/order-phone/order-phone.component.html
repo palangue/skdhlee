@@ -1,9 +1,9 @@
-<div fxLayout="column" fxFlexFill>
-  <div fxFlex='10'>
+<div fxLayout="column" class='main-body'>
+  <div class='header'>
     <app-order-header [phonePrice]='selectedPhoneInfo.origin_price' [phoneName]='selectedPhoneInfo.ModelName'>
     </app-order-header>
   </div>
-  <div fxFlex='70'>
+  <div >
     <!-- <mat-label fxLayoutAlign="center" class="mat-title">{{ selectedPhoneInfo.PhoneName }} 구매 신청</mat-label> -->
     <mat-horizontal-stepper linear #stepper>
       <mat-step [stepControl]="customerFormGroup" errorMessage="고객님 정보가 누락 되었습니다.">
@@ -147,7 +147,7 @@
       </mat-step>
     </mat-horizontal-stepper>
   </div>
-  <div fxFlex='20'>
+  <div class='footer'>
     <app-order-footer [originPrice]='selectedPhoneInfo.origin_price'></app-order-footer>
   </div>
 </div>
