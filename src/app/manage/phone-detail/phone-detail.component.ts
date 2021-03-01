@@ -23,6 +23,9 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
   phoneInfo: PHONE_DETAIL;
   tempPhoneInfo: PHONE_DETAIL;
 
+  chk5G: boolean = false;
+  chkLTE: boolean = false;
+
   storageTableColumns: string[] = ['storage', 'newDevice', 'changeDevice', 'moveNumber', 'actions'];
   colorTableColumns: string[] = ['color_name_kor', 'color_value', 'color_actions'];
 
@@ -36,6 +39,8 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
 
     if (data) {
       this.phoneInfo = data.phoneInfo;
+      this.chkLTE =  this.phoneInfo.net_type_lte;
+      this.chk5G = this.phoneInfo.net_type_5g;
     }
     else {
       this.phoneInfo = {
@@ -87,6 +92,8 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
     //#endregion
 
     this.phoneInfo.ModelName = this.phoneInfo.PhoneName + ' ' + this.phoneInfo.storageSize;
+    this.phoneInfo.net_type_5g = this.chk5G;
+    this.phoneInfo.net_type_lte = this.chkLTE;
 
     this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).set(this.phoneInfo)
       .then(ref => console.log('set done ', ref))

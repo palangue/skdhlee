@@ -28,6 +28,15 @@
         </mat-form-field>
       </div>
     </div>
+    <!-- 통신망 선택 -->
+    <div fxLayout='column' fxLayoutGap='16px'>
+      <mat-toolbar>통신망 선택</mat-toolbar>
+      <div fxLayoutGap='16px'>
+        <mat-checkbox [(ngModel)]='chk5G' >5G</mat-checkbox>
+        <mat-checkbox [(ngModel)]='chkLTE' >LTE</mat-checkbox>
+      </div>
+    </div>
+
     <!-- 단말기 사이즈 / 무게 -->
     <div fxLayout='column' fxLayoutGap='16px'>
       <mat-toolbar> 단말기 사이즈 / 무게 </mat-toolbar>
