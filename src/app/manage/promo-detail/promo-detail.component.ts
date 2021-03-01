@@ -144,10 +144,10 @@ export class PromoDetailComponent implements OnInit, OnDestroy {
     this.SelectedPayPlanList = [];
 
 
-
+    
     // 전체 단말기 리스트에서 선택 된 단말기를 가져온다.
     const chosenPhoneDetail = this.PhoneList.find(x => x.ModelName === this.selectedDeviceName);
-
+    
     // 선택 된 단말기가 설정 가능한 네트워크를 select box 에 설정
     if (chosenPhoneDetail.net_type_5g) {
       this.SelectedPayPlanList.push('5G');
