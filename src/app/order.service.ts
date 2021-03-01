@@ -97,7 +97,11 @@ export class OrderService {
   }
   SaveCustomerOrder(data: ICustomer)
   {
-    this.Database.collection("Customers").add(data);
+    this.Database.collection("Customers").add(data)
+    .then(() => alert("등록 성공했습니다. 곧 연락 드리겠습니다."))
+    .catch((err)=>{
+      alert(err);
+    })
   }
 
 }

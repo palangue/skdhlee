@@ -37,7 +37,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subCustomer = this.firestore.
-      collection('customers')
+      collection('Customers')
       .valueChanges({ idField: 'idx' })
       .subscribe((ref: any[]) => {
         console.log(ref);
@@ -68,6 +68,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   btnCompleteRequest(item): void {
     console.log(item);
     item.isDone = 'Y';
-    this.firestore.collection('customers').doc(item.idx).update(item);
+    this.firestore.collection('Customers').doc(item.idx).update(item);
   }
 }
