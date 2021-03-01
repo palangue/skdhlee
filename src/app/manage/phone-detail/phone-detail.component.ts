@@ -94,6 +94,7 @@ export class PhoneDetailComponent implements OnInit, OnDestroy {
     this.phoneInfo.ModelName = this.phoneInfo.PhoneName + ' ' + this.phoneInfo.storageSize;
     this.phoneInfo.net_type_5g = this.chk5G;
     this.phoneInfo.net_type_lte = this.chkLTE;
+    this.phoneInfo.device_installment = [24, 30, 36];
 
     this.firestore.collection('Phone').doc(this.phoneInfo.ModelName).set(this.phoneInfo)
       .then(ref => console.log('set done ', ref))
