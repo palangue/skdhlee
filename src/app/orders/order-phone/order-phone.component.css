@@ -1,26 +1,17 @@
-html, body{
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.main-body{
+html{
   position: relative;
   min-height: 100%;
+  margin: 0;
+  padding: 0;
+} 
+body{
+  min-height: 100%;
 }
-.header {
 
-}
 .footer {
-  position: absolute;
   width: 100%;
-
-  bottom: 0;
 }
-.contents {
-  position: relative;
 
-}
 table{
   width: 200px;
   border-collapse: collapse;
